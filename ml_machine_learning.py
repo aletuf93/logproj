@@ -406,7 +406,7 @@ def selectByForwardStepwiseSelection(XX,y,dirResults,n_feat,saveFig=False):
         resultFSs=resultFSs.append(row)
         
         numb_features.append(len(features))
-    #resultFSs.to_html(dirResults+'\\00-ForwardStepwiseSelection.html')
+    #resultFSs.to_xlsx(dirResults+'\\00-ForwardStepwiseSelection.xlsx')
     
     #Salvo le variabili
     s =resultFSs['Features']
@@ -420,7 +420,7 @@ def selectByForwardStepwiseSelection(XX,y,dirResults,n_feat,saveFig=False):
     df = pd.DataFrame({'numb_features': numb_features,'RSS': RSS_list, 'R_squared':R_squared_list})
     df_min = df[df.groupby('numb_features')['RSS'].transform(min) == df['RSS']]
     #df_max = df[df.groupby('numb_features')['R_squared'].transform(max) == df['R_squared']]
-    df_min.to_html(dirResults+'\\00-00_ForwardStepwiseSelection_min.html')
+    df_min.to_xlsx(dirResults+'\\00-00_ForwardStepwiseSelection_min.xlsx')
     
     
     df['min_RSS'] = df.groupby('numb_features')['RSS'].transform(min)
