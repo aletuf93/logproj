@@ -146,19 +146,19 @@ def diagnoseForFeatureSelection(X,y,dirResultsMachineLearning,diagnoseModels):
         selectByCorrelation(X,y,1,dirResultsMachineLearning,True)
     
     #analysis of the variance of the variables
-    elif diagnoseModels.count('variance')>0:
+    if diagnoseModels.count('variance')>0:
         selectByVariance(X, 1,dirResultsMachineLearning,True)
     
     #analysi of the selection of the variables by lasso
-    elif diagnoseModels.count('lasso')>0:
+    if diagnoseModels.count('lasso')>0:
         selectByLassoL1(X,y,1,dirResultsMachineLearning,True)
     
     #Verifico se posso esprimere la varianza in un sottoInsieme di componenti principali
-    elif diagnoseModels.count('PCA')>0:
+    if diagnoseModels.count('PCA')>0:
         PCAplot(len(Q.columns),Q,dirResultsMachineLearning, diagnose=True)
     
     #Creo la curva del forward Stepwise
-    elif diagnoseModels.count('forward stepwise')>0:
+    if diagnoseModels.count('forward stepwise')>0:
         selectByForwardStepwiseSelection(X,y,dirResultsMachineLearning,len(X.columns),saveFig=True )
     
     return True
