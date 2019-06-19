@@ -19,7 +19,7 @@ from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
 
 #pacchetti ZO
-import gitPackages.logproj.ml_machine_learning as ZO_ml
+from gitPackages.logproj import ml_machine_learning as ZO_ml
 
 # In[1]: #confusion matrix
 
