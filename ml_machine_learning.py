@@ -414,7 +414,7 @@ def selectByForwardStepwiseSelection(XX,y,dirResults,n_feat,saveFig=False):
     aaa=pd.DataFrame(mlb.fit_transform(s),columns=mlb.classes_, index=resultFSs.index)
     bbb=pd.concat([resultFSs,aaa],axis=1)
     if saveFig:
-        bbb.to_html(dirResults+'\\00-ForwardStepwiseSelection.html')
+        bbb.to_xlsx(dirResults+'\\00-ForwardStepwiseSelection.xlsx')
     
     #Store in DataFrame
     df = pd.DataFrame({'numb_features': numb_features,'RSS': RSS_list, 'R_squared':R_squared_list})
