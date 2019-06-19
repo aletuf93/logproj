@@ -1,4 +1,4 @@
-#import py_compile
+﻿#import py_compile
 #py_compile.compile('ZO_ML_machineLearning.py')
 
 import numpy as np
@@ -21,7 +21,7 @@ from sklearn import linear_model
 from sklearn.ensemble import ExtraTreesClassifier
 
 #developed libraries
-from ZO_ML_RegressionLinearModels import LassoRegressionCV, LassoRegressionComplete,LassoCV
+from ML_RegressionLinearModels import LassoRegressionCV, LassoRegressionComplete,LassoCV
 
 
 
