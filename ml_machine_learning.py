@@ -406,7 +406,7 @@ def selectByForwardStepwiseSelection(XX,y,dirResults,n_feat,saveFig=False):
         resultFSs=resultFSs.append(row)
         
         numb_features.append(len(features))
-    #resultFSs.to_xlsx(dirResults+'\\00-ForwardStepwiseSelection.xlsx')
+    #resultFSs.to_excel(dirResults+'\\00-ForwardStepwiseSelection.xlsx')
     
     #Salvo le variabili
     s =resultFSs['Features']
@@ -414,13 +414,13 @@ def selectByForwardStepwiseSelection(XX,y,dirResults,n_feat,saveFig=False):
     aaa=pd.DataFrame(mlb.fit_transform(s),columns=mlb.classes_, index=resultFSs.index)
     bbb=pd.concat([resultFSs,aaa],axis=1)
     if saveFig:
-        bbb.to_xlsx(dirResults+'\\00-ForwardStepwiseSelection.xlsx')
+        bbb.to_excel(dirResults+'\\00-ForwardStepwiseSelection.xlsx')
     
     #Store in DataFrame
     df = pd.DataFrame({'numb_features': numb_features,'RSS': RSS_list, 'R_squared':R_squared_list})
     df_min = df[df.groupby('numb_features')['RSS'].transform(min) == df['RSS']]
     #df_max = df[df.groupby('numb_features')['R_squared'].transform(max) == df['R_squared']]
-    df_min.to_xlsx(dirResults+'\\00-00_ForwardStepwiseSelection_min.xlsx')
+    df_min.to_excel(dirResults+'\\00-00_ForwardStepwiseSelection_min.xlsx')
     
     
     df['min_RSS'] = df.groupby('numb_features')['RSS'].transform(min)
