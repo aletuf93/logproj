@@ -19,7 +19,7 @@ import sklearn.metrics as metrics
 from sklearn.model_selection import KFold
 
 #pacchetti ZO
-import ZO_ML_machineLearning as ZO_ml
+import ML_machineLearning as ZO_ml
 
 
 
