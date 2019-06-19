@@ -447,7 +447,7 @@ def compareModelsCV(X,y,dirResultsMachineLearning,nFolds,models,savefig):
 
     
     return D_R
-
+'''
 def compareModelsBootstrap(X,y,nBoot,dirResultsMachineLearning,nFolds,models):
     modelsComparisoncols=['Model','MSE mean','MSE std']
     D_R=pd.DataFrame(columns=modelsComparisoncols)
@@ -491,9 +491,11 @@ def compareModelsBootstrap(X,y,nBoot,dirResultsMachineLearning,nFolds,models):
         temp=pd.DataFrame([['LARS Regression', D.MSE[1],D.MSE[2]]],columns=modelsComparisoncols)
         D_R=D_R.append(temp) 
 
-    
+
 
     return D_R
+    
+'''
     
 
 

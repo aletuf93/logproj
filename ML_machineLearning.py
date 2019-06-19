@@ -21,7 +21,7 @@ from sklearn import linear_model
 from sklearn.ensemble import ExtraTreesClassifier
 
 #developed libraries
-from ML_RegressionLinearModels import LassoRegressionCV, LassoRegressionComplete,LassoCV
+from ML_RegressionLinearModels import  LassoCV
 
 
 
