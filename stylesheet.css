@@ -1,0 +1,9 @@
+.okmessage { 
+  color: black
+  background-color: green;
+}
+
+.errormessage { 
+  color: black
+  background-color: red;
+}
