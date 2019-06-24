@@ -147,7 +147,7 @@ def diagnoseForFeatureSelection(X,y,dirResultsMachineLearning,diagnoseModels):
     
     #analysis of the variance of the variables
     if diagnoseModels.count('variance')>0:
-        selectByVariance(X, 1,dirResultsMachineLearning,True)
+        selectByVariance(X, 0,dirResultsMachineLearning,True)
     
     #analysi of the selection of the variables by lasso
     if diagnoseModels.count('lasso')>0:
@@ -228,12 +228,15 @@ def selectByVariance(X, perc,dirResults,diagnose):
         numFeatSelected=[]
         for i in range(1,101):
             val=i/100
-            sel=VarianceThreshold(threshold=(val))
-            sel.fit_transform(Q)
-            nn=len(Q.columns[sel.get_support()])
-            #print(nn)
-            numFeatSelected.append(nn)
-        plt.plot(range(1,101), numFeatSelected)   
+            try:
+                sel=VarianceThreshold(threshold=(val))
+                sel.fit_transform(Q)
+                nn=len(Q.columns[sel.get_support()])
+                #print(nn)
+                numFeatSelected.append(nn)
+            except:
+                pass
+        plt.plot(range(1,len(numFeatSelected)+1), numFeatSelected)   
         plt.title('Variance graph')
         plt.xlabel('Variance threshold %')
         plt.ylabel('Num. selected features')
