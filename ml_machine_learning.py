@@ -240,7 +240,7 @@ def selectByVariance(X, perc,dirResults,diagnose):
         plt.savefig(dirResults+'\\VarianceChart.png')
         plt.close('all')
         
-    sel=VarianceThreshold(threshold=(perc* (1 - perc)))
+    sel=VarianceThreshold(threshold=(perc))
     Z=sel.fit_transform(Q)
     feature_idx = sel.get_support()
     feature_name = Q.columns[feature_idx]
