@@ -228,7 +228,7 @@ def selectByVariance(X, perc,dirResults,diagnose):
         numFeatSelected=[]
         for i in range(1,101):
             val=i/100
-            sel=VarianceThreshold(threshold=(val* (1 - val)))
+            sel=VarianceThreshold(threshold=(val))
             sel.fit_transform(Q)
             nn=len(Q.columns[sel.get_support()])
             #print(nn)
