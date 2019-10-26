@@ -22,19 +22,31 @@ def timeStampToDays(series):
     return result
 
 
-def raggruppaPerSettimana(df,variable,tipo):
-    df['DatePeriod'] = pd.to_datetime(df['DatePeriod']) - pd.to_timedelta(7, unit='d')
-    if tipo=='count':
-        df = df.groupby([pd.Grouper(key='DatePeriod', freq='W-MON')])[variable].size()
-    elif tipo=='sum':
-         df = df.groupby([pd.Grouper(key='DatePeriod', freq='W-MON')])[variable].sum()
+def raggruppaPerSettimana(df,timeVariable,groupVariable,tipo):
+    #df indica il dataframe di partenza
+    # timevariable e' il nomer della variabile temporale
+    # groupVariable e' il nome della variabile da aggregare su base temporale
+    # tipo e' sum se le variabili vanno sommate, count se vanno conteggiate
+    
+    df[timeVariable] = pd.to_datetime(df[timeVariable]) - pd.to_timedelta(7, unit='d')
+    if tipo.lower()=='count':
+        df = df.groupby([pd.Grouper(key=timeVariable, freq='W-MON')])[groupVariable].size()
+    elif tipo.lower()=='sum':
+         df = df.groupby([pd.Grouper(key=timeVariable, freq='W-MON')])[groupVariable].sum()
     df=df.sort_index()
     return df
 
-def raggruppaPerGiornoDellaSettimana(df,variable):
+def raggruppaPerGiornoDellaSettimana(df,timeVariable,variable):
+    #raggruppa per frequenza del giorno della settimana
+    
+    #df = input dataframe
+    #timeVariable = variabile temporale in cui è salvato un datetime
+    #variable = valore della variabile da raggruppare
+    
+    
     cats = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    df['Weekday']=df.DatePeriod.dt.weekday_name
-    df['Weekday'] = df['Weekday'].astype('category', categories=cats, ordered=True)
+    df['Weekday']=df[timeVariable].dt.weekday_name
+    df['Weekday'] = pd.Categorical(df['Weekday'], categories=cats, ordered=True)
     D_grouped=df.groupby(['Weekday']).agg({variable:['size','mean','std']})
     D_grouped.columns = D_grouped.columns.droplevel(0)
     D_grouped['mean']=np.round(D_grouped['mean'],2)
@@ -183,13 +195,16 @@ def fourierAnalysis(y):
     yf = np.fft.fft(y_notrend)
     
     #filtro i valori più significativi (solo le frequenze il cui picco spiega almeo il 10% della stagionalità)
-    xf = np.linspace(0.0, 1.0/(2.0*T), N//2)
+    xf = np.linspace(0.000001, 1.0/(2.0*T), N//2)
     amplitude=2.0/N * np.abs(yf[0:N//2])
     weeks=1/xf
     
+    #
+    armoniche = plt.figure
+    plt.plot(xf, 2.0/N * np.abs(yf[0:N//2]),color='skyblue')
+    plt.title('Amplitude spectrum')
     
-    #plt.stem(xf, 2.0/N * np.abs(yf[0:N//2]))
-    #plt.grid()
+    
     #plt.show()
     
     data={'Frequenza':xf,'Settimana':weeks,'Ampiezza':amplitude  }
@@ -198,9 +213,9 @@ def fourierAnalysis(y):
     D=D.dropna()
     D=D.sort_values(['Ampiezza'],ascending=False)
     D['perc']=D.Ampiezza/np.sum(D.Ampiezza)
-    D=D[D['perc']>0.1]
+    #D=D[D['perc']>0.1]
     D['Settimana']=np.round(D.Settimana,0)
-    return D.Settimana
+    return D.Settimana, armoniche
     
     
     
