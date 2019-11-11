@@ -110,14 +110,18 @@ def cleanOutliers(tableSKU, features): #applica il criterio di chauvenet colonna
 
 # Clean data using the interquartile range method
 def cleanUsingIQR(table, features):
-    temp=table
+    table=temp=table.reset_index(drop=True)
     for feature in features:
-        q1, q3= np.percentile(table[feature],[25,75])
-        iqr = q3 - q1
-        lower_bound = q1 -(1.5 * iqr)
-        upper_bound = q3 +(1.5 * iqr)
-        temp=temp[(temp[feature]<=upper_bound) & (temp[feature]>=lower_bound)]
-        temp=temp.reset_index(drop=True)
+        
+        if len(temp[feature])>0:
+            q1, q3= np.percentile(temp[feature],[25,75]) #percentile ignoring nan values
+            if (q1!=None) & (q3!=None):
+                iqr = q3 - q1
+                lower_bound = q1 -(1.5 * iqr)
+                upper_bound = q3 +(1.5 * iqr)
+                temp=temp[(temp[feature]<=upper_bound) & (temp[feature]>=lower_bound)]
+                temp=temp.reset_index(drop=True)
+    print(f"IQR removed: {np.round((len(table)-len(temp))/len(table),2)}% of the dataset")       
     return temp
 
 
