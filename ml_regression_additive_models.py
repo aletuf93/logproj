@@ -19,7 +19,7 @@ import sklearn.metrics as metrics
 from sklearn.model_selection import KFold
 
 #pacchetti ZO
-import ml_machine_learning as ZO_ml
+from gitPackages.logproj import ml_machine_learning as ZO_ml
 
 
 
