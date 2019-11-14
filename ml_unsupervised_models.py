@@ -25,9 +25,9 @@ from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import MinMaxScaler
 
 #Import pacchetti proprietari
-from ZO_ML_apriori import apriori  
-from ZO_ML_association_rules import association_rules
-from ZO_ML_machineLearning import dummyColumns
+#from ZO_ML_apriori import apriori  
+#from ZO_ML_association_rules import association_rules
+#from ZO_ML_machineLearning import dummyColumns
 
 
 
