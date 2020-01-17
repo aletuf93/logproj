@@ -641,6 +641,17 @@ def subsample(dataset, ratio=1.0):
 		sample.append(dataset[index])
 	return sample
 
+# randomly bootstrap values from a dataset X
+def BootstrapValues(X, nboot):
+    #bootstrap values;
+    # X is the initial array
+    # the funxtion returns an array X_bootstraped of the same length
+    listBoots=[]
+    for boot_i in range(nboot):
+        boot_tr = np.random.choice(X, size=len(X), replace=True)
+        listBoots.append(boot_tr)
+    return listBoots
+
 #stima MSE utilizzando bootstrap
 def BootstrapLoop(nboot,model,X,y):
 

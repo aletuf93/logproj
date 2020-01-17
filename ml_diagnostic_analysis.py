@@ -20,7 +20,7 @@ def scale_range (series, minimo, massimo):
     return series
 
 
-def paretoChart(df, barVariable, paretoVariable):
+def paretoChart(df, barVariable, paretoVariable,titolo):
 
     #barVariable è la variabile di conteggio (istogramma) (itemcode)
     #paretoVariable è la variabile numerica (popularity)
@@ -42,7 +42,7 @@ def paretoChart(df, barVariable, paretoVariable):
     ax2.plot(np.linspace(0, 100, num=len(df)), df["cumpercentage"], color="C1", marker="D", ms=7)
     ax2.yaxis.set_major_formatter(PercentFormatter())
     ax2.tick_params(axis="y", colors="C1")
-    plt.title('Pareto '+str(barVariable))
+    plt.title(titolo)
     plt.xlabel(str(barVariable))
     plt.ylabel('Percentage '+str(paretoVariable))
     plt.ylim([0 , 110])
