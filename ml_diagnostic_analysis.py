@@ -164,6 +164,7 @@ def getDescriptionKeywords(D_SKU):
     
     for i in range(0,len(D_SKU)):
         descWords=D_SKU['cleanDescription'][i]
+        descWords=str(descWords)
         
         if(not(descWords is None)):
             descWords=set(descWords.split(' '))
