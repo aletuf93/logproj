@@ -47,12 +47,12 @@ def sampleTimeSeries(series,sampleInterval):
     return series
 
 def raggruppaPerSettimana(df,timeVariable,groupVariable,tipo):
-    
+
     if isinstance(df,pd.Series): #convert to dataframe if a series
         df = pd.DataFrame([[df.index.values.T, df.values]],columns=[timeVariable, groupVariable])
-        
+
     df['DatePeriod'] = pd.to_datetime(df[timeVariable]) - pd.to_timedelta(7, unit='d')
-    
+
     if tipo=='count':
         df = df.groupby([pd.Grouper(key=timeVariable, freq='W-MON')])[groupVariable].size()
     elif tipo=='sum':
@@ -62,12 +62,12 @@ def raggruppaPerSettimana(df,timeVariable,groupVariable,tipo):
 
 
 def raggruppaPerMese(df,timeVariable,groupVariable,tipo):
-    
+
     if isinstance(df,pd.Series): #convert to dataframe if a series
         df = pd.DataFrame([[df.index.values.T, df.values]],columns=[timeVariable, groupVariable])
-        
+
     #df['DatePeriod'] = pd.to_datetime(df[timeVariable]) - pd.to_timedelta(7, unit='d')
-    
+
     if tipo=='count':
         df = df.groupby([pd.Grouper(key=timeVariable, freq='M')])[groupVariable].size()
     elif tipo=='sum':
@@ -79,7 +79,7 @@ def raggruppaPerMese(df,timeVariable,groupVariable,tipo):
 def raggruppaPerGiornoDellaSettimana(df,timeVariable,seriesVariable):
     cats = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     cat_type = CategoricalDtype(categories=cats, ordered=True)
-    
+
     df['Weekday']=df[timeVariable].dt.day_name()
     df['Weekday'] = df['Weekday'].astype(cat_type)
     D_grouped=df.groupby(['Weekday']).agg({seriesVariable:['size','mean','std']})
@@ -95,32 +95,32 @@ def assegnaGiornoSettimana(df,dateperiodColumn):
     weekEnd[weekend]='Weekend'
     weekEnd[~weekend]='Weekday'
     return dayOfTheWeek,weekEnd
-   
+
 
 # In[1]: ACF and PACF
 def ACF_PACF_plot(series):
     # the function return the graph wit h a time series, the ACF and the PACF
     # it rreturns two arrays with the significant lags in the ACF and PACF
-    
-    fig=plt.subplot(131) 
-    
+
+    fig=plt.subplot(131)
+
     plt.plot(series,'skyblue')
     plt.xticks(rotation=30)
     plt.title('Time Series')
-    
-    
-    
+
+
+
     lag_acf = acf(series, nlags = 20)
     lag_pacf = pacf(series, nlags = 20)
 
-    plt.subplot(132) 
+    plt.subplot(132)
     plt.stem(lag_acf,linefmt='skyblue',markerfmt='d')
     plt.axhline(y=0,linestyle='--')
     plt.axhline(y=-1.96/np.sqrt(len(series)),linestyle='--',color='r')
     plt.axhline(y=1.96/np.sqrt(len(series)),linestyle='--',color='r')
     plt.title('ACF')
     plt.xlabel('time lag')
-    plt.xlabel('ACF value')
+    plt.ylabel('ACF value')
 
 
     plt.subplot(133) 
@@ -130,30 +130,30 @@ def ACF_PACF_plot(series):
     plt.axhline(y=1.96/np.sqrt(len(series)),linestyle='--',color='r')
     plt.title('PACF')
     plt.xlabel('time lag')
-    plt.xlabel('PACF value')
-    
-    
+    plt.ylabel('PACF value')
+
+
     #identify significant values for ACF
     D_acf = pd.DataFrame(lag_acf,columns=['ACF'])
     D_acf['ORDER'] = D_acf.index.values + 1
-    
+
     min_sign = -1.96/np.sqrt(len(series))
     max_sign = 1.96/np.sqrt(len(series))
-    
-    D_acf['SIGNIFICANT'] = (D_acf['ACF']>max_sign) | (D_acf['ACF']<min_sign) 
+
+    D_acf['SIGNIFICANT'] = (D_acf['ACF']>max_sign) | (D_acf['ACF']<min_sign)
     D_acf_significant =  D_acf['ORDER'][D_acf['SIGNIFICANT']].values
-    
-    
+
+
     #identify significant values for PACF
     D_pacf = pd.DataFrame(lag_pacf,columns=['PACF'])
     D_pacf['ORDER'] = D_pacf.index.values + 1
-        
-    D_pacf['SIGNIFICANT'] = (D_pacf['PACF']>max_sign) | (D_pacf['PACF']<min_sign) 
+
+    D_pacf['SIGNIFICANT'] = (D_pacf['PACF']>max_sign) | (D_pacf['PACF']<min_sign)
     D_pacf_significant =  D_pacf['ORDER'][D_pacf['SIGNIFICANT']].values
-    
-    
-    
-    
+
+
+
+
     return fig, D_acf_significant, D_pacf_significant
 
 def returnsignificantLags(D_pacf_significant, D_acf_significant, maxValuesSelected=2):
@@ -162,27 +162,27 @@ def returnsignificantLags(D_pacf_significant, D_acf_significant, maxValuesSelect
         if len(D_pacf_significant)>1:
             numSelected=min(maxValuesSelected,len(D_pacf_significant))
             p = D_pacf_significant[0:numSelected]
-                       
-            
+
+
         else:
             p = [0,1]
-            
+
         #select values for parameter q
         if len(D_acf_significant)>1:
             numSelected=min(maxValuesSelected,len(D_acf_significant))
             q = D_acf_significant[0:numSelected]
         else:
             q = [0,1]
-            
+
         d = [0,1]
-        
-        
-        
-        
+
+
+
+
         a = [p,d,q]
         params = list(itertools.product(*a))
         return params
-    
+
 # %% ROLLING AVERAGE
 
 def detrendByRollingMean(series,seasonalityPeriod):
@@ -201,45 +201,45 @@ def SARIMAXfit(stationary_series, params):
             #the function return a figure_forecast with the plot of the forecast
             # a figure_residuals with the plot of the residuals
             # a dict resultModel with the model, the error (AIC), the order p,d,q
-            
+
             '''
             #PACF=>AR
             #ACF=>MA
             #ARIMA(P,D,Q) = ARIMA(AR, I, MA)
-            
+
             '''
-            
+
             incumbentError=999999999999999999999
             bestModel=[]
-           
-            
+
+
             for param in params:
                       mod = sm.tsa.statespace.SARIMAX(stationary_series,
                                                             order=param,
                                                             enforce_stationarity=True,
                                                             enforce_invertibility=True,
                                                             initialization='approximate_diffuse')
-                
+
                       results = mod.fit()
                       if(results.aic<incumbentError):
                                 bestModel=mod
                                 incumbentError=results.aic
-                                
-                                
+
+
             results=bestModel.fit()
             figure_residuals=results.plot_diagnostics(figsize=(15, 12))
-            
+
             figure_forecast=plt.figure()
             plt.plot(stationary_series)
             plt.plot(results.fittedvalues, color='red')
             plt.title('ARIMA fit p='+str(bestModel.k_ar)+' d='+str(bestModel.k_diff)+' q='+str(bestModel.k_ma))
-            
+
             resultModel={'model':bestModel,
                          'aic':incumbentError,
                          'p':bestModel.k_ar,
                          'd':bestModel.k_diff,
                          'q':bestModel.k_ma}
-            
+
             return figure_forecast, figure_residuals, resultModel
 
 
@@ -250,16 +250,16 @@ def SARIMAXfit(stationary_series, params):
 
 def ARIMAfit(series,p,d,q):
     #series=series[~np.isnan(series)]
-    model = ARIMA(series, order=(p, d, q))  
-    results_AR = model.fit(disp=-1)  
+    model = ARIMA(series, order=(p, d, q))
+    results_AR = model.fit(disp=-1)
     plt.plot(series)
     plt.plot(results_AR.fittedvalues, color='red')
     plt.title('ARIMA fit p='+str(p)+' q='+str(q)+' d='+str(d))
-    
+
     plt.figure()
     results_AR.plot_diagnostics(figsize=(15, 12))
     return 1
-   
+
 
 def forecastSARIMAX(addSeries,minRangepdq, maxRangepdqy,seasonality, NofSteps,titolo):
     NofSteps=np.int(NofSteps)
@@ -267,19 +267,19 @@ def forecastSARIMAX(addSeries,minRangepdq, maxRangepdqy,seasonality, NofSteps,ti
     result=autoSARIMAXfit(addSeries,minRangepdq, maxRangepdqy,seasonality)
     results=result.fit()
     residui=results.plot_diagnostics(figsize=(15, 12))
-    
-    
+
+
     forecast=plt.figure()
     pred = results.get_prediction(start=len(addSeries)-1,end=len(addSeries)+NofSteps, dynamic=True)
     pred_ci = pred.conf_int()
-    
+
     ax = addSeries.plot(label='observed',color='orange')
     pred.predicted_mean.plot(ax=ax, label='Dynamic forecast', color='r', style='--', alpha=.7)
-    
+
     ax.fill_between(pred_ci.index,
                     pred_ci.iloc[:, 0],
                     pred_ci.iloc[:, 1], color='y', alpha=.2)
-    
+
     ax.set_xlabel('Timeline')
     ax.set_ylabel('Series value')
     plt.title('Forecast: '+titolo)
@@ -291,10 +291,10 @@ def autoSARIMAXfit(y,minRangepdq, maxRangepdqy,seasonality):
     minRangepdq=np.int(minRangepdq)
     maxRangepdqy=np.int(maxRangepdqy)
     seasonality=np.int(seasonality)
-    
+
     # Define the p, d and q parameters to take any value between 0 and 2
     p = d = q = range(minRangepdq, maxRangepdqy)
-    
+
 # Generate all different combinations of p, q and q triplets
     pdq = list(itertools.product(p, d, q))
 
@@ -311,12 +311,12 @@ def autoSARIMAXfit(y,minRangepdq, maxRangepdqy,seasonality):
                                                 seasonal_order=param_seasonal,
                                                 enforce_stationarity=False,
                                                 enforce_invertibility=False)
-    
+
                 results = mod.fit()
                 if(results.aic<incumbentError):
                     bestModel=mod
                     incumbentError=results.aic
-                
+
                 #print('ARIMA{}x{}12 - AIC:{}'.format(param, param_seasonal, results.aic))
             except:
                 continue
@@ -324,32 +324,32 @@ def autoSARIMAXfit(y,minRangepdq, maxRangepdqy,seasonality):
 
 # %% FOURIER ANALYSIS
 def fourierAnalysis(y):
-    
+
     y=y.reshape(len(y),)
     N = len(y) #600 campioni
     T=1 #un campione alla settimana
-    
+
     #plt.figure()
     t = np.arange(0, len(y)).reshape(len(y),)
     p = np.polyfit(t, y, 1)         # find linear trend in x
-    y_notrend = y - p[0] * t 
+    y_notrend = y - p[0] * t
     #plt.plot(x,y_notrend)
     #plt.title('detrended signal')
     #plt.xlabel('settimane')
-    
+
     #calcolo fourier transform
     yf = np.fft.fft(y_notrend)
-    
+
     #filtro i valori più significativi (solo le frequenze il cui picco spiega almeo il 10% della stagionalità)
     xf = np.linspace(0.0, 1.0/(2.0*T), N//2)
     amplitude=2.0/N * np.abs(yf[0:N//2])
     weeks=1/xf
-    
-    
+
+
     #plt.stem(xf, 2.0/N * np.abs(yf[0:N//2]))
     #plt.grid()
     #plt.show()
-    
+
     data={'Frequency_domain_value':xf,'Time_domain_value':weeks,'Amplitude':amplitude  }
     D=pd.DataFrame(data)
     D=D.replace([np.inf, -np.inf], np.nan)
@@ -366,17 +366,17 @@ def fourierAnalysis(y):
 def transformSeriesToStationary(timeSeries_analysis,signifAlpha=0.05):
     #this function tries log, power and square root transformation to stationary series
     # it returns the series and a string with the model used to transform the series
-    
+
     #timeSeries_analysis is a pandas series to make stationary
     #signifAlpha is the significance level (0.1 , 0.05, 0.01) to accept or reject the null hypothesis of Dickey fuller
-    
-    
+
+
     #reference: http://www.insightsbot.com/blog/1MH61d/augmented-dickey-fuller-test-in-python
     def returnPandPstar(result):
         p_value = result[1]
-    
+
         p_star = signifAlpha
-        
+
         #in alternativa si puo' usare il valore della statistica del test e i valori critici
         '''
         if signifAlpha==0.01:
@@ -386,86 +386,79 @@ def transformSeriesToStationary(timeSeries_analysis,signifAlpha=0.05):
         if signifAlpha==0.1:
             p_star=result[4]['10%']
         '''
-            
+
         return p_value, p_star
-        
 
 
-    
-    
+
+
+
     ###########################################################################
-    # test the original series    
+    # test the original series
     result = adfuller(timeSeries_analysis, autolag='AIC')
     p_value, p_star = returnPandPstar(result)
-    
-    
+
+
     '''
-    If the P-Value is less than the Significance Level defined, 
-    we reject the Null Hypothesis that the time series contains a unit root. 
-    In other words, by rejecting the Null hypothesis, 
+    If the P-Value is less than the Significance Level defined,
+    we reject the Null Hypothesis that the time series contains a unit root.
+    In other words, by rejecting the Null hypothesis,
     we can conclude that the time series is stationary.
     '''
-        
+
     if (p_value < p_star):
         print("The initial series is stationary")
         model = 'initial'
         return timeSeries_analysis, model
-    
+
     ###########################################################################
     # trying with power transformation
     timeSeries_analysis_transformed = timeSeries_analysis**2
-    
+
     result = adfuller(timeSeries_analysis_transformed, autolag='AIC')
     p_value, p_star = returnPandPstar(result)
-        
+
     if (p_value < p_star):
         print("The transformed series using POWER transformation is stationary")
         model = 'POWER:2'
         return timeSeries_analysis_transformed, model
-    
+
     ###########################################################################
     # trying with square root transformation
     timeSeries_analysis_transformed = np.sqrt(timeSeries_analysis)
-    
+
     result = adfuller(timeSeries_analysis_transformed, autolag='AIC')
     p_value, p_star = returnPandPstar(result)
-        
+
     if (p_value < p_star):
         print("The transformed series using SQUARE ROOT transformation is stationary")
         model='SQRT'
         return timeSeries_analysis_transformed, model
-    
+
     ###########################################################################
     # trying with logarithm transformation
     timeSeries_analysis_temp=timeSeries_analysis+0.001
     timeSeries_analysis_transformed = np.log(timeSeries_analysis_temp)
-    
+
     result = adfuller(timeSeries_analysis_transformed, autolag='AIC')
     p_value, p_star = returnPandPstar(result)
-        
+
     if (p_value < p_star):
         print("The transformed series using LOG transformation is stationary")
         model = 'LOG'
         return timeSeries_analysis_transformed, model
-    
+
     ###########################################################################
     # trying with boxcox transformation
     timeSeries_analysis_transformed, lam = boxcox(timeSeries_analysis_temp)
-    
+
     result = adfuller(timeSeries_analysis_transformed, autolag='AIC')
     p_value, p_star = returnPandPstar(result)
-        
+
     if (p_value < p_star):
         print("The transformed series using BOXCOX, lambda:{lam} transformation is stationary")
         model = f"BOXCOX, lambda:{lam}"
         return timeSeries_analysis_transformed, model
-    
+
     print("No valid transformation found")
     return [], []
-    
-    
-
-
-
-
-
