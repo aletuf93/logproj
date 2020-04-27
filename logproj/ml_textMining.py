@@ -38,7 +38,7 @@ def findBestMatchingString(inputTable,compareStringList,old_label_column,new_lab
 
 # %%  BAG OF WORDS MODEL
 
-def getFrequencyKeyword(inputTable,minFrequency):
+def getFrequencyKeyword(inputTable,minFrequency,weightColumn,maxLenTable=[]):
     #take as input a dataframe with:
     # - a column WORDTAG having keywords separated by ;
     # - a column CONTEGGIO with the weight of each row of the dataframe
@@ -52,13 +52,17 @@ def getFrequencyKeyword(inputTable,minFrequency):
     inputTable=inputTable[~filter]   
     
     if len(inputTable)>0:
+        inputTable=inputTable.sort_values(by=[weightColumn], ascending=False)
         inputTable=inputTable.reset_index(drop=True)
+        
+        if isinstance(maxLenTable,int):
+            inputTable=inputTable.iloc[0:maxLenTable]
         
         for i in range(0,len(inputTable)): 
         
                 descWords=set(inputTable.WORDTAG[i].split(';'))
                 descWords.remove('')
-                weight=inputTable['CONTEGGIO'][i]
+                weight=inputTable[weightColumn][i]
                 for word in descWords:        
                     dictionary=dictionary.append(pd.DataFrame([[word,weight/len(descWords)]],columns=['word','frequency']))
         
@@ -66,8 +70,10 @@ def getFrequencyKeyword(inputTable,minFrequency):
         if len(dictionary)>0:
             #dictionary=pd.DataFrame.from_dict(words_except_stop_dist,orient='index',columns=['frequency'])
             dictionary.index=dictionary.word
-            threshold=int((1-minFrequency/100)*max(dictionary.frequency))
-            dictionary=dictionary[dictionary.frequency>threshold]
+            threshold=int((minFrequency/100)*len(dictionary))
+            
+            dictionary=dictionary.sort_values(by = ['frequency'], ascending=False)
+            dictionary=dictionary.iloc[0:threshold]
             dictionary=dictionary.sort_values('frequency',ascending=False)
     return dictionary
 

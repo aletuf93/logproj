@@ -24,6 +24,137 @@ from scipy.stats import poisson
 
 import logproj.stat_time_series as ts
 from logproj.P1_familyProblem.part_classification import returnsparePartclassification
+# %% POPULARITY INDEX
+def calculatePopularity(movements):
+    '''
+    
+
+    Parameters
+    ----------
+    movements : TYPE pandas series
+        DESCRIPTION. the series of the movement with one item per day
+
+    Returns
+    -------
+    pop_in : TYPE float
+        DESCRIPTION. popularity IN per day
+    pop_out : TYPE
+        DESCRIPTION. popularity OUT per day
+
+    '''
+    
+    pop_in = len(movements[movements>0])/len(movements)
+    pop_out = len(movements[movements<0])/len(movements)
+    return pop_in, pop_out
+        
+# %% COI INDEX
+def calculateCOI(inventory):
+    '''
+    
+
+    Parameters
+    ----------
+    inventory : TYPE list
+        DESCRIPTION. list of inventory values
+
+    Returns
+    -------
+    COI_in : TYPE float
+        DESCRIPTION. daily COI index IN 
+    COI_out : TYPE float
+        DESCRIPTION. daily COI index OUT
+
+    '''
+    
+    #define inventory from movements
+    movements = movementfunctionfromInventory(inventory)
+    movements=movements.dropna()
+    pop_in, pop_out = calculatePopularity(movements['QUANTITY'])
+    
+    #calculate daily COI
+    I_t_avg = np.nanmean(inventory)
+    if I_t_avg>0:
+        COI_in = pop_in/I_t_avg
+        COI_out = pop_out/I_t_avg
+    else:
+        COI_in=COI_out=np.nan
+    
+    return COI_in, COI_out
+
+# %% TURN INDEX
+def calculateTurn(inventory):
+    '''
+    
+
+    Parameters
+    ----------
+    inventory : TYPE list
+        DESCRIPTION. list of inventory values
+
+    Returns
+    -------
+    turn : TYPE float
+        DESCRIPTION. daily TURN index
+
+    '''
+    #define inventory from movements
+    movements = movementfunctionfromInventory(inventory)
+    movements=movements.dropna()
+    
+    #calculate the average outbound quantity per day
+    out_qty_day = -np.sum(movements[movements['QUANTITY']<0]['QUANTITY'])/len(movements)
+    
+    #calculate average inventory quantity
+    I_t_avg = np.nanmean(inventory)
+    if I_t_avg>0:
+        turn =out_qty_day/I_t_avg
+    else:
+        turn=np.nan
+    
+    
+    return turn
+    
+
+# %% ORDER COMPLETION INDEX
+def calculateOrderCompletion(D_mov, itemcode, itemfield='ITEMCODE', ordercodefield='ORDERCODE'):
+    '''
+    
+
+    Parameters
+    ----------
+    D_mov : TYPE pandas dataframe
+        DESCRIPTION. dataframe with movements reporting ordercode and itemcode columns
+    itemcode : TYPE string
+        DESCRIPTION. itemcode to calculate the order competion (OC) index
+    itemfield : TYPE, optional string name of D_mov clumn with itemcode 
+        DESCRIPTION. The default is 'ITEMCODE'.
+    ordercodefield : TYPE, optional string name of D_mov clumn with ordercode 
+        DESCRIPTION. The default is 'ORDERCODE'.
+
+    Returns
+    -------
+    OC : TYPE float
+        DESCRIPTION. order completion (OC) index of SKU itemcode
+
+    '''
+    #clean data
+    D_mov=D_mov[[itemfield,ordercodefield]]
+    D_mov=D_mov[D_mov[ordercodefield]!='nan']
+    D_mov=D_mov.dropna()     
+    D_mov=D_mov.reset_index()
+    
+    
+    
+    orders = list(set(D_mov[D_mov[itemfield]==itemcode][ordercodefield]))
+    
+    idx = [j in orders for j in D_mov[ordercodefield]]
+    D_orders = D_mov.loc[idx]
+    
+    OC = 0
+    for ordercode in orders:
+        D_orders_filtered = D_orders[D_orders[ordercodefield]==ordercode]
+        OC=OC+1/len(D_orders_filtered)
+    return OC
 
 # %%
 
