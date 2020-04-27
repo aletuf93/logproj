@@ -1,5 +1,14 @@
 ﻿#import py_compile
-#py_compile.compile('ZO_ML_machineLearning.py')
+'''
+# %%
+#specify root folder path
+root_folder="C:\\Users\\aletu\\Documents\\GitHub\\OTHER\\ZENON"
+root_folder="D:\\OneDrive - Alma Mater Studiorum Università di Bologna\\ACADEMICS\\[514]Dottorato\\Projects\\Z_WAREHOUSE\\00_SOFTWARE\\GitHub\\ZENON"
+
+#%% import packages from other folders
+import sys
+sys.path.append(root_folder)
+'''
 
 import numpy as np
 import random as rn
@@ -19,6 +28,25 @@ from logproj.ml_dataCleaning import dummyColumns
 
 
 
+# %% DEBUG AREA
+'''
+from sklearn.datasets import load_wine
+import pandas as pd
+data = load_wine()
+
+# define X dataframe
+X = data.data
+X_labels = data.feature_names
+X = pd.DataFrame(X,columns=X_labels)
+
+# define y dataframe
+y = data.target
+y = pd.DataFrame(y,columns=['target'])
+
+output_figures = correlationMatrix(X,annotationCell=True)
+for fig in output_figures.keys():
+    output_figures[fig].show()
+'''
 
 # %%
 
@@ -61,8 +89,11 @@ def scatterplotMatrix(X,dirResults):
     fig.savefig(dirResults+'\\00_ScatterplotMatrix.png')
     return True
 
+# %%
 #costruisce la matrice di correlazione
-def correlationMatrix(X,dirResults,annotationCell):
+def correlationMatrix(X,annotationCell=True):
+    
+    output_figures = {}
     d = X
 
     # Compute the correlation matrix
@@ -82,10 +113,11 @@ def correlationMatrix(X,dirResults,annotationCell):
     # Draw the heatmap with the mask and correct aspect ratio
     figCorr=sns.heatmap(corr, mask=mask, cmap=cmap, vmax=1, annot=annotationCell, square=True, linewidths=.5, cbar_kws={"shrink": .5},xticklabels=True, yticklabels=True)
     figure = figCorr.get_figure()
-    figure.savefig(dirResults+'\\00_CorrelationMatrix.png')
-    #plt.close('all')
-    return True
+    output_figures['CorrelationMatrix'] = figure
+    plt.close('all')
+    return output_figures
 
+# %%
 #definisce un istogramma per ogni variabile
 def histogramVariables(K,dirResults):
     for i in range(0,len(K.columns)):
