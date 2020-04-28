@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*
 
-#import py_compile
-#py_compile.compile('ZO_ML_unsupervisedModels.py')
+'''
+# %%
+#specify root folder path
+root_folder="C:\\Users\\aletu\\Documents\\GitHub\\OTHER\\ZENON"
+root_folder="D:\\OneDrive - Alma Mater Studiorum Università di Bologna\\ACADEMICS\\[514]Dottorato\\Projects\\Z_WAREHOUSE\\00_SOFTWARE\\GitHub\\ZENON"
+
+#%% import packages from other folders
+import sys
+sys.path.append(root_folder)
+'''
 
 import pandas as pd  
 import numpy as np
 import os
-
-
-
 
 #Importa pacchetti grafici
 import matplotlib.pyplot as plt
@@ -24,75 +29,117 @@ from sklearn.mixture import GaussianMixture
 #Import pacchetti statistici
 from sklearn.preprocessing import MinMaxScaler
 
-#Import pacchetti proprietari
-#from ZO_ML_apriori import apriori  
-#from ZO_ML_association_rules import association_rules
-#from ZO_ML_machineLearning import dummyColumns
-
-
-
 '''
-def AprioriAlgorithm(dataFrame,minimo_support):
-    supportDf=apriori(dataFrame,min_support=minimo_support, use_colnames=True)
-    results=association_rules(supportDf)
-    return results
+# %% DEBUG AREA
+
+from sklearn.datasets import load_digits
+#Load the dataset
+data = load_digits()
+
+# define X dataframe
+X = data.data
+X = pd.DataFrame(X)
+
+# define y dataframe
+y = data.target
+y = pd.DataFrame(y,columns=['target'])
+
+inputColumns = X.columns
+from logproj import ml_dimensionalityReduction as dr
+
+# %% USE K-means
+
+
+X_clustered =  groupVariableKMean(X,inputColumns,k=10)
+X_res, out_fig_dict, output_df = dr.PCAplot(n_comp=2,XX=X, diagnose=True)
+
+plt.figure()
+plt.scatter(X_res[0],X_res[1],c = X_clustered['CLUSTER_KMEANS_10'])
+
+plt.figure()
+plt.scatter(X_res[0],X_res[1],c = y['target'])
+
+
+# %% USE GMM
+
+X_clustered =  GroupingVariableGMM(X,inputColumns,k=10)
+X_res, out_fig_dict, output_df = dr.PCAplot(n_comp=2,XX=X, diagnose=True)
+
+plt.figure()
+plt.scatter(X_res[0],X_res[1],c = X_clustered['CLUSTER_GMM_10'])
+
+plt.figure()
+plt.scatter(X_res[0],X_res[1],c = y['target'])
+
+# %% USE HIERARCHICAL
+X_clustered =  GroupingVariableHierarchical(X,inputColumns,k=10,metodoGrouping='single')
+X_res, out_fig_dict, output_df = dr.PCAplot(n_comp=2,XX=X, diagnose=True)
+
+plt.figure()
+plt.scatter(X_res[0],X_res[1],c = X_clustered['CLUSTER_HIER_10'])
+
+plt.figure()
+plt.scatter(X_res[0],X_res[1],c = y['target'])
+
+# %% DENDROGRAM
+out = HierarchicalClusteringDendrogram(X,
+                                       metodoGrouping='single',
+                                       medotoDistanze='euclidean')
+out['dendrogram'].show()
 '''
-def groupVariableKMean(K_MAX_Kmeans,X,D_ITEM_clean,dirResults,connection,caseStudy,saveToDB=False):
+# %% K-MEANS
+def groupVariableKMean(D_table,inputColumns,k):
     
-    #crea una cartella per i risultati dei vessel
-    dirResults = os.path.join(dirResults, 'Clustering_Kmean')
-    try:
-        os.mkdir(dirResults)
-    except OSError:
-        print('Cartella già esistente')
-    
-    results=pd.DataFrame(D_ITEM_clean.itemcode)
-    for i in range(2,K_MAX_Kmeans+1):
-        km = cluster.KMeans(n_clusters=i).fit(X)
-        results[str(i)]=pd.DataFrame(km.labels_)
-        fig1=plt.figure(num=None, figsize=(10, 8), dpi=80, facecolor='w', edgecolor='k')
-        plt.scatter(X[:, 0], X[:, 1], c=km.labels_,cmap='plasma')
-        plt.title("K="+str(i)+", J=%.2f" % km.inertia_)
-        fig1.savefig(dirResults+'\\Kmeans'+str(i)+'.png')
-        plt.close('all')
-          
-    return results
+    X=D_table[inputColumns]
+    km = cluster.KMeans(n_clusters=k).fit(X)
+    D_table[f"CLUSTER_KMEANS_{str(k)}"]=pd.DataFrame(km.labels_)
+    return D_table
 
+# %% GAUSSIAN MIXTURE MODEL
+def GroupingVariableGMM(D_table,inputColumns,k):
+    X=D_table[inputColumns]
+    gmm = GaussianMixture(n_components=k, covariance_type='full').fit(X)
+    D_table[f"CLUSTER_GMM_{str(k)}"]=pd.DataFrame(gmm.predict(X))
+    return D_table
 
-
-def GroupingVariableHierarchical(metodoGrouping,K_fixed_SLINK,X,D_ITEM_clean,dirResults,connection,caseStudy,saveToDB=False):
+# %% HIERARCHICAL CLUSTERING WITH FIXED K
+def GroupingVariableHierarchical(D_table,inputColumns,k,metodoGrouping):
     
-    #crea una cartella per i risultati
-    dirResults = os.path.join(dirResults, 'Clustering_Hierarchical')
-    try:
-        os.mkdir(dirResults)
-    except OSError:
-        print('Cartella già esistente')
-    
-    results=pd.DataFrame(D_ITEM_clean.itemcode)
-    for i in range(2,K_fixed_SLINK+1):
-        fig1=plt.figure(num=None, figsize=(10, 8), dpi=80, facecolor='w', edgecolor='k')
-        hierCl = cluster.AgglomerativeClustering(n_clusters=i, linkage=metodoGrouping).fit(X)
-        results[str(i)]=pd.DataFrame(hierCl.labels_)
-        plt.scatter(X[:, 0], X[:, 1], c=hierCl.labels_,cmap='plasma')
-        plt.title("K="+str(i))
-        fig1.savefig(dirResults+'\\Hier_'+str(metodoGrouping)+'_'+str(i)+'.png')
-        plt.close('all')
-    return results
+    X=D_table[inputColumns]
+    hierCl = cluster.AgglomerativeClustering(n_clusters=k, linkage=metodoGrouping).fit(X)
+    D_table[f"CLUSTER_HIER_{str(k)}"]=pd.DataFrame(hierCl.labels_)  
+    return D_table
         
-        
-def HierarchicalClusterJaccard(D_table,X,targetColumn,itemcode,groupingMethod,NCluster,dirResults):
+# %%      
+def HierarchicalClusterJaccard(D_table,targetColumn,itemcode,k,groupingMethod):
+    '''
+    PErformas hierarchical clustering from an incidence matrix
+
+    Parameters
+    ----------
+    D_table : TYPE pandas dataframe
+        DESCRIPTION. table with n rows, one rows for each item to cluster
+    
+    targetColumn : TYPE string
+        DESCRIPTION. column containing all the observed values for each item
+    
+    k : TYPE int
+        DESCRIPTION. number of clusters to generate
+    groupingMethod : TYPE string ('single','complete','average')
+        DESCRIPTION. specifies the type of linkage to use in hierarchical clustering
+
+    Returns
+    -------
+    D_table : TYPE pandas dataframe
+        DESCRIPTION. initial dataframe with an additional column containing the clusters
+
+    '''
     
     #la itemcode è la colonna degli oggetti di cui si vuole costruire la similarità
     #la targetColumn è la colonna con valori (eventualmente) separati da virgola su cui costruire il jaccard
     #X definisce i punti sul piano per il grafico
     
-    #crea una cartella per i risultati dei vessel
-    dirResults = os.path.join(dirResults, 'Clustering_Hierarchical_'+str(targetColumn))
-    try:
-        os.mkdir(dirResults)
-    except OSError:
-        print('Cartella già esistente')
+    
     
     D_Sim=D_table[targetColumn].str.get_dummies(sep=';')
     for j in D_Sim.columns : D_Sim[j]= D_Sim[j].astype(bool)
@@ -101,63 +148,28 @@ def HierarchicalClusterJaccard(D_table,X,targetColumn,itemcode,groupingMethod,NC
     Y = pdist(D_Sim, 'jaccard')
     Y[np.isnan(Y)]=0
     z = linkage(Y, method=groupingMethod)
-    
-    results=pd.DataFrame(D_table[itemcode])
-    for k in range(1,NCluster+1):
-        fig1=plt.figure(num=None, figsize=(10, 8), dpi=80, facecolor='w', edgecolor='k')
-        cutree = cut_tree(z, n_clusters=k)
-        results[str(k)]=pd.DataFrame(cutree)
-        plt.scatter(X[:, 0], X[:, 1], c=results[str(k)],cmap='plasma')
-        plt.title("K="+str(k))
-        fig1.savefig(dirResults+'\\Hier_'+str(groupingMethod)+'_'+str(k)+'.png')
-        plt.close('all')
+       
+    cutree = cut_tree(z, n_clusters=k)
+    D_table[f"CLUSTER_HIER_JAC_{str(k)}"]=pd.DataFrame(cutree)
+        
 
-    return results       
+    return D_table       
                 
     
 
-def GroupingVariableGMM(K_fixed_GMM,X,D_ITEM_clean,dirResults,connection,caseStudy,saveToDB=False):
-    
-     #crea una cartella per i risultati dei vessel
-    dirResults = os.path.join(dirResults, 'Clustering_GaussianMixture')
-    try:
-        os.mkdir(dirResults)
-    except OSError:
-        print('Cartella già esistente')
-    results=pd.DataFrame(D_ITEM_clean.itemcode)
-    for j in range(2,K_fixed_GMM+1):
-        gmm = GaussianMixture(n_components=j, covariance_type='full').fit(X)
-        results[str(j)]=pd.DataFrame(gmm.predict(X))
-        
-        #Rappresento i cluster ottenuti
-        colors = sns.color_palette('plasma',max(results[str(j)])+1)
-        fig1=plt.figure(num=None, figsize=(10, 8), dpi=80, facecolor='w', edgecolor='k')
-        plt.scatter(X[:, 0], X[:, 1], c=[colors[lab] for lab in gmm.predict(X)])
-        for i in range(gmm.covariances_.shape[0]):
-            plot_cov_ellipse(cov=gmm.covariances_[i, :], pos=gmm.means_[i, :], facecolor='none', linewidth=2, edgecolor='black')
-            plt.scatter(gmm.means_[i, 0], gmm.means_[i, 1], edgecolor=colors[i], marker="o", s=100, facecolor="w", linewidth=2)
-        plt.title("K="+str(j))
-        fig1.savefig(dirResults+'\GMM'+str(j)+'.png')
-        plt.close('all')
-    return results
+
         
        
-
-def HierarchicalClusteringDendrogram(X,metodoGrouping,medotoDistanze,dirResults):
-    
-    #crea una cartella per i risultati dei vessel
-    dirResults = os.path.join(dirResults, 'Clustering_Hierarchical')
-    try:
-        os.mkdir(dirResults)
-    except OSError:
-        print('Cartella già esistente')
+# %%
+def HierarchicalClusteringDendrogram(X,metodoGrouping,medotoDistanze):
+    output_figure={}
     
     fig1=plt.figure(num=None, figsize=(10, 8), dpi=80, facecolor='w', edgecolor='k')
     res = pdist(X, medotoDistanze)
     
     #costruisco linkage
     Z=linkage(res, method=metodoGrouping, metric=medotoDistanze)
-    plt.title('Hierarchical Clustering Dendrogram')
+    plt.title(f"Hierarchical Clustering Dendrogram, {metodoGrouping} linkage, {medotoDistanze} distance")
     plt.xlabel('item')
     plt.ylabel('similarity')
     dendrogram(
@@ -165,13 +177,13 @@ def HierarchicalClusteringDendrogram(X,metodoGrouping,medotoDistanze,dirResults)
         leaf_rotation=90.,  # rotates the x axis labels
         leaf_font_size=8.,  # font size for the x axis labels
     )
-    fig1.savefig(dirResults+'\Dendrogram_'+str(metodoGrouping)+'.png')
+    output_figure['dendrogram']=fig1
     plt.close('all')
-    return True
+    return output_figure
 
 #Funzione per disegnare ellissi nei modelli gaussiani
 
-
+# %%
 def plot_cov_ellipse(cov, pos, nstd=2, ax=None, **kwargs):
     """
     Plots an `nstd` sigma error ellipse based on the specified covariance
@@ -208,7 +220,7 @@ def plot_cov_ellipse(cov, pos, nstd=2, ax=None, **kwargs):
 
     ax.add_artist(ellip)
     return ellip
-
+# %%
 def capacitatedClustering(D,simMin,dem,capacity):
     #D is a simmetric distance matrix
     #simMin minimum similarity value to aggregate two points
