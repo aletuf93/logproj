@@ -143,7 +143,7 @@ def travelTimedistribution(D_mov,
                            dischargingTD='PTD_TO',
                            ):
 
-    df_traveltime=pd.DataFrame(columns=['PROVISIONAL_ACTUAL','U_L_BOUND','TIME_MEAN','TIME_STD'])
+    df_traveltime=pd.DataFrame(columns=['U_L_BOUND','TIME_MEAN','TIME_STD'])
     imageResults={}
 
     #get coverage
