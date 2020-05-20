@@ -41,6 +41,8 @@ class node():
         self.NODECODE=nodecode
         self.LATITUDE = np.random.uniform(min_latitude,max_latitude) #latitude
         self.LONGITUDE = np.random.uniform(min_longitude,max_longitude) #longitude
+        self.CLIENT_TYPE=random.choice(['CLIENT_TYPE_1','CLIENT_TYPE_2']) #type of client
+        self.SIZE=np.random.uniform(1,30) #client size flow
         
 # %% CLASS PART       
 class part():
