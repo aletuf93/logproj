@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 #https://github.com/gboeing/osmnx-examples/tree/master/notebooks
-import database.mongo_loginManager as mdb
-import database.models.odm_distribution_mongo as model_dist
-import database.models.odm_production_mongo as model_prod
+#import database.mongo_loginManager as mdb
+#import database.models.odm_distribution_mongo as model_dist
+#import database.models.odm_production_mongo as model_prod
 
 from logproj.ml_dataCleaning import cleanUsingIQR
 
@@ -12,13 +12,16 @@ import numpy as np
 import pandas as pd
 
 
-def import_graph_drive(dbName,latCol,lonCol, plantLatitude, plantLongitude,cleanOutliers=False):
+def import_graph_drive(D_node,latCol,lonCol,D_plant, plantLatitude, plantLongitude,cleanOutliers=False):
     
     '''
     the function imports a road network using osmnx library
-    dbName is the name of the collection of mongodb to use
+    
+    D_node is the table containing the nodes of the network
     latCol is the name attribute of the latitude of the node collection
     lonCol is the name attribute of the longitude of the node collection
+    
+    D_plant id the table containing the plant of the network
     plantLatitude is the name attribute of the latitude of the plant collection
     plantLongitude is the name attribute of the longitude of the plant collection
     cleanOutliers is True to remove outliers of latitude and logitude by using IQR
@@ -28,13 +31,13 @@ def import_graph_drive(dbName,latCol,lonCol, plantLatitude, plantLongitude,clean
     '''
     
     coverages=(1,np.nan)
-    mdb.setConnection(dbName)
-    D_plant=mdb.queryTodf(model_prod.plant.objects)
+    #mdb.setConnection(dbName)
+    #D_plant=mdb.queryTodf(model_prod.plant.objects)
     
     
     
     
-    D_node=mdb.queryTodf(model_dist.node.objects)
+    #D_node=mdb.queryTodf(model_dist.node.objects)
     
     #remove latitude and longitude outliers
     if cleanOutliers:

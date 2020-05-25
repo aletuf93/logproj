@@ -14,6 +14,40 @@ from logproj.P8_performanceAssessment.utilities_movements import getCoverageStat
 
 # %% service function
 def returnDummyColumnsFromList(D, columnName):
+    '''
+    extract the value from a pandas cell where a list is saved
+
+    Parameters
+    ----------
+    D : TYPE pandas dataframe
+        DESCRIPTION.
+    columnName : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    s : TYPE column string name
+        DESCRIPTION.
+
+    '''
+    x = D[columnName].values
+    #print(x)
+    #print(type(x))
+    newList=[]
+    for j in x:
+        for i in j:
+            i = str(i)
+            yyy = i.replace('nan,','')
+            yyy = yyy.replace('nan','')
+            newList.append(ast.literal_eval(yyy))
+
+
+    s = pd.Series(newList)
+    #X_add=pd.get_dummies(s.apply(pd.Series).stack()).sum(level=0)
+    #print(s)
+    return s
+'''
+def returnDummyColumnsFromList(D, columnName):
     x = D[columnName].values
     newList=[]
     for i in x:
@@ -25,7 +59,7 @@ def returnDummyColumnsFromList(D, columnName):
     s = pd.Series(newList)
     #X_add=pd.get_dummies(s.apply(pd.Series).stack()).sum(level=0)
     return s
-
+'''
 # %% RAY PLOT
 def networkRaysPlot(D_mov, timecol,lonCol_to, latCol_to, lonCol_from, latCol_from, G, capacityField='QUANTITY',sampleInterval='week',):
     '''
@@ -55,7 +89,7 @@ def networkRaysPlot(D_mov, timecol,lonCol_to, latCol_to, lonCol_from, latCol_fro
     
     #group movements
     D_groupFlows = D_mov.groupby(['TIME_PERIOD',lonCol_to, latCol_to, lonCol_from, latCol_from]).size().reset_index()
-    D_groupFlows['FLOW_NORM']=(D_groupFlows[0]-min(D_groupFlows[0]))/(max(D_groupFlows[0])-min(D_groupFlows[0]))*3
+    D_groupFlows['FLOW_NORM']=(0.0001 + D_groupFlows[0]-min(D_groupFlows[0]))/(max(D_groupFlows[0])-min(D_groupFlows[0]))*3
     
     #plot figures
     D_groupFlows=D_groupFlows.sort_values(by='TIME_PERIOD')
@@ -65,12 +99,13 @@ def networkRaysPlot(D_mov, timecol,lonCol_to, latCol_to, lonCol_from, latCol_fro
         #se riceve un grafo stradale lo rappresenta
         if G==[]:
             fig1 = plt.figure()
+            ax  =fig1.gca()
         else:
             fig1, ax = ox.plot_graph(G, bgcolor='k', 
                         node_size=1, node_color='#999999', node_edgecolor='none', node_zorder=2,
-                        edge_color='#555555', edge_linewidth=0.5, edge_alpha=1)
+                        edge_color='#555555', edge_linewidth=0.5, edge_alpha=1,show=False)
             plt.legend(['Node','Edges'])
-            
+    
         # rappresento i singoli raggi
         for i in range(0,len(D_groupFlows_filtered)):
             x_from=D_groupFlows_filtered[lonCol_from].iloc[i]
@@ -78,11 +113,15 @@ def networkRaysPlot(D_mov, timecol,lonCol_to, latCol_to, lonCol_from, latCol_fro
             x_to=D_groupFlows_filtered[lonCol_to].iloc[i]
             y_to=D_groupFlows_filtered[latCol_to].iloc[i]
             c=D_groupFlows_filtered['FLOW_NORM'].iloc[i]
-            plt.plot([x_from,x_to],[y_from,y_to], color='orange', linewidth=c)
-            plt.legend(['flow'])
-            plt.title(f"Network rays {period}")
-        output_figure[f"Network_rays_{sampleInterval}_{period}"]=fig1
-        plt.close('all')
+            
+            
+            ax.plot([x_from,x_to],[y_from,y_to], color='orange', linewidth=c)
+            ax.set_title(f"Network rays {period}")
+            
+            fig1 = ax.figure
+            fig1.show()
+            output_figure[f"Network_rays_{sampleInterval}_{period}"]=fig1
+            plt.close('all')
     return output_figure, output_coverages
 
 
@@ -106,15 +145,19 @@ def networkRoadsRoutePlot(D_arcs,lonCol_from, latCol_from, latCol_to,lonCol_to, 
     D_arcs_filtered=D_arcs[[lonCol_from,latCol_from,latCol_to,lonCol_to]]
     
     
-    D_arcs_filtered[lonCol_from] = returnDummyColumnsFromList(D_arcs_filtered, lonCol_from)
-    D_arcs_filtered[latCol_from] = returnDummyColumnsFromList(D_arcs_filtered, latCol_from)
-    D_arcs_filtered[latCol_to] = returnDummyColumnsFromList(D_arcs_filtered, latCol_to)
-    D_arcs_filtered[lonCol_to] = returnDummyColumnsFromList(D_arcs_filtered, lonCol_to)
+    D_arcs_filtered[lonCol_from] = [k for k in returnDummyColumnsFromList(D_arcs_filtered, lonCol_from)]
+    D_arcs_filtered[latCol_from] = [k for k in returnDummyColumnsFromList(D_arcs_filtered, latCol_from)]
+    D_arcs_filtered[latCol_to] = [ k for k in returnDummyColumnsFromList(D_arcs_filtered, latCol_to)]
+    D_arcs_filtered[lonCol_to] = [ k for k in returnDummyColumnsFromList(D_arcs_filtered, lonCol_to)]
+    
     
     all_variables = [lonCol_from, latCol_from, latCol_to, lonCol_to]
     for i in range(0,len(D_arcs_filtered)):
         for variable in all_variables:
-            if len(D_arcs_filtered[variable].iloc[i])>0:
+            if isinstance(D_arcs_filtered[variable].iloc[i],float):
+                D_arcs_filtered[variable].iloc[i] =  D_arcs_filtered[variable].iloc[i]
+                
+            elif isinstance(D_arcs_filtered[variable].iloc[i],list) & len(D_arcs_filtered[variable].iloc[i])>0:
                 D_arcs_filtered[variable].iloc[i] =  D_arcs_filtered[variable].iloc[i][0]
             else:
                 D_arcs_filtered[variable].iloc[i]=np.nan
