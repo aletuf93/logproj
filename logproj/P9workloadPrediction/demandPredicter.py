@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
-import datetime as date
-import numpy as np
+#import datetime as date
+#import numpy as np
 import pandas as pd
 
 
 # import stat packages
 from fbprophet import Prophet
-from fbprophet.diagnostics import cross_validation
+#from fbprophet.diagnostics import cross_validation
 from fbprophet.plot import plot_plotly
 from sklearn.metrics import mean_squared_error
 
 #import graph packages
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import plotly.offline as py
 
 #import industrial packages
 import logproj.stat_time_series as ts
 
 # import utiliy functions
-from dashboard.Zutilities import creaCartella
+
 
 # %% PREDICTION FBPROPHET
     
