@@ -282,3 +282,122 @@ def LOOP_PREDICT_SARIMA(D_time, date_field, qtyVariable, countVariable,predictio
     #  SAVE dataframe results
     D_results.to_excel(f"{prediction_results_path}\\pred_results_SARIMA.xlsx")
     return True
+
+
+# %%
+
+#PROD_PREDICT_SARIMA(D_time, qtyVariable, countVariable,prediction_results_path,filterVariable=[], samplingInterval='week'):
+def LOOP_PREDICT_FBPROPHET(D_time, timeVariable, qtyVariable, countVariable, prediction_results_path, filterVariable=[], samplingInterval='week' ):
+    
+    
+    def nestedPredictionFBprophet(D_results, ss, nomecartella):
+        #create folder with results
+        _, current_dir_results = creaCartella(prediction_results_path,f"{str(nomecartella)}")
+            
+        print(f"***********{ss}*************")
+        if len(ss)>0:
+            D_series=D_time[D_time[filterVariable]==ss]
+        else:
+            D_series=D_time
+        
+        #save report txt
+        file = open(f"{current_dir_results}\\{reportFilename}.txt", "a") 
+        file.write(f"{str(date.datetime.now())} STARTING PREDICTIONS \r") 
+        file.close() 
+        
+        # set initial
+        tot_qty = np.nansum(D_series[qtyVariable])
+        tot_lns = np.nansum(D_series[countVariable])
+        MSE_QTY = ''
+        MSE_LNS = ''
+        
+        
+        if len(D_series)>=12: #I need at least 12 points (e.g. 1 year expressed in  months)
+            
+            # predict quantities
+            m, forecast_fig, components_fig, MSE_result = predictWithFBPROPHET(D_series, 
+                                                                               timeVariable, 
+                                                                               qtyVariable, 
+                                                                               current_dir_results, 
+                                                                               samplingInterval=samplingInterval, predictionsLength=52, titolo='qty')
+            
+            
+            
+            forecast_fig.savefig(f"{current_dir_results}\\{ss}_quantities_FBPROPHET_forecast.png")
+            components_fig.savefig(f"{current_dir_results}\\{ss}_quantities_FBPROPHET_comp.png")
+            plt.close('all')
+            
+            #save params
+            MSE_QTY=MSE_result
+            
+                
+            #save report txt
+            file = open(f"{current_dir_results}\\{reportFilename}.txt", "a") 
+            file.write(f"{str(date.datetime.now())} quantities: Predictions built\r") 
+            file.close() 
+            
+       
+                
+            
+            # predict quantities
+            m, forecast_fig, components_fig, MSE_result = predictWithFBPROPHET(D_series, timeVariable, countVariable, current_dir_results, samplingInterval=samplingInterval, predictionsLength=52, titolo='lines')
+            
+            
+            
+            forecast_fig.savefig(f"{current_dir_results}\\{ss}_quantities_FBPROPHET_forecast.png")
+            components_fig.savefig(f"{current_dir_results}\\{ss}_quantities_FBPROPHET_comp.png")
+            plt.close('all')
+            
+            #save params
+            MSE_LNS=MSE_result
+            
+                
+            #save report txt
+            file = open(f"{current_dir_results}\\{reportFilename}.txt", "a") 
+            file.write(f"{str(date.datetime.now())} quantities: Predictions built\r") 
+            file.close() 
+            
+        
+            
+            
+        
+        
+        else:
+            
+            
+            #save report txt
+            file = open(f"{current_dir_results}\\{reportFilename}.txt", "w") 
+            file.write(f"{str(date.datetime.now())} Not ehough input points to build a time series\r") 
+            file.close() 
+            
+            
+        # append results to dataframe
+        D_results=D_results.append(pd.DataFrame([[ss, tot_qty, tot_lns, MSE_QTY, MSE_LNS]], columns = D_results.columns))
+        return D_results
+    
+    reportFilename='report_fbProphet'
+    resultscolumn=['SERVICETYPE','QUANTITIES','LINES','MSE_QTY','MSE_LNS']
+    D_results=pd.DataFrame(columns=resultscolumn)
+    
+    
+    # genero i trend globali
+    D_results = nestedPredictionFBprophet(D_results,[], nomecartella='globalResults')
+    
+    if len(filterVariable)>0:
+        #itero sulle famiglie di prodotto
+        st = list(set(D_time[filterVariable]))
+        
+        for ss in st:
+            #ss='zz'
+            try:
+                D_results = nestedPredictionFBprophet(D_results, ss, nomecartella=ss)
+            except Exception as e:
+                print(f"*=*=*=*=*=*=ERROR*=*=*= {e}")
+        
+        
+            
+            
+            
+    #  SAVE dataframe results
+    D_results.to_excel(f"{prediction_results_path}\\pred_results_FBPROPHET.xlsx")
+    return True
