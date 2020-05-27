@@ -108,10 +108,10 @@ def paretoNodeClient(D_mov,
              for row in D_clNode_all.iterrows():
                  index=row[0]
                  rr=row[1]
-                 if rr.Location.lower().strip() in setLocation:
+                 if str(rr.Location).lower().strip() in setLocation:
                      D_clNode_all=D_clNode_all.drop(index)
                  else:
-                     setLocation.append(rr.Location.lower().strip())
+                     setLocation.append(str(rr.Location).lower().strip())
 
 
              #aggiungo nodi che non cumuano nulla per rappresentarli nella pareto

@@ -10,12 +10,31 @@ import math
 import random
 import datetime
 
+'''
+num_nodes = 25
+min_latitude = 41.413896
+max_latitude = 41.945192
+min_longitude = 13.972079
+max_longitude = 15.056329
+num_plants = 2
+num_parts = 2
+num_users = 8
+num_movements = 100
+movements_per_voyage = 25
+average_advance_planning = 7 #days
+average_time_window_days = 1/24 #days (1 hour)
+average_time_between_movements = 1/24*2 #average two hours between movements
+first_day = datetime.datetime(year=2020, month=1, day = 2)
+'''
+
 def generateDistributionData(   num_nodes = 25,
                                 min_latitude = 41.413896,
                                 max_latitude = 41.945192,
                                 min_longitude = 13.972079,
                                 max_longitude = 15.056329,
+                                num_plants = 2,
                                 num_parts = 2,
+                                num_users = 8,
                                 num_movements = 100,
                                 movements_per_voyage = 25,
                                 average_advance_planning = 7, #days
@@ -23,6 +42,8 @@ def generateDistributionData(   num_nodes = 25,
                                 average_time_between_movements = 1/24*2, #average two hours between movements
                                 first_day = datetime.datetime(year=2020, month=1, day = 2)
     ):
+    
+
         
     
     # %% CLASS NODE
@@ -92,6 +113,7 @@ def generateDistributionData(   num_nodes = 25,
             self.QUANTITY = quantity
             self.TIMESTAMP_IN = booking_timestamp
             self.PACKAGE_DESCRIPTION = random.choice(['TEU CONTAINER','FEU CONTAINER']) #only two type of packages
+            self.USER = random.choice([f"USER_{i}" for i in list(np.arange(0,num_users))])
             
             
     #%% CREATE NODES
@@ -112,7 +134,16 @@ def generateDistributionData(   num_nodes = 25,
     # %% CREATE PLANT
     
     dict_plant={}
-    dict_plant['PLANT'] = plant('PLANT',dict_nodes.keys()) #all nodes of the netwrok served by a single plant
+    plants=np.arange(0,num_plants)
+    all_nodes = list(dict_nodes.keys())
+    assigned_plant = [random.choice(plants) for i in all_nodes]
+    for plant_code in plants:
+        plant_name = f"PLANT_{plant_code}"
+        idx = assigned_plant==plant_code
+        idx_num = [i for i, x in enumerate(idx) if x]
+        nodes_code = [str(all_nodes[node]) for node in idx_num ]
+        dict_plant[plant_name] = plant(plant_name,nodes_code) #all nodes of the network served by a single plant
+    
     
              
     # %% CREATE MOVEMENTS
