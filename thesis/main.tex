@@ -1,0 +1,125 @@
+\documentclass{book}
+\usepackage[utf8]{inputenc}
+\usepackage[paperheight=23.5cm,paperwidth=16.5cm,margin=2.5cm,heightrounded, showframe]{geometry}
+%\usepackage[a4paper,margin=2.5cm,heightrounded, showframe]{geometry}
+
+%bibliography for each chapter
+\usepackage[sectionbib,square,numbers]{natbib} %cite with square brackets and numbers
+\usepackage{chapterbib}
+
+
+% packages for figures and captions
+\usepackage{graphicx} %image package
+\usepackage{caption} %table and figures captions
+
+% packages for rotating figures full page
+\usepackage{lscape} %setup landscape page
+\usepackage{rotating} %rotate the figures
+
+%Links and references color
+\usepackage[colorlinks=true, citecolor = blue,linkcolor = blue, urlcolor=blue]{hyperref} %url links
+
+%deployment of equations
+\usepackage{amsmath}
+
+%package for algorithms
+\usepackage[ruled,vlined]{algorithm2e}
+
+%package for math symbols (Real set, etc.)
+\usepackage{amssymb}
+
+%Package per teoremi con  dimostrazioni e proof
+\usepackage{amsthm} 
+\newtheorem{theorem}{Theorem} %number theorems
+
+%PAckage per numeri romani
+\usepackage{enumitem} %per numeri romani nelle liste
+
+%Package per simbolo euro
+\usepackage[official]{eurosym}
+
+
+%PAckage draft watermark
+\usepackage{draftwatermark}
+\SetWatermarkText{draft version 0.7}
+\SetWatermarkColor[rgb]{1,1,0.8}
+\SetWatermarkScale{3}
+
+
+\title{thesis}
+\author{aletuf }
+\date{April 2020}
+
+\begin{document}
+
+
+
+\frontmatter
+
+%\maketitle
+
+%\include{Dedication/dedication}
+%\include{Declaration/declaration}
+%\include{Acknowledgement/acknowledgement}
+%\include{Abstract/abstract}
+
+% *********************** Adding TOC and List of Figures ***********************
+
+\tableofcontents
+
+%\listoffigures
+
+
+%\listoftables
+
+% \printnomenclature[space] space can be set as 2em between symbol and description
+%\printnomenclature[3em]
+
+%\printnomenclature
+
+% ******************************** Main Matter *********************************
+\mainmatter
+
+%part 1
+\part{DATA-DRIVEN MODELLING}
+\include{SectionIntroduction/dataDrivenModelling}
+\include{SectionIntroduction/informationFramework}
+\include{SectionIntroduction/dataDrivenDecisions}
+
+
+%part 2
+\part{LET'S MATH}
+\include{SectionLetsMath/logicalModelling}
+\include{SectionLetsMath/elemStat}
+\include{SectionLetsMath/dimensionalityReduction}
+\include{SectionLetsMath/unsupervisedLearning}
+\include{SectionLetsMath/linearRegression}
+\include{SectionLetsMath/linearClassification}
+\include{SectionLetsMath/nonLinearMethods}
+\include{SectionLetsMath/ensembleMethods}
+\include{SectionLetsMath/prescriptive}
+
+
+
+%part 3
+\part{DISTRIBUTION SYSTEMS}
+\include{SectionDistribution/diagnosticModels}
+\include{SectionDistribution/control}
+\include{SectionDistribution/design}
+
+
+%part 4
+\part{STORAGE SYSTEMS}
+\include{SectionWarehouses/diagnosticModels}
+\include{SectionWarehouses/control}
+\include{SectionWarehouses/design}
+
+
+%part 5
+\part{PRODUCTION SYSTEMS}
+\include{sectionProduction/diagnosticModels}
+\include{sectionProduction/control}
+\include{sectionProduction/design_plant}
+\include{sectionProduction/design_process}
+
+\end{document}
