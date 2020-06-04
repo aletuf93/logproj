@@ -88,18 +88,34 @@ out = HierarchicalClusteringDendrogram(X,
 out['dendrogram'].show()
 '''
 # %% K-MEANS
+'''
 def groupVariableKMean(D_table,inputColumns,k):
     
     X=D_table[inputColumns]
     km = cluster.KMeans(n_clusters=k).fit(X)
     D_table[f"CLUSTER_KMEANS_{str(k)}"]=pd.DataFrame(km.labels_)
     return D_table
+'''
+def groupVariableKMean(D_table,inputColumns,k):
+    
+    X=D_table[inputColumns]
+    km = cluster.KMeans(n_clusters=k).fit(X)
+    D_table[f"CLUSTER_KMEANS_{str(k)}"]=[i for i in km.labels_]
+    return D_table
 
+'''
 # %% GAUSSIAN MIXTURE MODEL
 def GroupingVariableGMM(D_table,inputColumns,k):
     X=D_table[inputColumns]
     gmm = GaussianMixture(n_components=k, covariance_type='full').fit(X)
     D_table[f"CLUSTER_GMM_{str(k)}"]=pd.DataFrame(gmm.predict(X))
+    return D_table
+'''
+
+def GroupingVariableGMM(D_table,inputColumns,k):
+    X=D_table[inputColumns]
+    gmm = GaussianMixture(n_components=k, covariance_type='full').fit(X)
+    D_table[f"CLUSTER_GMM_{str(k)}"]=[ i for i in gmm.predict(X)]
     return D_table
 
 # %% HIERARCHICAL CLUSTERING WITH FIXED K
@@ -222,7 +238,7 @@ def plot_cov_ellipse(cov, pos, nstd=2, ax=None, **kwargs):
     return ellip
 # %%
 def capacitatedClustering(D,simMin,dem,capacity):
-    #D is a simmetric distance matrix
+    #D is a list of coordinates
     #simMin minimum similarity value to aggregate two points
     #array of demand for each point
     #capacity = fixed capacity for each cluster
@@ -359,4 +375,4 @@ def capacitatedClustering(D,simMin,dem,capacity):
         if(capCluster[jj]==0):
            capCluster[jj]=progressivoCluster
            progressivoCluster=progressivoCluster+1
-    return progressivoCluster
+    return capCluster
