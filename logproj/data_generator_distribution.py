@@ -51,6 +51,7 @@ def generateDistributionData(   num_nodes = 25,
         
         def __init__(self,nodecode):
             self.NODECODE=nodecode
+            self.DESCRIPTION=f"NODE_{nodecode}"
             self.LATITUDE = np.random.uniform(min_latitude,max_latitude) #latitude
             self.LONGITUDE = np.random.uniform(min_longitude,max_longitude) #longitude
             self.CLIENT_TYPE=random.choice(['CLIENT_TYPE_1','CLIENT_TYPE_2']) #type of client
@@ -68,6 +69,7 @@ def generateDistributionData(   num_nodes = 25,
     class plant():
         def __init__(self,nodecode, listClient):
             self.NODECODE=nodecode
+            self.DESCRIPTION=f"NODE_{nodecode}"
             self.LATITUDE = np.random.uniform(min_latitude,max_latitude) #latitude
             self.LONGITUDE = np.random.uniform(min_longitude,max_longitude) #longitude
             self.listClient = listClient
@@ -80,6 +82,7 @@ def generateDistributionData(   num_nodes = 25,
             
             #nodecode FROM information
             self.LOADING_NODE=nodeFrom.NODECODE
+            self.LOADING_NODE_DESCRIPTION=nodeFrom.DESCRIPTION
             self.LOADING_NODE_LATITUDE=nodeFrom.LATITUDE
             self.LOADING_NODE_LONGITUDE=nodeFrom.LONGITUDE
             
@@ -93,6 +96,7 @@ def generateDistributionData(   num_nodes = 25,
             
             # nodecode TO information
             self.DISCHARGING_NODE=nodeTo.NODECODE
+            self.DISCHARGING_NODE_DESCRIPTION=nodeTo.DESCRIPTION
             self.DISCHARGING_LATITUDE=nodeTo.LATITUDE
             self.DISCHARGING_LONGITUDE=nodeTo.LONGITUDE
             

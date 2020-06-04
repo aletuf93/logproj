@@ -12,7 +12,7 @@ import networkx as nx
 
 
 
-from dashboard.chart.chart_3D_surface import createFigureWith3Dsurface
+from chart.chart_3D_surface import createFigureWith3Dsurface
 
 
 from logproj.P8_performanceAssessment.utilities_movements import getCoverageStats
@@ -49,27 +49,33 @@ def optimalLocationRectangularDistance(D_filtered, latCol, lonCol, weightCol):
     op_w=sum(D_filtered[weightCol])/2 # identify the median of the sum of weights
     
     #identify optimal latitude
-    D_filtered=D_filtered.sort_values(by=latCol, ascending=True) #sort by latitude
-    D_filtered['X_cumsum']=D_filtered[weightCol].cumsum() #calculate the cumulated sum
-    
-    #identify the LATITUDE closer to the optimal location 
-    D_opt_x_max=D_filtered[D_filtered['X_cumsum']>=op_w].iloc[0]
-    D_opt_x_min=D_filtered[D_filtered['X_cumsum']<op_w].iloc[-1]
-    
-    x_array=[D_opt_x_min['X_cumsum'],D_opt_x_max['X_cumsum']]
-    y_array=[D_opt_x_min[latCol],D_opt_x_max[latCol]]
-    lat_optimal=np.interp(op_w, x_array, y_array)
-    
-    #identify the LONGITUDE closer to the optimal location 
-    D_filtered=D_filtered.sort_values(by=lonCol, ascending=True) #sort by latitude
-    D_filtered['Y_cumsum']=D_filtered[weightCol].cumsum() #calculate the cumulated sum
-    
-    D_opt_x_max=D_filtered[D_filtered['Y_cumsum']>=op_w].iloc[0]
-    D_opt_x_min=D_filtered[D_filtered['Y_cumsum']<op_w].iloc[-1]
-    
-    x_array=[D_opt_x_min['Y_cumsum'],D_opt_x_max['Y_cumsum']]
-    y_array=[D_opt_x_min[lonCol],D_opt_x_max[lonCol]]
-    lon_optimal=np.interp(op_w, x_array, y_array)
+    if len(D_filtered)>1: #when there are more than a single point
+        D_filtered=D_filtered.sort_values(by=latCol, ascending=True) #sort by latitude
+        D_filtered['X_cumsum']=D_filtered[weightCol].cumsum() #calculate the cumulated sum
+        
+        #identify the LATITUDE closer to the optimal location 
+        D_opt_x_max=D_filtered[D_filtered['X_cumsum']>=op_w].iloc[0]
+        D_opt_x_min=D_filtered[D_filtered['X_cumsum']<op_w].iloc[-1]
+        
+        x_array=[D_opt_x_min['X_cumsum'],D_opt_x_max['X_cumsum']]
+        y_array=[D_opt_x_min[latCol],D_opt_x_max[latCol]]
+        lat_optimal=np.interp(op_w, x_array, y_array)
+        
+        #identify the LONGITUDE closer to the optimal location 
+        D_filtered=D_filtered.sort_values(by=lonCol, ascending=True) #sort by latitude
+        D_filtered['Y_cumsum']=D_filtered[weightCol].cumsum() #calculate the cumulated sum
+        
+        D_opt_x_max=D_filtered[D_filtered['Y_cumsum']>=op_w].iloc[0]
+        D_opt_x_min=D_filtered[D_filtered['Y_cumsum']<op_w].iloc[-1]
+        
+        x_array=[D_opt_x_min['Y_cumsum'],D_opt_x_max['Y_cumsum']]
+        y_array=[D_opt_x_min[lonCol],D_opt_x_max[lonCol]]
+        lon_optimal=np.interp(op_w, x_array, y_array)
+        
+    else: #with a single point take the coordinates of the point
+        lat_optimal = float(D_filtered.iloc[0][latCol])
+        lon_optimal = float(D_filtered.iloc[0][lonCol])
+        
     return lat_optimal, lon_optimal
 
 def optimalLocationGravityProblem(D_filtered, latCol, lonCol, weightCol):
@@ -78,10 +84,14 @@ def optimalLocationGravityProblem(D_filtered, latCol, lonCol, weightCol):
     #latCol is a string with the name of the columns woith latitude
     #loncol is a string with the name of the columns with longitude
     #weightCol is a string with the name of the columns with the flow intensity
-    
+    #print(D_filtered)
     D_filtered_notnan=D_filtered.dropna(subset=[latCol,lonCol,weightCol])
-    lat_optimal=sum(D_filtered_notnan[latCol]*D_filtered_notnan[weightCol])/sum(D_filtered_notnan[weightCol])
-    lon_optimal=sum(D_filtered_notnan[lonCol]*D_filtered_notnan[weightCol])/sum(D_filtered_notnan[weightCol])
+    D_filtered_notnan = D_filtered_notnan[D_filtered_notnan[weightCol]>0]
+    if len(D_filtered_notnan)>0:
+        lat_optimal=sum(D_filtered_notnan[latCol]*D_filtered_notnan[weightCol])/sum(D_filtered_notnan[weightCol])
+        lon_optimal=sum(D_filtered_notnan[lonCol]*D_filtered_notnan[weightCol])/sum(D_filtered_notnan[weightCol])
+    else:
+        lat_optimal = lon_optimal = 0
     return lat_optimal, lon_optimal
     
     
@@ -451,13 +461,14 @@ def calculateCostASIS(D_plant,
         #plant =652
         
         plant_client_list = D_plant[D_plant['_id']==plant][plantListName].iloc[0]
+        plant_client_list = [str(i) for i in plant_client_list]
             
         #considero latitudine e longitude del plant
         lat_plant= D_plant[D_plant['_id']==plant][latCol_plant].iloc[0]
         lon_plant= D_plant[D_plant['_id']==plant][lonCol_plant].iloc[0]
         
         #creo una nuova colonna per identificare se servito da un determinato plant
-        D_node[plant]= [id_nodo in plant_client_list for id_nodo in D_node[nodeCol_node]]
+        D_node[plant]= [str(id_nodo) in plant_client_list for id_nodo in D_node[nodeCol_node]]
         
         #D_res['all']=D_res[652].astype(int) + D_res[2615].astype(int) +D_res[603].astype(int) + D_res[610].astype(int)
         D_filtered = D_node[D_node[plant]==True]
@@ -497,65 +508,69 @@ def tracciaCurveIsocosto(D_res, D_res_optimal, latCol,  lonCol, distanceType,
     for year in year_list:
         #year = list(set(D_res['YEAR']))[0]
         D_res_test=D_res[(D_res['FLOW']>0) & (D_res['YEAR']==year)]
-        D_res_optimal_filtered = D_res_optimal[D_res_optimal['YEAR']==year]
-        
-        
-        
-        #identifico il rettangolo da rappresentare
-        min_lon = min(D_res_test[lonCol])
-        max_lon= max(D_res_test[lonCol])
+        if len(D_res_test)>2:
+            D_res_optimal_filtered = D_res_optimal[D_res_optimal['YEAR']==year]
             
-        min_lat=min(D_res_test[latCol])
-        max_lat=max(D_res_test[latCol])
-        
-        #costruisco la griglia
-        lon = np.linspace(min_lon,max_lon, 100)
-        lat = np.linspace(min_lat, max_lat, 100)
-        X, Y = np.meshgrid(lon, lat)
-        xy_coord = list(zip(D_res_test[lonCol],D_res_test[latCol]))
-        
-        #interpolo la funzione nei punti mancanti
-        grid = griddata(xy_coord, np.array(D_res_test['COST_TOBE']), (X, Y), method='linear')
-        
-        #salvo i valori per la rappresentazione 3d
-        X_list.append(X)
-        Y_list.append(Y)
-        grid_list.append(grid)
-        time_list.append(year)
-        
-        
-        #se riceve un grafo stradale lo rappresenta
-        if roadGraph==[]:
-            fig1 = plt.figure()
-        else:
-            fig1, ax = ox.plot_graph(roadGraph, bgcolor='k', 
-                        node_size=1, node_color='#999999', node_edgecolor='none', node_zorder=2,
-                        edge_color='#555555', edge_linewidth=0.5, edge_alpha=1)
-            plt.legend(['Node','Edges'])
             
-
-        
-        
-        plt.contour(X, Y, grid, cmap='Reds')
-        
-        plt.xlabel('LONGITUDE')
-        plt.ylabel('LATITUDE')
-        plt.colorbar()
-        
-        plt.title(f"Isocost line {distanceType}, period: {year}")
-        
-        #rappresento i punti di ottimo
-        plt.scatter(D_res_optimal_filtered[lonCol], D_res_optimal_filtered[latCol],100,marker='^',color='green')
-        plt.legend(['Optimal points'])
-        
-        #rappresento i punti as-is
-        if len(D_plant)>0:
-            plt.scatter(D_plant[plantLongitude], D_plant[plantLatitude],100,marker='s',color='black')
-            plt.legend(['Optimal points','Actual points'])
             
-        outputFigure[f"isocost_{distanceType}_{year}"]=fig1
-        
-        plt.close('all')
+            #identifico il rettangolo da rappresentare
+            min_lon = min(D_res_test[lonCol])
+            max_lon= max(D_res_test[lonCol])
+                
+            min_lat=min(D_res_test[latCol])
+            max_lat=max(D_res_test[latCol])
+            
+            #costruisco la griglia
+            lon = np.linspace(min_lon,max_lon, 100)
+            lat = np.linspace(min_lat, max_lat, 100)
+            X, Y = np.meshgrid(lon, lat)
+            xy_coord = list(zip(D_res_test[lonCol],D_res_test[latCol]))
+            
+            #interpolo la funzione nei punti mancanti
+            grid = griddata(xy_coord, np.array(D_res_test['COST_TOBE']), (X, Y), method='linear')
+            
+            #salvo i valori per la rappresentazione 3d
+            X_list.append(X)
+            Y_list.append(Y)
+            grid_list.append(grid)
+            time_list.append(year)
+            
+            
+            #se riceve un grafo stradale lo rappresenta
+            if roadGraph==[]:
+                fig1 = plt.figure()
+                ax  = fig1.gca()
+            else:
+                fig1, ax = ox.plot_graph(roadGraph, bgcolor='k', 
+                            node_size=1, node_color='#999999', node_edgecolor='none', node_zorder=2,
+                            edge_color='#555555', edge_linewidth=0.5, edge_alpha=1)
+                plt.legend(['Node','Edges'])
+                
+    
+            
+            
+            im = ax.contour(X, Y, grid, cmap='Reds')
+            
+            ax.set_xlabel('LONGITUDE')
+            ax.set_ylabel('LATITUDE')
+            fig1.colorbar(im, ax=ax)
+            
+            
+            ax.set_title(f"Isocost line {distanceType}, period: {year}")
+            
+            #rappresento i punti di ottimo
+            ax.scatter(D_res_optimal_filtered[lonCol], D_res_optimal_filtered[latCol],100,marker='^',color='green')
+            plt.legend(['Optimal points'])
+            
+            #rappresento i punti as-is
+            if len(D_plant)>0:
+                ax.scatter(D_plant[plantLongitude], D_plant[plantLatitude],100,marker='s',color='black')
+                plt.legend(['Optimal points','Actual points'])
+            
+            fig1 = ax.figure
+            outputFigure[f"isocost_{distanceType}_{year}"]=fig1
+            
+            plt.close('all')
     # costruisco il grafico 3d
     fig_curve_cost3D=createFigureWith3Dsurface(X_list,Y_list,grid_list,time_list)
     return outputFigure,fig_curve_cost3D
