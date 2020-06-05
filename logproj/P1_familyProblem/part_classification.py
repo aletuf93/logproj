@@ -5,6 +5,29 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# %%
+def calculateADICV2(D_mov, itemfield, qtyfield, dateVar):
+    #D_mov is a movement dataframe
+    #itemfiels is the string with the column name for the itemcode
+    #qtyfield is the string with the column name for the quantity
+    #dataVar is the string with the column name for the timestamp
+    
+    
+    #identify the number of days of the input dataset
+    N_Days=max(D_mov[dateVar])-min(D_mov[dateVar])
+    N_Days=N_Days.days
+
+    D_demandPatterns = pd.DataFrame(columns = ['ITEMCODE','ADI','CV2'])
+    for item in set(D_mov[itemfield]):
+                #item='17092774'
+                df_filtered=D_mov[D_mov[itemfield]==item]
+                CV2=(np.std(df_filtered[qtyfield])/np.mean(df_filtered[qtyfield]))**2
+
+                #ADI in days
+                df_filtered=df_filtered.sort_values(by=dateVar)
+                ADI=len(df_filtered)/N_Days
+                D_demandPatterns = D_demandPatterns.append(pd.DataFrame([[item, ADI,CV2]],columns=D_demandPatterns.columns))
+    return D_demandPatterns
 
 # %%
 def returnsparePartclassification(ADI,CV2):
