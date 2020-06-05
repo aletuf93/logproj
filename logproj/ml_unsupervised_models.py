@@ -238,10 +238,27 @@ def plot_cov_ellipse(cov, pos, nstd=2, ax=None, **kwargs):
     return ellip
 # %%
 def capacitatedClustering(D,simMin,dem,capacity):
-    #D is a list of coordinates
-    #simMin minimum similarity value to aggregate two points
-    #array of demand for each point
-    #capacity = fixed capacity for each cluster
+    '''
+    
+
+    Parameters
+    ----------
+    D : TYPE numpy array
+        DESCRIPTION. array of coordinates (nxm), n= number of points or observations
+    simMin : TYPE float
+        DESCRIPTION. minimum similarity vlaue to group two points together (0->1)
+    dem : TYPE numpy array
+        DESCRIPTION. array of the demand of dimension n
+    capacity : TYPE float
+        DESCRIPTION. maximum capacity for each cluster
+
+    Returns
+    -------
+    capCluster : TYPE numpy array
+        DESCRIPTION. array of dimension n with the code of the cluster for each observation
+
+    '''
+    
     
     method='single'
     
