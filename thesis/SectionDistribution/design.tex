@@ -78,6 +78,32 @@ Solving equation (\ref{eqLAP}) in the variable $m$ provides the optimal solution
 
 Nevertheless, in practice, both $C^{PLANT}$, and $C^{DIST}$ are easy and fast to estimate for a finite set of solutions of the LAP. A smart approach is to evaluate the total cost $E_\chi$ for a finite number of scenarios $\chi$. Often these scenarios already exist in the mind of the decision-makers. A comparison between these scenarios immediately leads to the most profitable one.
 
+\subsection{Application}
+We show an example of an application of the LAP problem by comparing a network in two alternative scenarios: as-is scenario describing the current situation of the network, and to-be scenario evaluating an alternative. The comparison method evaluates the differential cash flows in the two scenarios in a Montecarlo fashion.\footnote{An example of this application is available \href{https://github.com/aletuf93/logproj/blob/master/examples/DIST_04\%20Location-Allocation\%20problem.ipynb}{here}}  \par
+
+A cost model is defined to identify which cost items are relevant to compare the two scenarios, for example:
+
+\begin{itemize}
+    \item the direct labour cost;
+    \item the cost of logistics and distribution;
+    \item the operating costs (e.g. the energy);
+    \item the fixed costs to operate the plant;
+    \item the depreciation cost;
+    \item the investment cost (only for the to-be scenario).
+\end{itemize}
+
+The sum of these cost items (except for the depreciation cost) determined the cash flow in each scenario. The difference between the to-be and the as-is scenario determines the differential cash flow. Extending this analysis to a significant time horizon (e.g. ten years) identify the payback period of the to-be investment. When a probability distribution is given for all the cost items identified above, it is possible to determine the risk of the investment using a Montecarlo simulation. The Montecarlo simulation identifies different behaviour, randomly generating numbers from the distribution of the input cost items. Figure \ref{fig_LAP} illustrates the Montecarlo approach and the static approach applied to sample data. This approach can be used to evaluate multiple LAP alternatives compared to an existent scenario identifying which alternative produce an adequate return on the investment.
+
+% INSERT fig_LAP
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.9\textwidth]{SectionDistribution/design_figures/fig_LAP.png}
+\captionsetup{type=figure}
+\caption{Montecarlo and static simulations to evaluate the cash flows of a LAP configuration compared to the existent scenario.}
+\label{fig_LAP}
+\end{figure}
+
+
 \section{Network topology design (P2)}
 Defining the topology of a network consists of grouping terminals $j$ together, such that a single facility can serve all of them without exceeding its capacity. For example, assigning a distribution centre to a set of points of demand provides a solution to this problem.\par
 
@@ -167,7 +193,7 @@ Data-driven methodologies involve unsupervised learning (see chapter \ref{chapUn
 \end{figure}
 
 \subsubsection{Capacitated similarity tree (CST)}
-This algorithm builds clusters using a similarity tree produced by hierarchical clustering (see section \ref{secHierarchicalClustering}). Hierarchical clustering aggregates the m observations relying on a proximity matrix $m \times m$, describing how close the observations are. To cluster terminals, we consider a similarity matrix $S$ whose entries $s_{ij}$ measure the closeness of two terminals. $S$ is calculated as the inverse of the matrix of the distances (e.g. the road distance) between nodes. At each step of the algorithm $s_{ij}$ are ordered and the two nodes with the maximum $s_{ij}$ are clustered together if the capacity constraint is respected; otherwise the following $s_{ij}$ is considered for clustering. The algorithm starts creating $m$ clusters. This number is progressively reduced grouping nodes together when the capacity is respected. Algorithm \ref{algo_dist_CST} illustrates the pseudocode for this algorithm.\footnote{The source code of Algorithm \ref{algo_dist_CST} is available \href{https://github.com/aletuf93/logproj/blob/master/logproj/ml_unsupervised_models.py}{here}.} 
+This algorithm builds clusters using a similarity tree produced by hierarchical clustering (see section \ref{secHierarchicalClustering}). Hierarchical clustering aggregates the m observations relying on a proximity matrix $m \times m$, describing how close the observations are. To cluster terminals, we consider a similarity matrix $S$ whose entries $s_{ij}$ measure the closeness of two terminals. $S$ is calculated as the inverse of the matrix of the distances (e.g. the road distance) between nodes. At each step of the algorithm $s_{ij}$ are ordered and the two nodes with the maximum $s_{ij}$ are clustered together if the capacity constraint is respected; otherwise the following $s_{ij}$ is considered for clustering. The algorithm starts creating $m$ clusters. This number is progressively reduced grouping nodes together when the capacity is respected. Algorithm \ref{algo_dist_CST} illustrates the pseudocode for this algorithm.\footnote{The source code of Algorithm \ref{algo_dist_CST} is available \href{https://github.com/aletuf93/logproj/blob/master/logproj/ml_unsupervised_models.py}{here}} 
 
 \begin{algorithm}[H]
 \DontPrintSemicolon
@@ -479,7 +505,7 @@ The model is defined as follows.
 \end{equation}
 
 \subsection{Application}
-We test the five algorithms mentioned above in the field of urban logistics while designing the waste collection service of a wide urban area. The problem involves clustering point of waste production (POWP) together, to assign them to vehicles.\par
+We test the five algorithms mentioned above in the field of urban logistics while designing the waste collection service of a wide urban area. The problem involves clustering point of waste production (POWP) together, to assign them to vehicles.\footnote{An example of this application is available \href{https://github.com/aletuf93/logproj/blob/master/examples/DIST_03\%20Route\%20topology\%20design.ipynb}{here}} \par
 
 We define three indicators to evaluate the performance of the algorithm from a computational point of view (see Table \ref{tab_ROMA_application}. The average number of cluster is a measure of the compactness of the outcome clusters. It gives an idea of which algorithm produces, on average, a higher number of classes. It is important to remark that this indicator cannot be directly used as a logistics indicator since it may not be related to the travelled distance within a cluster. The optimal solution of the bin-packing problem (BPP) is calculated, to measure the efficiency of the algorithm in clustering points in the minor number of cluster possible. This solution defines the lower bound of the number of clusters to create. For each algorithm, we measure the gap between its solution and the BPP solution. Besides, we measure the average solving time and the percentage of failing of the algorithms (i.e., the percentage of the instances when an algorithm is not able to find a feasible solution). Since CST and CHST are fully heuristic algorithms, they always provide a feasible solution in a relatively short time.
 
