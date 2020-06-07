@@ -1,5 +1,428 @@
 \chapter{Plant Design} \label{chapProdPlantDesign}
 
-\section{Clustering parts into product families (P1)}
+This chapter and the following one address the design from scratch (i.e. greenfield) of a production node. Greenfield design is often a hard task since it involves risk, uncertainty and the definition of many assumptions which are hard to set since the production node only exists in our minds.\par
+
+In general, this activity is complicated. Luckily, there are some general rules and framework that can help in this activity. When historical data from previous experience (or similar production nodes) are available, the data-driven approach helps to work with few but robust information. When historical data are not available, the definition of a kinematic/engineering model may help to get trustful estimates.\par
+
+This chapter focuses on the problems related to the design of the plant:
+
+\begin{enumerate}
+    \item Clustering items into product families;
+    \item Facility location;
+    \item Technology and asset choice;
+    \item Auxiliary systems design;
+    \item Definition of the number of assets;
+    \item Layout design.
+
+\end{enumerate}
+
+Chapter \ref{chapProdProcessDesign} focuses on the problems related to the design of the processes:
+
+\begin{enumerate}
+    \item Inventory policy design;
+    \item Workstation design;
+    \item Handling design.
+
+\end{enumerate}
+
+Figure \ref{fig_prod_plant_design} presents a cascade procedure, inspired to ~\cite{Heragu} showing these nine tasks for the design of a greenfield production node. This procedure is known in the literature as “facility design” and guides all the activity to transform a greenfield to a production plant.
+
+% INSERT fig_prod_plant_design
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=1\textwidth]{sectionProduction/design_plant_figures/fig_prod_plant_design.png}
+\captionsetup{type=figure}
+\caption{Hierarchical framework for facility design.}
+\label{fig_prod_plant_design}
+\end{figure}
+
+
+
+\section{Clustering parts into product families (P1)} \label{secClusteringParts}
+Engineering is about complexity. Companies rely on engineers and engineering science since they are able to use tools and method to:
+
+\begin{enumerate}
+    \item Pickup a complex problem;
+    \item Reduce its complexity;
+    \item Understand the problem;
+    \item Find a method to solve the problem;
+    \item Solve the problem.
+
+\end{enumerate}
+
+Production nodes are responsible for creating goods, i.e. parts $i$. Globalisation and mass customisation trends lead production nodes to incredibly high levels of complexity. This complexity is measurable in terms of:
+
+\begin{itemize}
+    \item 	The size of the product portfolio (i.e. the number of different parts $i$);
+	\item The production volume $Q_{G,i}$ (i.e. the number of items produced by the plant $G$, for each type of part $i$).
+
+\end{itemize}
+
+These metrics are important to identify an adequate production technology, with a proper throughput $TH_j$ for each resource $j$; but this task can be hard when the number of parts $i$ is high (e.g. more than 1000). For this reason, it is good practice to cluster items into homogeneous families with similar features in order to reduce the complexity of the problem and focus on similar entities. According to Section \ref{secDecisionPatterns}, this is a version of the family problem, applied to a production system.
+
+\subsection{Model-driven methods (D2)}
+
+The design of a production system is all about creating an environment for a smooth and efficient production of goods. Empirically, the evidence shows that grouping parts $i$ with similar production cycle (i.e. route $e$) is an excellent way to improve efficiency. Model-driven approaches rely on the definition of an incidence matrix $X_{ij}$, defined as:
+
+\begin{equation}
+   \begin{split}
+   X_{ij}=\left\{
+                \begin{array}{ll}
+                  1\ & if\ part\ i\ needs\ resource\ j\ in\ its\ production\ process\\
+                  0 & otherwise\\
+                \end{array}
+              \right.
+   \end{split}
+\end{equation}
+
+The diagonalisation of the matrix $X_{ij}$ into a matrix $X_{ij}^\delta$ is used to identify groups of homogeneous parts (see Figure \ref{fig_prod_matrix_diagonalisation}).
+
+% INSERT fig_prod_matrix_diagonalisation
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=1\textwidth]{sectionProduction/design_plant_figures/fig_prod_matrix_diagonalisation.png}
+\captionsetup{type=figure}
+\caption{Diagonalisation of a part-resource incidence matrix.}
+\label{fig_prod_matrix_diagonalisation}
+\end{figure}
+
+Any diagonalisation algorithm is suitable to identify clusters of parts and resources since the model assumes that operations can be improved when the clusters of parts using the same subset of resources are handled together. For the sake of completeness, we mention the direct clustering algorithm ~\cite{Chan1982}, and the rank order clustering algorithm ~\cite{King1980} that produce the diagonalization of $X_{ij}$. \par
+
+Once product families $\pi\in\Pi$ are defined, the rest of the design of the production node should consider the family $\pi$ instead of all the parts $i\in\pi$, so that the complexity due to the variety of the size of the product portfolio is reduced. In case, the number of families is still difficult to handle (e.g. higher than 100 families). A Pareto analysis  may help. For example, if a small subset of families (e.g. the 20\%) produces the major amount of the volumes $Q_{G,i}$, it is good to consider only the first 20\% of the families to reduce the complexity and the bias in the other design stages (see Figure \ref{fig_prod_pareto}).
+
+% INSERT fig_prod_pareto
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.9\textwidth]{sectionProduction/design_plant_figures/fig_prod_pareto.png}
+\captionsetup{type=figure}
+\caption{Pareto curve of a production plant where the first 40\% of the items produces the 80\% of the production volume (i.e. the number of production lines)}
+\label{fig_prod_pareto}
+\end{figure}
+
+Clustering does not guarantee cluster are feasible in practice. For example, a cluster to be assigned to a group of machines may exceed the available working time of the resources. To solve this feasibility problem, an original capacitated clustering algorithm is proposed ~\cite{Tufano2020ISM}.  The algorithm is inspired to hierarchical clustering with a capacity constraint. Let $d_i$ be the \textit{demand} (e.g. the total working time) of a point (i.e. a part) $i$ and $C$ the maximum capacity of a cluster. The algorithm works similarly to algorithm \ref{algo_dist_CST}\footnote{The source code of Algorithm \ref{algo_dist_CST} is available \href{https://github.com/aletuf93/logproj/blob/master/logproj/ml_unsupervised_models.py}{here}}. The outcome of this algorithm is a set of clusters whose cardinality is unknown in advance. Each cluster $k$ has a total demand $d=\sum_{i\in k} d_i$, with $d\le C$.
+
+\subsection{Data-driven methods (D1)}
+
+The matrix $X_{ij}$ can be seen as the learning table introduced in chapter \ref{chapUnsupervisedLearning}. It consists of $n$ observations (one for each part $i=1,\ldots n$) and $p$ features (one for each resource $j=1,\ldots,p$). Data driven-methods enhance more powerful applications, by defining the similarity of the resources $j$, given the set of parts they can process. The incidence matrix $X_{ij}$ can, then, be transformed into a proximity matrix $D_{ik}$ (where $i$, and $k$ are both parts) by using a similarity index (see section \ref{secHierarchicalClustering}). Similarity indexes were born in the biological, and are defined using:
+
+\begin{itemize}
+    \item $a$, the number of resources processing by both $i$, and $k$;
+	\item $b$, the number of resources processing only by $i$, and not by $k$;
+	\item $c$, the number of resources processing only by $k$, and not by $i$;
+	\item $d$, the number of resources processing neither by $i$, nor by $k$.
+
+\end{itemize}
+
+Using $a$, $b$, $c$ and $d$, the matrix $D_{ik}$ is defined for all the couples of resources $(i,k)$ using $d_{ik}=1$, where $s_{ik}$ is a similarity index. The most famous is the Jaccard index:
+
+\begin{equation}
+    s_{ik}=\frac{a}{a+b+c}
+\end{equation}
+
+For the sake of completeness, there are other similarity coefficients $s_{ij}$, as: the simple or relative matching coefficients ~\cite{Heltshe1988}, Yule coefficients, Rogers and Tanimoto coefficients ~\cite{Jackson1989}, Baroni-Urbani coefficients ~\cite{Buser1976}, Sorenson coefficient ~\cite{Yin2005}. Given $D_{ik}$, hierarchical clustering (see section \ref{secHierarchicalClustering}) is used to agglomerate parts into clusters.\par
+
+The same procedure can be applied to create clusters of similar resources j to locate close to each other on the plant layout. So far, the data-driven approach does not add too much to the classical model-driven approach.\par
+
+There are unlucky but ordinary circumstances where the route $e$ of a product is unknown (e.g. not available in the information system during the planning). In this case, the data-driven approach is useful by combining different type of data to determine product families. There are many features that can enter the matrix $X_{ij}$, for example:
+
+\begin{itemize}
+    \item The set of processing resources $j$;
+	\item The size of the part $i$;
+	\item The volume and weight of $i$;
+	\item The description of the item $i$;
+	\item The package or the vehicle needed to transport $i$;
+	\item The supplier of $i$;
+	\item The customer of $i$;
+	\item The bill of materials of $i$.
+
+\end{itemize}
+
+Given a matrix $X_{ij}$ with all the available information, it is necessary to investigate (e.g. using historical data) if a correlation exists between one of the features and the route $e$. If a correlation exists, feature selection should be performed, and unsupervised learning algorithms can be applied. Many unsupervised learning algorithms can be used as:
+
+\begin{itemize}
+    \item 	The k-means (see section \ref{secKmeans}), suitable when all the data are numerical and with the same unit of measure (e.g. length, height and width);
+	\item The Gaussian mixture model (see section \ref{secGaussianMixture}), suitable when all the data are numerical and with the same unit of measure (e.g. length, height and width) and values are normally distributed within the same cluster;
+	\item Hierarchical clustering (see section \ref{secHierarchicalClustering}), when data are categorical or provided by a binary incidence matrix $X_{ij}$ or a proximity matrix $D_{ik}$.
+
+\end{itemize}
+
+Measuring the goodness of a cluster is a hard task both using a data-driven and a model-driven approach. The underlying assumption is that when clusters are homogeneous, the $WIP_j$ of the resources is minimised since flows are smooth. In addition, if resources processing the same product family are placed close to each other, the $LT_e$ is reduced and provides a higher $LoS_e$.
+
 
 \section{Facility location (P6)} \label{secFacilityLocationProd}
+Facility location problem regards the definition of an adequate location (i.e. latitude and longitude) to place a production node. The production plant should be placed within an area where the costs are minimised. This type of decision is highly prescriptive and guided by engineering models since it is difficult to collect data on the previous realisation of this choice.
+
+\subsection{Model-driven methods (PS4)}
+The main underlying assumption of these models is that a plant should be placed such that the costs linked with its location are minimised. Some other crucial aspects connected with the facility location are:
+
+\begin{itemize}
+    \item the cost of the direct labour of a location;
+    \item the cost of the energy;
+    \item the cost of the land and the building;
+    \item the connection to distribution networks (e.g. rail/water)
+    \item the availability of raw materials (e.g. sand)
+    \item the transportation costs.
+
+\end{itemize}
+
+This problem can be solved using optimisation when all this information is available for any alternative. When alternative locations are close to each other, transportation cost may be the only significant variable to take into account (and to minimise) in the definition of the facility location.\par
+
+In this case, the problem can be solved by using a kinematic model based on the minimisation of the travelled distance. Let $S$, with $s\in S, s=1,...,k$ be the set of customers and suppliers of the production plant to place. Each point $s$ is characterised by its longitude and latitude ($lon_s$,$lat_s$), and an estimate of the number of trips $w_s$ travelled between the production node and $s$. To find the point minimising the distance, it is necessary to transform the longitude and the latitude into cartesian coordinates. There are many methods allowing to do that. Here the Mercator projection ~\cite{Snyder1978} is used, where:
+
+\begin{equation}
+    x_s=R\times lon_s^{RAD}
+    \label{eq_mercator_x}
+\end{equation}
+
+\begin{equation}
+    y_s=R\times\ln{\left[\left(\frac{1-e\times\sin{\left(lat_s^{RAD}\right)}}{1+e\times\sin{\left(lat_s^{RAD}\right)}}\right)^\frac{e}{2}\times t g\left(\frac{\pi}{4}+\frac{lat_s^{RAD}}{2}\right)\right]}
+    \label{eq_mercator_y}
+\end{equation}
+
+Where $lon_s^{RAD}$ and $lat_s^{RAD}$ are the coordinates using radians, $R=6378.14$ km is the equatorial radius, $e=0.0167$ is the eccentricity of the Earth. Given $x_s$ and $y_s$ for all $s\in S$, the problem is to find the coordinates $(x,y)$ to place the production plant, minimising:
+
+\begin{equation}
+    z=\min{\left\{d\left[\left(x,y\right),\left(x_s,y_s\right)\right]\times w_s\ \right\}}
+\end{equation}
+
+Where $d$ is an arbitrary distance function, for example:
+
+\begin{itemize}
+    \item Rectangular (or city block) distance: $\left|x-x_s\right|+\left|y-y_s\right|$;
+	\item Euclidean distance: $\sqrt{\left(x-x_s\right)^2+\left(y-y_s\right)^2}$;
+	item Squared Euclidean (or gravity) distance: $\left(x-x_s\right)^2+\left(y-y_s\right)^2$.
+
+\end{itemize}
+
+The mathematical minimum can be found by minimising $z$ ~\cite{Wesolowsky1972}. Nevertheless, it is almost impossible that this point coincides with a feasible physical location for the plant. For this reason, a gradient approach results much more useful to support the decision-maker. Let define a set $\Phi={(x_f,y_f)}$ containing the coordinates (using equations (\ref{eq_mercator_x}) and (\ref{eq_mercator_y})) of a number of available locations $f$. By considering a broader geofence, containing all the points in $\Phi$ and defining the value of $z$ for any point within the geofence, the gradient of $z$ can be identified. This way, the decision-maker could identify which direction is better to find an area for the new production plant. Many alternative procedures to minimise $z$ depending on $d$ can be found in ~\cite{Salhi1996}.\par
+
+Nowadays, due to the variability of the market demand and the shortness of the duration of the contract, the reliability of a static approach to solving the facility location problem may be reduced. As well as with time series, which considers the evolution of an event over time, by repeating the calculation of the optimal location with different time horizon it is possible to define optimal location using a probabilistic approach. Let $z^\ast$ be the set of optimal locations $(x_t^\ast,y_t^\ast)$ calculated on a time horizon $T$, where $t\in T$. Then, the minimum of the function:
+
+\begin{equation}
+    z^\pi=\min{\left\{\sum_{t\in T} d\left[\left(x,y\right),\left(x_t^\ast,y_t^\ast\right)\right]\right\}}
+\end{equation}
+
+Identifies the optimal location over a time horizon $T$.\footnote{The package logproj provides method to deal with facility location problems \href{https://github.com/aletuf93/logproj/blob/master/logproj/P6_placementProblem/facility_location_definition.py}{here}}.
+
+\section{Auxiliary systems design (P4)}
+Auxiliary systems are any technological asset that does not directly add value to the finished product, but it is necessary to perform tasks. Examples of the auxiliary systems are:
+
+\begin{itemize}
+    \item The lighting systems of the production site;
+    \item The air conditioning system (i.e. heating and cooling);
+    \item The systems for the production of energy (e.g. electricity/steam),
+    \item The systems for the production of other technological fluids (e.g. compressed air);
+    \item The systems for the reduction of the noise.
+
+\end{itemize}
+
+All of these systems involve precise prescriptive design models based on engineering models. These models cannot be validated before the realisation of the system that is usually costly. For this reason, the whole design phase relies on engineering procedure based on indices and coefficient belonging to different knowledge domains that are not deeply analysed in this work ~\cite{Colombo2012}.
+
+\section{Technology and asset choice (P2)}
+This activity involves the determination of the proper technologies and level of automation to perform production tasks. This is a technology assignment problem  since, given the features of the products and the demand, it is necessary to identify the throughput $TH_j$ for each resource and the lead times $LT_e$ associated with the production cycles. Depending on the level of automation and flexibility, it is possible to identify different production, layout and automation paradigms (see Figure \ref{fig_prod_flexauto1}) ~\cite{Groover2015}.
+
+
+% INSERT fig_prod_flexauto1
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=1.0\textwidth]{sectionProduction/design_plant_figures/fig_prod_flexauto1.png}
+\captionsetup{type=figure}
+\caption{Flexibility-automation matrix for technology choice.}
+\label{fig_prod_flexauto1}
+\end{figure}
+
+Three main layout configurations are identified:
+
+\begin{enumerate}
+    \item The production line: all the resources necessary to transform raw materials into a finished product are placed in line.
+    \item Cellular manufacturing: all the resources necessary to transform raw materials into a limited set of finished products are placed together. There is the possibility some tasks need resources outside the cell.
+    \item Resources are organised per type (milling machines, lathing machines, pressing machines).
+
+\end{enumerate}
+
+There are four production paradigms connected to these layout configurations:
+
+\begin{itemize}
+    \item continuous production: the production flow is continuous, with a fixed cycle time;
+    \item mass production: the production flow is fast but not continuous since it requires small customisations (e.g. form-postponement, different labelling) in the end-of-line;
+    \item batch production: the production flow has major interruptions due to the setup of machines (e.g. to change the die of a press);
+    \item job-shop production: the production flow is slow and fragmented among the different departments.
+
+\end{itemize}
+
+The type of automation is different as well, since:
+
+\begin{itemize}
+    \item fully automated production line works with robots allowing high accuracy and modest cycle time, but with no flexibility to readapt the production;
+    \item collaborative robots may work together with human operators in many applications (e.g. assembly lines) enhancing both the power of the automation and the flexibility of the manual operations;
+    \item manual operations have the highest degree of flexibility, but with limited cycle time and a significant probability of errors.
+
+\end{itemize}
+
+The decision-maker should choose the possibilities that maximise the profit of the company within a pre-defined time horizon. In particular, it is important to have reliable forecasts on the workload and information on the investment cost for different technologies.
+
+\subsection{Model-driven methods (PS3)}
+Model-driven methods consider two metrics (already seen in section \ref{secClusteringParts}) to identify an adequate technological configuration:
+
+\begin{itemize}
+    \item The size of the product portfolio (i.e. the number of different parts $i$);
+	\item The production volume $Q_{G,i}$ (i.e. the number of items produced by the plant $G$, for each type of part $i$).
+
+\end{itemize}
+
+By performing a Pareto analysis on the production volume for each part (see Figure \ref{fig_prod_flexauto2}):
+
+\begin{itemize}
+    \item few parts with high production volumes should be assigned to production lines;
+    \item the majority of parts with extremely low volumes should be processed in the departments of a flow shop;
+    \item cellular manufacturing, flexible manufacturing systems (FMS) and reconfigurable manufacturing systems (RMS) should be considered for parts with an intermediate behaviour.
+
+\end{itemize}
+
+% INSERT fig_prod_flexauto2
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.8\textwidth]{sectionProduction/design_plant_figures/fig_prod_flexauto2.png}
+\captionsetup{type=figure}
+\caption{Classification of parts for technology and asset choice.}
+\label{fig_prod_flexauto2}
+\end{figure}
+
+For each product, it is possible to identify the decoupling production volume $TH_i$ (part/hours) corresponding to an economic convenience between a production line and a job-shop production ~\cite{Pareschi2007}. Let the saturation of a resource $j$ be:
+
+\begin{equation}
+    U_j\left(TH_i\right)=\frac{THi\times t_j}{n_j\left(TH_i\right)\times3600}
+\end{equation}
+
+Where $TH_i$ is the production throughput (parts/hours), $t_j$ is the processing time per part (sec/part), $n_j(TH_i)$ the number of resources of type $j$, necessary to reach a throughput $TH_i$, 3600 is the number of available seconds per hour of resource $j$.\par
+
+Considering a target saturation $K$ for a production line (e.g. the 90\%), the decoupling production volume for a part $i$ is $TH_i:U(TH_i)>K$, where:
+
+\begin{equation}
+    U(TH_i)=\frac{\sum_{j}{U_j\times n_j(TH_i)}}{\sum_{j}{n_j(TH_i)}}
+\end{equation}
+
+Resources $j$ are usually some tens. When they have a very different investment cost $C_J$ between each other, it is recommended to take into account this cost by setting:
+
+\begin{equation}
+    U(TH_i)=\frac{\sum_{j}{U_j\times{C_j\times n}_j(TH_i)}}{\sum_{j}{C_J\times n_j(TH_i)}}
+\end{equation}
+
+Once the function $U(TH_i)$ is defined, the decision between production line or job-shop should be made by setting $TH_i$ equal to the demand takt-time. If $U\left(TH_i\right)>K$, then there are good reasons to take into account the design of a production line. Otherwise, other layout models (cellular manufacturing or job-shop) should be considered.
+
+\subsection{Data-driven methods (PS2)}
+
+The choice of the production technology and the assets can be seen as an assignment problem where parts $i$ need to be assigned to an adequate technology. Observations of parts belonging to different production models help to identify the proper cluster. Classification models (see chapter \ref{chapLinearClassification}) can be used for the definition of the decision boundaries between the clusters. Figure \ref{fig_prod_flexauto3} illustrates a scatterplot identifying three different production technology. Blue dots are processed within the departments of a job-shop system. Red dots are products realised by machines organizes ad production cells and flexible manufacturing systems (FMS). Green dots are processed on manual workbenches able to perform any production task for any type of product.
+
+% INSERT fig_prod_flexauto3
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.9\textwidth]{sectionProduction/design_plant_figures/fig_prod_flexauto3.png}
+\captionsetup{type=figure}
+\caption{Classification of parts using the number of orders and the number of produces quantities per day.}
+\label{fig_prod_flexauto3}
+\end{figure}
+
+The definition of such clusters within the same production node allows to immediately identify which layout configuration results suitable the most in case of re-design. In addition, the design of a classification model (see sectio \ref{chapLinearClassification}), can help to design the production flow of new products depending on the expectation of their market demand (i.e. the number of rows and the order quantity).
+
+\section{Definition of the number of assets (P5)}
+The definition of the number of assets identifies the power (i.e. the capacity) and the saturation of the resources. The utilisation $U_j$ must be as highest as possible for economic reasons, while the capacity $C_j$ should be enough to satisfy the market demand. Both these metrics impact the level of service since capacity act as a buffer (higher capacity allow for processing a production volume within a shorter time). As many power problems in other engineering disciplines, this problem is prescriptive and lead by an engineering model.
+
+\subsection{Model-driven methods (PS4)}
+Models to define the number of assets can be static or dynamic. When no information about the time is available, a static model should be chosen. Static models always work by considering:
+\begin{itemize}
+    \item $a_j$, the amount of time a resource $j$ is available over a time span (e.g. hours/day);
+	\item $b_j$, the expected amount of working time required by the parts $i$ that need to be processed on $j$ (e.g. hours/day).
+
+\end{itemize}
+
+The minimum number of assets of type $j$ can be statically calculated as:
+
+\begin{equation}
+    n_j=\left\lceil\frac{b_j}{a_j}\right\rceil
+\end{equation}
+
+When the decision-maker has time-based information as:
+\begin{itemize}
+    \item the probability distribution $f_i(t)$ of the arrival of parts for each resource $j$;
+	\item the probability distribution $g_{ij}(t)$ of the working time of each resource $j$.
+
+\end{itemize}
+
+A simulation approach can be used to identify the number of resources virtually. Simulation is a complex task performed on commercial simulation software. Each resource is associated with a queue where parts $i$ are placed when the resource is busy. By randomly generating parts $i$ and processing time (from $f$, and $g$) operations are virtualised, and the number of items waiting in queue is estimated. $U_j$, $C_j$ and $LoS_e$ can be estimated as well by iterating instances of the simulation. The probability distributions of the KPIs and the queue size suggest the decision-maker if the number of assets in the simulated configuration is appropriate or should be modified. By running different scenarios with a different number of assets, a satisfying configuration can be obtained. 
+
+\section{Layout design (P6)}
+The layout design is a placement problem involving the definition of the location on the plant layout for each resource $j$. It is a combinatorial problem, usually solvable by a model-driven approach using optimisation.
+
+\subsection{Model-driven methods (PS1)}
+The combinatorial problem can be modelled using the quadratic assignment problem as follows. Table \ref{tab_QAP} identifies the parameters of the problem.
+
+% INSERT tab_QAP
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.9\textwidth]{sectionProduction/design_plant_figures/tab_QAP.png}
+\captionsetup{type=figure}
+\caption{Parameters of the quadratic assignment problem.}
+\label{tab_QAP}
+\end{figure}
+
+The model is as follows.
+
+\begin{equation}
+   \begin{split}
+   X_{jk}=\left\{
+                \begin{array}{ll}
+                  1\ & if j assigned to k process\\
+                  0 & otherwise\\
+                \end{array}
+              \right.
+   \end{split}
+\end{equation}
+
+\begin{equation}
+    \begin{split}
+        \min{\sum_{j\in C\ }\sum_{k\in L}\sum_{h\in C}\sum_{l\in L}{c_{jkhl}\ x_{jk}\ x_{hl}}}\\
+        \sum_{j\in C}{x_{jk}=1\ , k=1,\ldots,n}\\
+        \sum_{k\in L}{x_{jk}=1\ , j=1,\ldots,n}\\
+        x_{jk}\ integer\\
+    \end{split}
+\end{equation}
+
+By setting $c_{jkhl}$ equal to the distance between control points $k$, and $l$, times the number of trips exchanged between resources $j$, and $h$, the problem consists in finding the layout configuration which minimises the total travelled distance. Unfortunately, the problem is quadratic and a solver may take forever to find the configuration of decision variables $x_{jk}$ corresponding to the minimum solution value. For this reason, a number of suboptimal algorithms are introduced to find adequate configuration (without the warranty of optimality). These algorithms are organized into:
+
+\begin{itemize}
+    \item construction algorithms, to find a feasible solution starting from the input data;
+    \item local search algorithms, to improve an existing feasible solution.
+
+\end{itemize}
+
+\subsubsection{Construction algorithms}
+Construction algorithms split the problem of the layout configuration into two different subproblems:
+
+\begin{enumerate}
+    \item control points ranking;
+    \item control points placement.
+
+\end{enumerate}
+
+Relevant methods are the total-closeness-rating, the ALDEP ~\cite{Rosenblatt1979}, the CORELAP ~\cite{Adendorff1972} and the relationship diagramming method ~\cite{Plotnick2007}. All of these have a ranking and a placement procedure.
+
+\subsubsection{Local search algorithms}
+The solution produced by a construction algorithm may be far from optimality. For this reason, local search algorithms perform \textit{moves} (i.e. little modification of the incumbent solution) to improve the solution value.\par
+
+Local search algorithms are the 2-opt, 3-opt exchange ~\cite{Potvin1989} and CRAFT ~\cite{Scriabin1985}. The 2-opt and 3-opt are general-purpose local search methods that make exchanges between groups of 2 or 3 elements.
+
+Regardless of the methodology used to solve the plant layout problem, a graph $G\left(V,A\right)$ of the system can be defined and visually investigated to identify criticalities. The flows exchanged between control points can be aggregated by arcs or nodes and represented by projecting $G$ on the plant layout (see Figure \ref{prod_layout_visual}).
+
+% INSERT prod_layout_visual
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.9\textwidth]{sectionProduction/design_plant_figures/prod_layout_visual.png}
+\captionsetup{type=figure}
+\caption{Visual representation of the material flows aggregated by arcs (on the left) and by nodes (on the right).}
+\label{prod_layout_visual}
+\end{figure}
+
+%\clearpage
+\bibliographystyle{ieeetr}
+\bibliography{sectionProduction/design_plant_ref}
