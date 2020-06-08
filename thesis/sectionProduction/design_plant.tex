@@ -423,6 +423,190 @@ Regardless of the methodology used to solve the plant layout problem, a graph $G
 \label{prod_layout_visual}
 \end{figure}
 
-%\clearpage
+\section{Applications}
+This section illustrates two applications of plant and process design within two different industrial sectors (food and automotive). The aim is to show the generalisation of the methods proposed in the previous chapters, and the effect of the data-driven methods in applied design case studies. In particular, the first case study is mainly model-driven, while the second is more data-driven.
+
+\subsection{Plant Design of a food catering plant}
+
+This section applies the methodology to design a food catering plant from scratch. The food catering industry is responsible for supplying warm, safe, and tasty food to schools, hospitals, and nurseries, as well as to company canteens. The production plant of a food catering industry is known as a \textit{centralised kitchen} (CEKI).\par
+
+Typically, a middle-size CEKI can prepare, pack, and deliver more than 10.000 meals per day by working in a short-spanned time batch (e.g., from 5.00 AM to 11.30 AM for the lunch service); it provides food service within a short-range, usually at distances under 30 km. The type of service is also characterized by the temperature at which the meals are distributed. Three alternative temperature profiles are possible:  
+
+\begin{itemize}
+    \item cook-warm: the product is cooked and maintained warm (above 65 \degree C) until it is consumed; 
+    \item cook-chill: the product is cooked, blasted, and delivered to the customer who re-warm it before service ~\cite{Williams1996};
+    \item cook-chill-re-warm: this is when cook-and-chill products are rewarmed at the CEKI and delivered according to the cook-warm profile.
+\end{itemize}
+
+Among these profiles, cook-warm is the most critical for safety issues because the product’s temperature must be maintained above the danger zone (4–65 \degree C) at which bacteria propagate exponentially ~\cite{Rahman2002}. The cook-warm meals should be conserved at conditions that are outside the danger temperature range to comply with safety rules and standards from the time they are produced until their consumption and should be necessarily subjected to continuous and expensive hazard analyses and critical control points (HACCP), as well as monitoring and control of the processing tasks. \par
+
+A CEKI can implement all these three production temperature profiles leading to a more complex organisation of the operations. The assessment of the current production environment is a fundamental step to properly design a new plant. This procedure has already been illustrated in \ref{secFoodCateringControl}.
+
+\subsubsection{Clustering products into families}
+For analysing the extant production mix, the previous product families are considered. Product families are based on the commercial class to which a product belongs. Different families are defined for the components of a menu (e.g. main dish, side dish, fruit, dessert, vegetables, mineral water). Figure \ref{fig_prod_CAMST_productFamilies} illustrates the relative importance of each product family by using a Pareto analysis.
+
+
+% INSERT fig_prod_CAMST_productFamilies
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.9\textwidth]{sectionProduction/design_plant_figures/fig_prod_CAMST_productFamilies.png}
+\captionsetup{type=figure}
+\caption{Histogram and Pareto chart of the product volumes within each product family.}
+\label{fig_prod_CAMST_productFamilies}
+\end{figure}
+
+Figure \ref{fig_prod_CAMST_productFamilies} show that few product families generate the majority of the product mix. This is a key metric to consider to improve the design in the following steps.
+
+\subsubsection{Facility location}
+
+A similar profiling activity has been performed on the points of demand to group them according to the temperature profile(s) they demand. This activity leads to the decision of designing a CEKI able to realize products belonging to all the three temperature profiles. Then, by considering the number of trips to every single point of demand, it was possible to define the optimal location. Euclidean distances have been used since empirical tests showed that they were the most accurate estimate of the real distances in this area. Figure \ref{fig_prod_CAMST_ubicazione} illustrates the output of the facility location investigation identifying an optimal point for each time period (e.g. a week). This analysis evidences that the network suffers changes of the flows intensity exchanged between the plants and the nodes of the network.\footnote{The source code of Figure \ref{fig_prod_CAMST_ubicazione} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/PROD_01\%20Facility\%20location.ipynb}{here}.}
+
+% INSERT fig_prod_CAMST_ubicazione
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.9\textwidth]{sectionProduction/design_plant_figures/fig_prod_CAMST_ubicazione.png}
+\captionsetup{type=figure}
+\caption{Transition of the optimal location of the network considering different time periods.}
+\label{fig_prod_CAMST_ubicazione}
+\end{figure}
+
+\subsubsection{Auxiliary systems design, technology and asset choice, definition of the number of assets and layout design}
+
+Due to the peculiarity of the catering industry, a wide number of professionals with various competencies and backgrounds were involved in the design phase. To support the design of the new plant and to investigate how their decisions affect each other, a comprehensive decision support system (DSS) was developed ~\cite{Tufano2018_cekiDesign}. The DSS simulates the production operations by using a Montecarlo approach. Decision-makers can change the value of the decision levers regarding:
+
+\begin{itemize}
+    \item the auxiliary energy system to use (electricity, gas or steam);
+    \item the type of asset to use;
+    \item the number of assets for each type;
+    \item the position of the control point where resources are placed.
+
+\end{itemize}
+
+The relational database illustrated in section \ref{secRelationalModelProduction} is the input dataset to feed the DSS. The DSS produces descriptive and visual analytics on the results of the simulation as, for example, the spaghetti chart (see Figure \ref{fig_prod_CAMST_spaghettiChart}), representing the intensity of the material flow exchanged between control points.
+
+% INSERT fig_prod_CAMST_spaghettiChart
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.9\textwidth]{sectionProduction/design_plant_figures/fig_prod_CAMST_spaghettiChart.png}
+\captionsetup{type=figure}
+\caption{Spaghetti chart and material flow intensity chart.}
+\label{fig_prod_CAMST_spaghettiChart}
+\end{figure}
+
+Figure \ref{fig_prod_CAMST_workload} proposes insights about the effect of decision-making on the workload of the auxiliary systems for the production of energy and the workload of a single workstation (i.e. a machine). The two analytics look similar as they represent the expected utilization of the loading capacity of a generic working station and power load required by the plant (i.e., the electrical or thermal energy expressed in equivalent kWh of energy or gas) or gas loads over the timeline, respectively. The blue lines represent the utilization coefficient of a resource. This coefficient is calculated as the ratio between the volume of a product loaded on the resource to its loading capacity. A value of utilization less than unity indicates when a working station is underutilized, while values above unity indicate the theoretical number of resources needed to avoid queues.\par
+
+The energy workload chart identifies the power load for different energy types, estimating the size and capacity of the power supply system. When different energy supplies are allowed for a given resource (i.e., trivalent oven), two alternative graphs are reported, and energy costs are quantified accordingly to assess the most convenient energy source.
+
+% INSERT fig_prod_CAMST_workload
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.9\textwidth]{sectionProduction/design_plant_figures/fig_prod_CAMST_workload.png}
+\captionsetup{type=figure}
+\caption{Representation of the workload and the energy profile of a set of different resources of the CEKI.}
+\label{fig_prod_CAMST_workload}
+\end{figure}
+
+To investigate the behaviour of the system depending on the number of assets, the DSS implements three different rationales to identify the number of assets ~\cite{Tufano2019_bookChapterPlantDesign}. The simulation can be set up using:
+
+\begin{itemize}
+    \item a single machine for each type (machine-based rationale), to identify the workload curve of the machine;
+    \item The minimum number of machine to avoid queues (recipe-based), to identify the behaviour of the system without queues;
+    \item An arbitrary number of machine defined by the decision-maker (layout-based), to identify the performance of a given design alternative.
+
+\end{itemize}
+
+By using the DSS, managers can immediately investigate the logistic effect of their decisions. Additional information on the expected production time and costs are provided to identify which product may represent a bottleneck for the production system (see Figure \ref{fig_prod_CAMST_cost}).
+
+% INSERT fig_prod_CAMST_cost
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.9\textwidth]{sectionProduction/design_plant_figures/fig_prod_CAMST_cost.png}
+\captionsetup{type=figure}
+\caption{Dashboard identifying the cost and the schedule of each part processed by the CEKI.}
+\label{fig_prod_CAMST_cost}
+\end{figure}
+
+The DSS allows them to develop many different production scenarios and to test their behaviour by using a simulation approach. This approach presents a high bias since it cannot be generalised to any production nodes. However, it gives the flexibility to the decision-makers of investigating how the decisions belonging to their specific field of responsibility (e.g. architectural, power plants, layout design, asset choice) modify the operational performance of the entire production system.
+
+\subsection{Plant Design of a 3PL packaging plant for automotive spare parts}
+This section illustrates the methodology to design a 3PL packaging plant for automotive spare parts from scratch.\par
+
+The new plant is designed to replace an existing plant processing end-of-line tasks (e.g. picking, packing, placing, oiling, labelling) on more than 58.000 spare parts automotive supply chain. This type of processing plants works as an intermediate stage of the automotive supply chain where incoming products are collected, packaged and labelled according to the clients' needs. The clients are production plants where cars or tractors are assembled and prepared for shipping to the final user. Since these clients mainly work Just-In-Time (JIT), the 3PL packaging plant has to absorb an unpredictable demand in a very short time. \par
+
+The plant delivers its service using three different due times (24, 48 and 72 hours) with an LoS of the 90\% (i.e. 90\% of the probability to deliver a service within the given LoS). The operations of the 3PL packaging plant consist of oiling, packing and labelling spare parts. \par
+
+To properly design the new plant, it is necessary to assess the current state of the system and predict future demand as illustrated in \ref{secControlPackagingPlant}.
+
+\subsubsection{Clustering products into families}
+
+The first step for the design of the new production node is to define product families ~\cite{Tufano2020ISM}. As Figure 1 shows, the workload is highly variable. In addition, the quantity processed is variable too and slightly correlated with the number of lines processed. For these reasons, the definition of product families can help the design and control of the production systems. Since the production cycle is not available in the information system of the company, the idea is to cluster parts based on their feature, assuming the production cycle is similar. A correlation heatmap is built, considering the service type, the size, volume, weight and type of package of the items, to check this assumption. Figure \ref{fig_prod_CHIMAR_prodFamilies} shows a heatmap built on about two millions of orders for seven years.
+
+% INSERT fig_prod_CHIMAR_prodFamilies
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.7\textwidth]{sectionProduction/design_plant_figures/fig_prod_CHIMAR_prodFamilies.png}
+\captionsetup{type=figure}
+\caption{Correlation matrix of the features of the input dataset.}
+\label{fig_prod_CHIMAR_prodFamilies}
+\end{figure}
+
+Figure \ref{fig_prod_CHIMAR_prodFamilies} reveals an obvious significant correlation between the dimensions of the package and the items. Besides, there are significant correlations between the dimensions of packages and items and some service type. This result suggests that there is the possibility to cluster item based on the service type and assign them to specific workbenches in order to reduce the complexity and the inventory of packages needed on each workbench.\par
+
+Operators perform the tasks of a specific service type on manual workbenches with no automation. All the operators on the 12 workbenches can process any of the 58.000 products. This fact leads to a very low specialisation of the operators, and unpredictable material flows since any of the workbenches can request all the 1500 different types of packages. Besides, some clients require a customised tertiary package structured as a shelf of the dimension of a pallet. These shelves are placed directly to a workstation of the client’s assembly line. For this reason, the 3PL package plant has to deal with high work-in-process (WIP) levels on the workbenches due to products, packages (with the size of a carton box) and customised shelves (with the size of a pallet). To deal with this randomised material flows and WIP of the 3PL plants, we applied the proposed methodology aiming at the definition of a number of families. We start with an increasing number of cluster (from two to ten) using different clustering techniques (see section \ref{secClustering}). This value is, then, compared to an estimation of the real number of workbenches with the application of the capacitated clustering algorithm. Figure \ref{fig_prod_CHIMAR_clustering} presents the graphical results of the algorithms in the different clustering scenarios and with a different number of clusters. Each dot is one of the 58.000 products, while the axis of each subplot represents the first two principal components of the input dataset. Different colours indicate different product families. 
+
+% INSERT fig_prod_CHIMAR_clustering
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.9\textwidth]{sectionProduction/design_plant_figures/fig_prod_CHIMAR_clustering.png}
+\captionsetup{type=figure}
+\caption{Clustering of parts using different clustering algorithms, and different nuber of clusters.}
+\label{fig_prod_CHIMAR_clustering}
+\end{figure}
+
+The output of unsupervised clustering is compared with the capacitated clustering algorithm (see algorithm \ref{algo_dist_CST}). The capacitated clustering algorithm considers a maximum allowable capacity that is fixed and equal for all the cluster and an amount of demand required by each product. To feed the algorithm with this data, we set a time and motion monitoring campaign in order to identify an average processing time required by each product. This data collection applied on a subset of the products (i.e. the items belonging to the 95\degree percentile of the total number of processed lines) due to the very high number of items. The amount of time required by the products with the highest workload defines the maximum capacity for each cluster. The capacitated clustering produces 20 clusters. This number is used to compare the performance with the best performing unsupervised models: the Gaussian Mixture Model and the Complete Linkage Clustering based on the Descriptions, setting the number of clusters $k=20$. \par
+
+Figure \ref{fig_prod_CHIMAR_clusteringVisualisation} illustrates the outcome of this comparison using a visual analytics technique called t-SNE. This technique visually identifies clusters based on the matrix $X$, $n\times p$ of the observation that is projected onto a 2-dimensional space preserving the proximity of each observation according to the t-distribution. The colours are associated accordingly with the cluster assignment given by the algorithms. Figure \ref{fig_prod_CHIMAR_clusteringVisualisation} shows that it is difficult to identify a topology of the cluster (as it happens in Figure \ref{fig_prod_CHIMAR_clustering}) since the number of clusters is high and the input data are scattered. On the other side, analysing Table \ref{tab_prod_CHIMAR_familiesPerformance} it is possible to evaluate the performance of the algorithm from a logistic point of view, identifying the variability of the processes organised according to this clustering. 
+
+% INSERT fig_prod_CHIMAR_clusteringVisualisation
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.9\textwidth]{sectionProduction/design_plant_figures/fig_prod_CHIMAR_clusteringVisualisation.png}
+\captionsetup{type=figure}
+\caption{Comparison of the topology of the cluster using the t-sne algorithm. Colors identifies parts belonging to the same cluster.}
+\label{fig_prod_CHIMAR_clusteringVisualisation}
+\end{figure}
+
+Table \ref{tab_prod_CHIMAR_familiesPerformance} illustrates the KPIs and compares their variance (using absolute and relative value compared to the capacitated case) calculated on a time horizon of 7 years. It is easy to check that the capacitated clustering provides the highest balanced scenario with the lowest variance. The variance in workload (i.e. seconds) between the 20 clusters has an average of 180 hours per year per workbenches. This is a low gap, considering that the variability in the number of products and packages is dramatically reduced compared to the other scenarios.
+
+% INSERT tab_prod_CHIMAR_familiesPerformance
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.9\textwidth]{sectionProduction/design_plant_figures/tab_prod_CHIMAR_familiesPerformance.png}
+\captionsetup{type=table}
+\caption{Comparison of the logistic impact between capacitated and uncapacitated algorithms.}
+\label{tab_prod_CHIMAR_familiesPerformance}
+\end{figure}
+
+Gaussian Mixture Model provides a poorer result that has to be manually checked and assessed before a physical implementation since a couple of clusters results extremely small in workload compared to the average of the others. Nevertheless, it is important to remember that GMM provides the uncapacitated result in short running time (i.e. about 5 minutes) compared to a long runtime of the capacitated algorithm which needs around 20 hours of runtime on a computer equipped with 8Gb memory and a 2.7GHz processor. 
+
+\subsubsection{Facility location}
+Facility location has been studied by using a probabilistic approach, identifying for each year of the input dataset the optimal location in three different scenarios. The scenarios are defined by the distance metrics, i.e. euclidean, rectangular and squared euclidean distance. Figure \ref{fig_prod_CHIMAR_location} identifies the results on the map where each row is a different distance scenario, and each column identifies how the optimal location – according to the chosen distance – moves on the map. The bubbles identify the intensity of the yearly aggregated flows exchanged with suppliers and customers.\footnote{The source code of Figure \ref{fig_prod_CHIMAR_location} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/PROD_01\%20Facility\%20location.ipynb}{here}.}
+
+% INSERT fig_prod_CHIMAR_location
+\begin{figure}[hbt!]
+\centering
+\includegraphics[width=0.9\textwidth]{sectionProduction/design_plant_figures/fig_prod_CHIMAR_location.png}
+\captionsetup{type=figure}
+\caption{Comparison of the optimal location produced using different distance metric (i.e. euclidean, rectangular, and gravity) and different time periods.}
+\label{fig_prod_CHIMAR_location}
+\end{figure}
+
+
+
+
+
+
+
+\clearpage
 \bibliographystyle{ieeetr}
 \bibliography{sectionProduction/design_plant_ref}
