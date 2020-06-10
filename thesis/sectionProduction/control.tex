@@ -43,7 +43,7 @@ The definition of the KPIs is a modelling activity where the definition of a BPM
 
 Data-driven methods use descriptive analytics to manipulate these data and extract information. Clustering methods (see section \ref{secClustering}) allows defining clusters. In particular, having a time series of a KPIs it is possible to identify if a value diverges to out-of-control of anomalous values. These values are often associated with bottlenecks and inefficiencies of the production process. Inferential statistics (see section \ref{secStatistics}) is used to describe the behaviour of a KPI as a random variable. Almost always the value of a KPI changes, and it is relevant to identify its statistics to evaluate the robustness and steadiness of a production process. Bayesian statistic (see section \ref{secBayesianMethods}) can be used to define the statistics of a KPI when only partially reliable measurements are available. Finally, simulation approaches (e.g. Monte Carlo see section \ref{secMontecarlo}) uses different input measurement to identify the behaviour of the output from a statistical point of view.  
 
-\section{Workload prediction (P9)}
+\section{Workload prediction (P9)} \label{secWorkloadPredictionProd}
 Workload prediction aims at forecasting the value of the workload in the future. Companies rely on a demand forecast that is the starting point to derive all the other predictions. 
 
 \subsection{Model-driven methods (D1)} \label{secDemandPatterns}
@@ -82,7 +82,7 @@ When dealing with stable and erratic parts, many data points should be available
 
 When dealing with intermittent and lumpy parts, the variance of the interarrival times is high, and it is hard to identify a robust sampling interval to estimate the demand (e.g. parts per week, per months, per year). In these cases, the probability distribution of the number of pieces per time unit cannot be approximated to the uniform, and a different distribution must be used to approximate the rareness of the events. For this reason, the Poisson distribution (see section \ref{secPoisson}) is used since it can well describe the behaviour of rare events.\par
 
-The Poisson method identifies the probability of absorption of $x$ parts within a time interval $\tau$ having an average demand d calculated in a time interval of the same span of $\tau$. The Poisson distribution assumes $\lambda=d\tau$.
+The Poisson method identifies the probability of absorption of $x$ parts within a time interval $\tau$ having an average demand $d$ calculated in a time interval of the same span of $\tau$. The Poisson distribution assumes $\lambda=d\tau$.
 
 \begin{equation}
     P_{d,\tau}\left(x\right)=\frac{\lambda^xe^{-\lambda}}{x!}
