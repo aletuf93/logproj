@@ -10,7 +10,7 @@ import random
 import datetime
 
 
-def generateWarehouseDate(num_SKUs = 100,
+def generateWarehouseData(num_SKUs = 100,
     nodecode = 1,
     idwh = ['LOGICAL_WH1', 'LOGICAL_WH2', 'FAKE'],
     whsubarea = ['AREA 1'],
@@ -164,7 +164,7 @@ def generateWarehouseDate(num_SKUs = 100,
     return D_locations, D_SKUs, D_movements
 
 # %% degub area
-D_locations, D_SKUs, D_movements = generateWarehouseDate()
+#D_locations, D_SKUs, D_movements = generateWarehouseData()
 
 #D_movements.to_excel('movimenti.xlsx')
 #D_SKUs.to_excel('anagrafica.xlsx')
