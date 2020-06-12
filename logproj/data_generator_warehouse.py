@@ -53,7 +53,7 @@ def generateWarehouseData(num_SKUs = 100,
             
     # % CLASS MOVEMENTS 
     class MOVEMENTS():
-        def __init__(self, itemcode, nodecode, idwh, whsubarea, idlocation, loccodex, loccodey, loccodez, 
+        def __init__(self, itemcode,volume,weight,  nodecode, idwh, whsubarea, idlocation, loccodex, loccodey, loccodez, 
                      ordercode, quantity, timestamp, inout, ordertype):
             self.ITEMCODE=itemcode
             
@@ -67,6 +67,8 @@ def generateWarehouseData(num_SKUs = 100,
             
             self.ORDERCODE = ordercode
             self.QUANTITY = quantity
+            self.VOLUME = volume*quantity
+            self.WEIGHT = weight*quantity
             self.TIMESTAMP_IN = timestamp
             self.INOUT = inout
             self.ORDERTYPE = ordertype
@@ -113,6 +115,8 @@ def generateWarehouseData(num_SKUs = 100,
         #random select sku
         sku = random.choice(dict_SKUs)
         itemcode = sku.ITEMCODE
+        volume = sku.VOLUME 
+        weight = sku.WEIGHT
         
         #random select storage location
         loc_key = random.choice(list(dict_locations.keys()))
@@ -136,7 +140,7 @@ def generateWarehouseData(num_SKUs = 100,
         
         inout = random.choice(['+','-',' '])
         ordertype = random.choice(['PICKING','PUTAWAY',' OTHER '])
-        dict_movements[num_creati] = MOVEMENTS(itemcode, nodecode, idwh, whsubarea, idlocation, loccodex, loccodey, loccodez, 
+        dict_movements[num_creati] = MOVEMENTS(itemcode,volume,weight , nodecode, idwh, whsubarea, idlocation, loccodex, loccodey, loccodez, 
                      ordercode, quantity, timestamp, inout, ordertype)
         
         

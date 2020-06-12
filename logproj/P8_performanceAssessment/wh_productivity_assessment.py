@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from logproj.ml_dataCleaning import cleanUsingIQR
 
 # %% 3D warehouse productivity plot
-def spaceProductivity(D_movements,inout_column, x_col,  y_col, z_col, graphType='2D',cleanData = False):
+def spaceProductivity(D_movements,variableToPlot,inout_column, x_col,  y_col, z_col, graphType='2D',cleanData = False):
     '''
     
 
@@ -11,6 +11,8 @@ def spaceProductivity(D_movements,inout_column, x_col,  y_col, z_col, graphType=
     ----------
     D_movements : TYPE pandas dataframe
         DESCRIPTION. pandas dataframe with movements
+    variableToPlot : string
+        DESCRIPTION. string with the column to plot. or "popularity" for movement count
     inout_column : TYPE string
         DESCRIPTION. string of the column with inout
     x_col : TYPE string
@@ -33,12 +35,20 @@ def spaceProductivity(D_movements,inout_column, x_col,  y_col, z_col, graphType=
                       
     figure_output={}
     #group data
-    if graphType=='3D':
-        D_mov = D_movements.groupby(['PERIOD',inout_column,x_col,y_col,z_col]).size().reset_index()
-        D_mov.columns=['PERIOD','INOUT','LOCCODEX','LOCCODEY','LOCCODEZ','POPULARITY']
-    elif graphType=='2D':
-        D_mov = D_movements.groupby(['PERIOD',inout_column,x_col,y_col,]).size().reset_index()
-        D_mov.columns=['PERIOD','INOUT','LOCCODEX','LOCCODEY','POPULARITY']
+    if variableToPlot=='popularity':
+        if graphType=='3D':
+            D_mov = D_movements.groupby(['PERIOD',inout_column,x_col,y_col,z_col]).size().reset_index()
+            D_mov.columns=['PERIOD','INOUT','LOCCODEX','LOCCODEY','LOCCODEZ','POPULARITY']
+        elif graphType=='2D':
+            D_mov = D_movements.groupby(['PERIOD',inout_column,x_col,y_col,]).size().reset_index()
+            D_mov.columns=['PERIOD','INOUT','LOCCODEX','LOCCODEY','POPULARITY']
+    else:
+        if graphType=='3D':
+            D_mov = D_movements.groupby(['PERIOD',inout_column,x_col,y_col,z_col]).sum()[variableToPlot].reset_index()
+            D_mov.columns=['PERIOD','INOUT','LOCCODEX','LOCCODEY','LOCCODEZ','POPULARITY']
+        elif graphType=='2D':
+            D_mov = D_movements.groupby(['PERIOD',inout_column,x_col,y_col,]).sum()[variableToPlot].reset_index()
+            D_mov.columns=['PERIOD','INOUT','LOCCODEX','LOCCODEY','POPULARITY']
         
         
     
@@ -134,7 +144,7 @@ def spaceProductivity(D_movements,inout_column, x_col,  y_col, z_col, graphType=
     return figure_output
 
 # %% time productivity
-def timeProductivity(D_movements, inout_column):
+def timeProductivity(D_movements,variableToPlot, inout_column):
     '''
     
 
@@ -142,6 +152,8 @@ def timeProductivity(D_movements, inout_column):
     ----------
     D_movements : TYPE pandas dataframe
         DESCRIPTION. input movements dataframe
+    variableToPlot : string
+        DESCRIPTION. string with the column to plot. or "popularity" for movement count
     inout_column : TYPE string
         DESCRIPTION. string of the inout column
 
@@ -152,7 +164,12 @@ def timeProductivity(D_movements, inout_column):
 
     '''
     figure_output = {}
-    D_mov = D_movements.groupby(['PERIOD',inout_column]).size().reset_index()
+    
+    if variableToPlot=='popularity':
+        D_mov = D_movements.groupby(['PERIOD',inout_column]).size().reset_index()
+        
+    else:
+        D_mov = D_movements.groupby(['PERIOD',inout_column]).sum()[variableToPlot].reset_index()
     D_mov.columns = ['PERIOD', 'INOUT', 'MOVEMENTS']
     
     D_loc_positive=D_mov[D_mov[inout_column]=='+']
@@ -177,6 +194,7 @@ def timeProductivity(D_movements, inout_column):
         plt.plot(D_loc_negative['PERIOD'],
                  D_loc_negative['MOVEMENTS'])
         plt.title(f"Warehouse OUTBOUND productivity")
+        plt.xticks(rotation=45)
         plt.xlabel("Timeline")
         plt.ylabel("N. of lines")
         figure_output[f"OUT_productivity_trend"] = fig1
