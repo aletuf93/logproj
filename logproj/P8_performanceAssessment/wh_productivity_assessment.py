@@ -133,3 +133,52 @@ def spaceProductivity(D_movements,inout_column, x_col,  y_col, z_col, graphType=
                 figure_output[f"OUT_productivity_3D_{period}"] = fig1
     return figure_output
 
+# %% time productivity
+def timeProductivity(D_movements, inout_column):
+    '''
+    
+
+    Parameters
+    ----------
+    D_movements : TYPE pandas dataframe
+        DESCRIPTION. input movements dataframe
+    inout_column : TYPE string
+        DESCRIPTION. string of the inout column
+
+    Returns
+    -------
+    figure_output : TYPE dictionary
+        DESCRIPTION. dictionary with output figures
+
+    '''
+    figure_output = {}
+    D_mov = D_movements.groupby(['PERIOD',inout_column]).size().reset_index()
+    D_mov.columns = ['PERIOD', 'INOUT', 'MOVEMENTS']
+    
+    D_loc_positive=D_mov[D_mov[inout_column]=='+']
+    D_loc_negative=D_mov[D_mov[inout_column]=='-']
+    
+    #render inbound figure
+    if len(D_loc_positive)>0:
+     
+        fig1 = plt.figure()
+        plt.plot(D_loc_positive['PERIOD'],
+                 D_loc_positive['MOVEMENTS'])
+        plt.title(f"Warehouse INBOUND productivity")
+        plt.xticks(rotation=45)
+        plt.xlabel("Timeline")
+        plt.ylabel("N. of lines")
+        figure_output[f"IN_productivity_trend"] = fig1
+        
+    #render inbound figure
+    if len(D_loc_negative)>0:
+     
+        fig1 = plt.figure()
+        plt.plot(D_loc_negative['PERIOD'],
+                 D_loc_negative['MOVEMENTS'])
+        plt.title(f"Warehouse OUTBOUND productivity")
+        plt.xlabel("Timeline")
+        plt.ylabel("N. of lines")
+        figure_output[f"OUT_productivity_trend"] = fig1
+    return figure_output
+

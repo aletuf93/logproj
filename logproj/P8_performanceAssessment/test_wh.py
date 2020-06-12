@@ -39,6 +39,11 @@ fig_out_3D = spaceProductivity(D_movements,inout_column, x_col,  y_col, z_col, g
                                                   
 
 # %% 1D (trend) productivity plot
+from logproj.P8_performanceAssessment.wh_productivity_assessment import timeProductivity
+fig_out_trend = timeProductivity(D_movements, inout_column)
 
+
+            
+           
 
 
