@@ -127,7 +127,7 @@ def generateWarehouseData(num_SKUs = 100,
         
         #generates movements data
         ordercode = random.choice(ordercodes)
-        quantity = np.random.uniform(1,10)
+        quantity = np.random.lognormal(mean=2,sigma=1)
         wait = np.random.exponential(average_time_between_movements)
         if num_creati==1:
             timestamp = first_day + datetime.timedelta(wait)
