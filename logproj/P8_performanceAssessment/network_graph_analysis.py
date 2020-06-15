@@ -333,3 +333,69 @@ def supplyChainCovering(D_plant,D_mov,latCol_plant,lonCol_plant,node_from,node_t
     
     fig_covering.update_layout(mapbox_style="open-street-map")
     return fig_covering, output_coverages
+
+
+# %% calculate route distance
+def networkRouteDistance(D_arcs,lonCol, latCol, G):
+    '''
+    
+
+    Parameters
+    ----------
+    D_arcs : TYPE pandas dataframe
+        DESCRIPTION. pandas dataframe listing all the nodes visited by a single tour
+    lonCol : TYPE string
+        DESCRIPTION. column name of the longityde
+    latCol : TYPE string
+        DESCRIPTION. column name of the latitude
+    G : TYPE networkx graph
+        DESCRIPTION. road graph
+
+    Returns
+    -------
+    output_figures : TYPE matplotlib figure
+        DESCRIPTION. figure indicating the travelled arcs on the graph
+    distance_array : TYPE list
+        DESCRIPTION. array of the partial distances travelled between the nodes
+
+    '''
+    
+    output_figures=[]
+    routes=[]
+    distance_array=[0]
+    
+    
+    for i in range(1,len(D_arcs)):
+        lat_from = D_arcs[latCol].iloc[i-1]
+        lon_from = D_arcs[lonCol].iloc[i-1]
+        lat_to = D_arcs[latCol].iloc[i]
+        lon_to = D_arcs[lonCol].iloc[i]
+    
+        #find closest node
+        #print(lat_from)
+        #print(lon_from)
+        #print(lat_to)
+        #print(lon_to)
+        
+        node_from = ox.get_nearest_node(G, (lat_from,lon_from), method='euclidean')
+        node_to = ox.get_nearest_node(G, (lat_to,lon_to), method='euclidean')
+        
+        # calculate shortest paths for the 2 routes
+        try:
+            route = nx.shortest_path(G, node_from, node_to, weight='length')
+            routes.append(route)
+        except:
+            pass
+            
+        try:
+            distance = nx.shortest_path_length(G, node_from, node_to, weight='length')
+            distance_array.append(distance)
+        except:
+            distance_array.append(np.nan)
+        
+    fig, ax = ox.plot_graph_routes(G, routes, route_color='orange', route_linewidth=3,
+                                   node_size=0,
+                                   orig_dest_node_size =0)
+    
+    output_figures=fig
+    return output_figures, distance_array
