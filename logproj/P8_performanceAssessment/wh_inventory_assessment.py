@@ -25,9 +25,10 @@ from scipy.stats import poisson
 import logproj.stat_time_series as ts
 from logproj.P1_familyProblem.part_classification import returnsparePartclassification
 # %% POPULARITY INDEX
+# %% POPULARITY INDEX
 def calculatePopularity(movements):
     '''
-    
+
 
     Parameters
     ----------
@@ -42,15 +43,17 @@ def calculatePopularity(movements):
         DESCRIPTION. popularity OUT per day
 
     '''
-    
+
     pop_in = len(movements[movements>0])/len(movements)
     pop_out = len(movements[movements<0])/len(movements)
-    return pop_in, pop_out
-        
+    pop_absolute_in = len(movements[movements>0])
+    pop_absolute_out = len(movements[movements<0])
+    return pop_in, pop_out, pop_absolute_in, pop_absolute_out
+
 # %% COI INDEX
 def calculateCOI(inventory):
     '''
-    
+
 
     Parameters
     ----------
@@ -60,17 +63,17 @@ def calculateCOI(inventory):
     Returns
     -------
     COI_in : TYPE float
-        DESCRIPTION. daily COI index IN 
+        DESCRIPTION. daily COI index IN
     COI_out : TYPE float
         DESCRIPTION. daily COI index OUT
 
     '''
-    
+
     #define inventory from movements
     movements = movementfunctionfromInventory(inventory)
     movements=movements.dropna()
-    pop_in, pop_out = calculatePopularity(movements['QUANTITY'])
-    
+    pop_in, pop_out,_,_ = calculatePopularity(movements['QUANTITY'])
+
     #calculate daily COI
     I_t_avg = np.nanmean(inventory)
     if I_t_avg>0:
@@ -78,13 +81,13 @@ def calculateCOI(inventory):
         COI_out = pop_out/I_t_avg
     else:
         COI_in=COI_out=np.nan
-    
+
     return COI_in, COI_out
 
 # %% TURN INDEX
 def calculateTurn(inventory):
     '''
-    
+
 
     Parameters
     ----------
@@ -100,25 +103,25 @@ def calculateTurn(inventory):
     #define inventory from movements
     movements = movementfunctionfromInventory(inventory)
     movements=movements.dropna()
-    
+
     #calculate the average outbound quantity per day
     out_qty_day = -np.sum(movements[movements['QUANTITY']<0]['QUANTITY'])/len(movements)
-    
+
     #calculate average inventory quantity
     I_t_avg = np.nanmean(inventory)
     if I_t_avg>0:
         turn =out_qty_day/I_t_avg
     else:
         turn=np.nan
-    
-    
+
+
     return turn
-    
+
 
 # %% ORDER COMPLETION INDEX
 def calculateOrderCompletion(D_mov, itemcode, itemfield='ITEMCODE', ordercodefield='ORDERCODE'):
     '''
-    
+
 
     Parameters
     ----------
@@ -126,9 +129,9 @@ def calculateOrderCompletion(D_mov, itemcode, itemfield='ITEMCODE', ordercodefie
         DESCRIPTION. dataframe with movements reporting ordercode and itemcode columns
     itemcode : TYPE string
         DESCRIPTION. itemcode to calculate the order competion (OC) index
-    itemfield : TYPE, optional string name of D_mov clumn with itemcode 
+    itemfield : TYPE, optional string name of D_mov clumn with itemcode
         DESCRIPTION. The default is 'ITEMCODE'.
-    ordercodefield : TYPE, optional string name of D_mov clumn with ordercode 
+    ordercodefield : TYPE, optional string name of D_mov clumn with ordercode
         DESCRIPTION. The default is 'ORDERCODE'.
 
     Returns
@@ -140,27 +143,47 @@ def calculateOrderCompletion(D_mov, itemcode, itemfield='ITEMCODE', ordercodefie
     #clean data
     D_mov=D_mov[[itemfield,ordercodefield]]
     D_mov=D_mov[D_mov[ordercodefield]!='nan']
-    D_mov=D_mov.dropna()     
+    D_mov=D_mov.dropna()
     D_mov=D_mov.reset_index()
-    
-    
-    
+
+
+
     orders = list(set(D_mov[D_mov[itemfield]==itemcode][ordercodefield]))
-    
+
     idx = [j in orders for j in D_mov[ordercodefield]]
     D_orders = D_mov.loc[idx]
-    
+
     OC = 0
     for ordercode in orders:
         D_orders_filtered = D_orders[D_orders[ordercodefield]==ordercode]
         OC=OC+1/len(D_orders_filtered)
     return OC
 
+def fourierAnalysisInventory(inventory):
+    '''
+
+    Parameters
+    ----------
+    I_t : TYPE TYPE list
+        DESCRIPTION. list of inventory values
+    Returns
+    -------
+    first_carrier : TYPE float
+        DESCRIPTION. frequency (in 1/days) with the highest amplitude value
+    period : TYPE float
+        DESCRIPTION. period (in days) associated with the frequency with the highest amplitude value
+    '''
+    D = fourierAnalysis(np.array(inventory))
+    D=D.sort_values(by='Amplitude', ascending=False)
+    first_carrier = D.iloc[0]['Frequency_domain_value'] #1/days
+    period = 1/first_carrier
+    return first_carrier, period
+
 # %%
 
 def movementfunctionfromInventory(I_t_cleaned):
     '''
-    
+
 
     Parameters
     ----------
@@ -184,15 +207,15 @@ def movementfunctionfromInventory(I_t_cleaned):
 def assessInterarrivalTime(I_t):
     #remove nan values
     I_t_cleaned = [x for x in I_t if str(x) != 'nan'] #remove nan inventories (e.g. at the beginning of the series if the part is not in the WH)
-    
+
     #generate the movement function
     M_t = movementfunctionfromInventory(I_t_cleaned)
-    
+
     M_t_in=M_t[M_t['QUANTITY']>0]
     interarrival_time = []
     for j in range(1,len(M_t_in)):
-        interarrival_time.append(M_t_in.index[j] - M_t_in.index[j-1])    
-    
+        interarrival_time.append(M_t_in.index[j] - M_t_in.index[j-1])
+
     mean_interarrival_time_in = np.mean(interarrival_time)
     std_interarrival_time_in = np.std(interarrival_time)
     return mean_interarrival_time_in, std_interarrival_time_in, interarrival_time
@@ -311,7 +334,7 @@ def returnProbabilisticInventory(I_t, iterations=30):
 
     #generate the movement function
     M_t = movementfunctionfromInventory(I_t_cleaned)
-    
+
     # plot movement and inventory functions
     #plt.plot(M_t)
     #plt.plot(I_t_cleaned)

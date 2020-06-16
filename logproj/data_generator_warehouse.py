@@ -20,7 +20,7 @@ def generateWarehouseData(num_SKUs = 100,
     alt_livello = 1200,
     largh_campate = 800,
     largh_corsia = 4000,
-    num_movements=10000,
+    num_movements=1000,
     num_ordercode = 800,
     average_time_between_movements = 1/24, #days
     first_day = datetime.datetime(year=2020, month=1, day = 2),
@@ -72,6 +72,16 @@ def generateWarehouseData(num_SKUs = 100,
             self.TIMESTAMP_IN = timestamp
             self.INOUT = inout
             self.ORDERTYPE = ordertype
+            
+    # % CLASS INVENTORY
+    class INVENTORY():
+        def __init__(self,itemcode,nodecode, idwh, idlocation,quantity, timestamp):
+            self.NODECODE = nodecode
+            self.IDWH=idwh
+            self.ITEMCODE=itemcode
+            self.IDLOCATION = idlocation
+            self.QUANTITY = quantity
+            self.TIMESTAMP = timestamp
             
     #% CREATE SKUS
     
@@ -143,6 +153,20 @@ def generateWarehouseData(num_SKUs = 100,
         dict_movements[num_creati] = MOVEMENTS(itemcode,volume,weight , nodecode, idwh, whsubarea, idlocation, loccodex, loccodey, loccodez, 
                      ordercode, quantity, timestamp, inout, ordertype)
         
+    # %% CREATE INVENTORY
+    dict_inventory = {}
+    for itemcode in dict_SKUs:
+        #sku = dict_SKUs[itemcode]
+        
+        loc_key = random.choice(list(dict_locations.keys()))
+        loc = dict_locations[loc_key]
+        nodecode=loc.NODECODE
+        idwh=loc.IDWH
+        idlocation=loc.IDLOCATION
+        quantity = np.random.lognormal(mean=2,sigma=1)
+        dict_inventory[itemcode] = INVENTORY(itemcode,nodecode, idwh, idlocation,quantity, first_day)
+        
+        
         
     # %% SAVE LOCATIONS AND EXPORT
     
@@ -165,11 +189,17 @@ def generateWarehouseData(num_SKUs = 100,
         D_movements=D_movements.append(pd.DataFrame([vars(dict_movements[mov])]))
     #D_movements.to_excel('movimenti.xlsx')
     
-    return D_locations, D_SKUs, D_movements
+    # %% SAVE INVENTORY 
+    D_inventory = pd.DataFrame()
+    for inv in dict_inventory:
+        D_inventory=D_inventory.append(pd.DataFrame([vars(dict_inventory[inv])]))
+    
+    return D_locations, D_SKUs, D_movements, D_inventory
 
 # %% degub area
-#D_locations, D_SKUs, D_movements = generateWarehouseData()
+#D_locations, D_SKUs, D_movements, D_inventory = generateWarehouseData()
 
 #D_movements.to_excel('movimenti.xlsx')
 #D_SKUs.to_excel('anagrafica.xlsx')
 #D_locations.to_excel('ubiche.xlsx')
+#D_inventory.to_excel('giacenza.xlsx')
