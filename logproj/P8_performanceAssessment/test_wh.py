@@ -158,6 +158,10 @@ from logproj.P8_performanceAssessment.wh_inventory_assessment import updateFouri
 D_SKUs = updateFourieranalysis(D_SKUs)
 
 
+# %% save sku table
+D_SKUs.to_excel(path_current+"\\SKUs.xlsx")
+
+
 
 
 
