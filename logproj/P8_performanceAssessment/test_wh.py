@@ -112,6 +112,22 @@ output_figures = whIndexParetoPlot(D_SKUs,'OC')
 for key in output_figures.keys():
         output_figures[key].savefig(path_current+f"\\{key}.png") 
 
+# %% COI INDEX
+from logproj.P8_performanceAssessment.wh_inventory_assessment import updateCOI
+D_SKUs = updateCOI(D_SKUs)
+
+#COI IN
+output_figures = whIndexParetoPlot(D_SKUs,'COI_IN')
+
+for key in output_figures.keys():
+        output_figures[key].savefig(path_current+f"\\{key}.png") 
+        
+#COI OUT
+output_figures = whIndexParetoPlot(D_SKUs,'COI_OUT')
+
+for key in output_figures.keys():
+        output_figures[key].savefig(path_current+f"\\{key}.png") 
+
 
 
 # %%
@@ -135,7 +151,7 @@ for i in range(0,len(D_SKUs)):
 
 
     #calculate the order completion (OC) index
-    OC = calculateOrderCompletion(D_mov, part, itemfield='ITEMCODE', ordercodefield='ORDERCODE')
+    #OC = calculateOrderCompletion(D_mov, part, itemfield='ITEMCODE', ordercodefield='ORDERCODE')
 
 
     #retrieve the inventory
@@ -159,7 +175,7 @@ for i in range(0,len(D_SKUs)):
             #POP_IN, POP_OUT, POP_IN_TOT, POP_OUT_TOT = calculatePopularity(movements['QUANTITY'])
 
             #calculate the COI
-            COI_IN, COI_OUT = calculateCOI(I_t)
+            #COI_IN, COI_OUT = calculateCOI(I_t)
 
             #calculate the TURN
             TURN = calculateTurn(I_t)

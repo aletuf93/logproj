@@ -257,7 +257,7 @@ def updatePartInventory(D_SKUs,D_movements,D_inventory,timecolumn_mov,itemcodeCo
     return D_SKUs
 
 
-# %%
+# %% UPDATE POPULARITY INDEX
 def updatePopularity(D_SKUs):
     
     #create result columns
@@ -282,8 +282,29 @@ def updatePopularity(D_SKUs):
             D_SKUs.at[index,'POP_OUT_TOT']=POP_OUT_TOT
     return D_SKUs
 
+# %% UPDATE COI INDEX
+def updateCOI(D_SKUs):
+    
+    #create result columns
+    D_SKUs['COI_IN']=np.nan
+    D_SKUs['COI_OUT']=np.nan
+    for index, row in D_SKUs.iterrows():
+        #select inventory curve
+        I_t = D_SKUs.loc[index]['INVENTORY_QTY']
+        #calculate the popularity
+        movements = movementfunctionfromInventory(I_t)
+        movements=movements.dropna()
+        if len(movements)>0:
+            COI_IN, COI_OUT = calculateCOI(I_t)
+            
+            #update the dataframe
+            D_SKUs.at[index,'COI_IN']=COI_IN
+            D_SKUs.at[index,'COI_OUT']=COI_OUT
+            
+    return D_SKUs
 
-# %%
+
+# %% UPDATE OC INDEX
 def updateOrderCompletion(D_SKUs, D_mov):
     
     
@@ -307,7 +328,7 @@ def updateOrderCompletion(D_SKUs, D_mov):
 
 
 
-# %%
+# %% PARETO AND HISTOGRAM PLOT
 
 
 
@@ -316,9 +337,6 @@ def whIndexParetoPlot(D_SKUs,columnIndex):
     
     output_figures = {}
     
-    
-    
-    # INBOUND 
     
     #define the pareto values
     D_SKUs_pop = paretoDataframe(D_SKUs,columnIndex)
