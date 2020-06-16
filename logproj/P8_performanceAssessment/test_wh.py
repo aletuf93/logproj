@@ -81,18 +81,37 @@ for variableToPlot in ['popularity','QUANTITY','VOLUME','WEIGHT']:
 from logproj.P8_performanceAssessment.wh_inventory_assessment import updatePartInventory
 D_SKUs= updatePartInventory(D_SKUs,D_movements,D_inventory,timecolumn_mov,itemcodeColumns_sku,itemcodeColumns_mov,itemcodeColumns_inv) 
         
-# %% warehouse indices
+# %% POPULARITY INDEX
 
 _, path_current = creaCartella(path_results,f"SKUs indices")
 
-from logproj.P8_performanceAssessment.wh_inventory_assessment import updatePopularity, popularityParetoPlot
+from logproj.P8_performanceAssessment.wh_inventory_assessment import updatePopularity, whIndexParetoPlot
 
 
 D_SKUs = updatePopularity(D_SKUs)
-output_figures = popularityParetoPlot(D_SKUs)
+
+#POPULARITY IN
+output_figures = whIndexParetoPlot(D_SKUs,'POP_IN')
 
 for key in output_figures.keys():
         output_figures[key].savefig(path_current+f"\\{key}.png")  
+        
+#POPULARITY IN
+output_figures = whIndexParetoPlot(D_SKUs,'POP_OUT')
+
+for key in output_figures.keys():
+        output_figures[key].savefig(path_current+f"\\{key}.png")  
+
+# %% ORDER COMPLETION INDEX
+from logproj.P8_performanceAssessment.wh_inventory_assessment import updateOrderCompletion
+D_SKUs = updateOrderCompletion(D_SKUs, D_movements)
+
+#OC
+output_figures = whIndexParetoPlot(D_SKUs,'OC')
+
+for key in output_figures.keys():
+        output_figures[key].savefig(path_current+f"\\{key}.png") 
+
 
 
 # %%
@@ -137,7 +156,7 @@ for i in range(0,len(D_SKUs)):
         movements = movementfunctionfromInventory(I_t)
         movements=movements.dropna()
         if len(movements)>0:
-            POP_IN, POP_OUT, POP_IN_TOT, POP_OUT_TOT = calculatePopularity(movements['QUANTITY'])
+            #POP_IN, POP_OUT, POP_IN_TOT, POP_OUT_TOT = calculatePopularity(movements['QUANTITY'])
 
             #calculate the COI
             COI_IN, COI_OUT = calculateCOI(I_t)

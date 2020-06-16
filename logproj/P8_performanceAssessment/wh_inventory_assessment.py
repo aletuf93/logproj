@@ -27,7 +27,7 @@ import logproj.stat_time_series as ts
 from logproj.information_framework import returnInventoryPart
 from logproj.ml_explore import paretoDataframe
 
-# %% POPULARITY INDEX
+
 # %% POPULARITY INDEX
 def calculatePopularity(movements):
     '''
@@ -284,10 +284,35 @@ def updatePopularity(D_SKUs):
 
 
 # %%
+def updateOrderCompletion(D_SKUs, D_mov):
+    
+    
+    
+    #create result columns
+    D_SKUs['OC']=np.nan
+    
+    
+    for index, row in D_SKUs.iterrows():
+        
+        part = row['ITEMCODE']
+        
+        #calculate the popularity
+        OC = calculateOrderCompletion(D_mov, part, itemfield='ITEMCODE', ordercodefield='ORDERCODE')
+        
+        
+        #update the dataframe
+        D_SKUs.at[index,'OC']=OC
+            
+    return D_SKUs
 
 
 
-def popularityParetoPlot(D_SKUs):
+# %%
+
+
+
+def whIndexParetoPlot(D_SKUs,columnIndex):
+    
     
     output_figures = {}
     
@@ -296,52 +321,28 @@ def popularityParetoPlot(D_SKUs):
     # INBOUND 
     
     #define the pareto values
-    D_SKUs_pop = paretoDataframe(D_SKUs,'POP_IN')
+    D_SKUs_pop = paretoDataframe(D_SKUs,columnIndex)
     
     #build the pareto figures
     fig1 = plt.figure()
-    plt.plot(np.arange(0,len(D_SKUs_pop)),D_SKUs_pop['POP_IN_CUM'])
-    plt.title("Inbound popularity Pareto curve")
+    plt.plot(np.arange(0,len(D_SKUs_pop)),D_SKUs_pop[f"{columnIndex}_CUM"])
+    plt.title(f"{columnIndex} Pareto curve")
     plt.xlabel("N. of SKUs")
     plt.ylabel("Popularity percentage")
     
     #save the Pareto figure
-    output_figures['Popuparity_IN_pareto'] = fig1
+    output_figures[f"{columnIndex}_pareto"] = fig1
     
     
     fig2 = plt.figure()
-    plt.hist(D_SKUs_pop['POP_IN'])
-    plt.title("Inbound popularity histogram")
-    plt.xlabel("Popularity IN")
+    plt.hist(D_SKUs_pop[columnIndex])
+    plt.title(f"{columnIndex} histogram")
+    plt.xlabel(f"{columnIndex}")
     plt.ylabel("Frequency")
     
     #save the Pareto figure
-    output_figures['Popuparity_IN_hist'] = fig2
+    output_figures[f"{columnIndex}_hist"] = fig2
     
-    #OUTBOUND
-    
-    #define the pareto values
-    D_SKUs_pop = paretoDataframe(D_SKUs,'POP_OUT')
-    
-    #build the pareto figures
-    fig1 = plt.figure()
-    plt.plot(np.arange(0,len(D_SKUs_pop)),D_SKUs_pop['POP_OUT_CUM'])
-    plt.title("Outbound popularity Pareto curve")
-    plt.xlabel("N. of SKUs")
-    plt.ylabel("Popularity percentage")
-    
-    #save the Pareto figure
-    output_figures['Popuparity_OUT_pareto'] = fig1
-    
-    
-    fig2 = plt.figure()
-    plt.hist(D_SKUs_pop['POP_OUT'])
-    plt.title("Outbound popularity histogram")
-    plt.xlabel("Popularity OUT")
-    plt.ylabel("Frequency")
-    
-    #save the Pareto figure
-    output_figures['Popuparity_OUT_hist'] = fig2
     
     return output_figures
     
