@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 
 #import matplotlib colorbar
-from matplotlib import cm
+#from matplotlib import cm
 
 from logproj.DIST.globalBookingAnalysis import getCoverageStats
 
@@ -506,67 +506,5 @@ def createFigureWithOptimalPointsAndBubbleFlows(D_res,D_res_optimal,latCol,lonCo
 
 
 
-# %% TEST aggiungere grafici con curve isoscosto
-'''
-from scipy.interpolate import RegularGridInterpolator
-def f(x,y,z):
-     return 2 * x**3 + 3 * y**2 - z
-x = np.linspace(1, 4, 11)
-y = np.linspace(4, 7, 22)
-z = np.linspace(7, 9, 33)
-data = f(*np.meshgrid(x, y, z, indexing='ij', sparse=True))
 
-
-a=np.meshgrid(x, y, z, indexing='ij', sparse=True)
-
-
-# %% test righe isocosto
-#https://plot.ly/python/lines-on-maps/
-#https://plot.ly/python/3d-surface-plots/
-#https://docs.scipy.org/doc/numpy/reference/generated/numpy.meshgrid.html
-#https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.interpolate.griddata.html
-
-#rectangularCost
-    
-
-
-
-
-D_filtered_notnan=D_filtered.dropna(subset=[latCol,lonCol,weightCol])
-#identify limit points
-min_x=math.trunc(min(D_filtered_notnan[lonCol]))
-max_x=math.trunc(max(D_filtered_notnan[lonCol]))+1
-min_y=math.trunc(min(D_filtered_notnan[latCol]))
-max_y=math.trunc(max(D_filtered_notnan[latCol]))+1
-min_z=math.trunc(min(D_filtered_notnan[weightCol]))
-max_z=math.trunc(max(D_filtered_notnan[weightCol]))+1
-
-
-
-# define meshgrid
-x = np.linspace(min_x, max_x, 1000)
-y = np.linspace(min_y, max_y, 1000)
-z= np.linspace(min_z, max_z, 1000)
-#xv, yv = np.meshgrid(x, y)
-
-
-#interpolate the function wij X dig
-data = f(*np.meshgrid(x, y, z, indexing='ij', sparse=True))
-data = zip(D_filtered_notnan[lonCol],D_filtered_notnan[latCol],D_filtered_notnan[weightCol])
-data = list(zip(D_filtered_notnan[lonCol],D_filtered_notnan[latCol],D_filtered_notnan[weightCol]))
-data_points=[]
-for i,j,k in data: 
-    data_points[i,j,k]=i,j,k
-    
-from scipy.interpolate import RegularGridInterpolator
-my_interpolating_function = RegularGridInterpolator((x, y, z), data)
-my_interpolating_function = RegularGridInterpolator((D_filtered_notnan[lonCol],D_filtered_notnan[latCol]),D_filtered_notnan[weightCol])
-
-#define the surface
-values = func_rectangularDistance(xv, yv, lon_optimal, lat_optimal)
-
-import plotly.graph_objects as go
-fig = go.Figure(data=[go.Surface(z=values)])
-plotly.offline.plot(fig, filename = 'test.html', auto_open=True)
-'''
 

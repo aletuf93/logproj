@@ -7,7 +7,7 @@ Created on Fri May 17 10:07:31 2019
 # In[1]: importo pacchetti
 #from database.back_db_login_manager import setConnection
 
-import pandas as pd
+#import pandas as pd
 import numpy as np
 
 import warnings
@@ -257,66 +257,3 @@ def calculateABCsaving(p,q,D_pop_filtered):
     else:
         return [],[],[],[]
 
-
-   
-
-    '''
-    ################################# DEBUG OFFLINE ###########################
-    #import from a level above
-    import sys
-    sys.path.append('../..')
-    
-    #import packages
-    import database.back_db_queries as qq
-    
-    #other import
-    import plotly.graph_objs as go
-    from plotly.offline import plot
-    
-    caseStudy=1
-    listVehicle=["FORKLIFT"]
-    listSubarea=[]
-    listIdwh=[]
-    nodeCode="93"
-
-    #represent layout
-    D_WH=qq.importWarehousePQ(caseStudy)
-    D_pop=qq.importWarehousePopularity(caseStudy)
-    esito,errore,D_pop_filtered,p,q=filterD_popD_WH(D_pop,D_WH, listVehicle, listSubarea, listIdwh, nodeCode)
-    soglieA, soglieB, SAVING_IN, SAVING_OUT,best_A,best_B, SAV_TOT, D_pop_ABC = calculateABCsaving(p,q,D_pop_filtered)
-    
-    
-    
-    import matplotlib.pyplot as plt
-    from mpl_toolkits.mplot3d import axes3d
-
-
-    index_max_in = np.argmax(SAVING_IN)
-    index_max_out = np.argmax(SAVING_OUT)
-    print(f"sogliaA_IN:{soglieA[index_max_in]}")
-    print(f"sogliaB_IN:{soglieB[index_max_in]}")
-
-    print(f"sogliaA_OUT:{soglieA[index_max_out]}")
-    print(f"sogliaB_OUT:{soglieB[index_max_out]}")
-
-
-    #genero grafico IN
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.scatter3D(soglieA, soglieB, SAVING_IN)
-    ax.set_xlabel('soglia A')
-    ax.set_ylabel('soglia B')
-    ax.set_zlabel('Saving')
-    ax.set_title('Saving IN')
-    fig.show()
-
-    #genero grafico OUT
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.scatter3D(soglieA, soglieB, SAVING_OUT)
-    ax.set_xlabel('soglia A')
-    ax.set_ylabel('soglia B')
-    ax.set_zlabel('Saving')
-    ax.set_title('Saving OUT')
-    fig.show()
-    '''
