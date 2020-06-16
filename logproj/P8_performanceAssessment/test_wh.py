@@ -129,79 +129,39 @@ for key in output_figures.keys():
         output_figures[key].savefig(path_current+f"\\{key}.png") 
 
 
+# %% TURN INDEX
+from logproj.P8_performanceAssessment.wh_inventory_assessment import updateTURN
+D_SKUs = updateTURN(D_SKUs)
 
-# %%
-import numpy as np
-import matplotlib.pyplot as plt
+#COI IN
+output_figures = whIndexParetoPlot(D_SKUs,'TURN')
 
-
-    
-    
-    
-    
-# %%
-for i in range(0,len(D_SKUs)):
-    #i=33159
-    print(i)
-
-    part = D_SKUs.iloc[i]['ITEMCODE']
-    if isinstance(part,np.int64): #mongodb non puo' gestire gli int64
-        part=int(part)
-
-
-
-    #calculate the order completion (OC) index
-    #OC = calculateOrderCompletion(D_mov, part, itemfield='ITEMCODE', ordercodefield='ORDERCODE')
-
-
-    #retrieve the inventory
-    I_t = D_SKUs.iloc[i]['INVENTORY_QUANTITY']
-
-    #proseguo solo se ho una lista e non un nullo a database
-    if isinstance(I_t,list):
-        #bootstrap the inventory curve
-        min_real_I_t, max_real_I_t, avg_real_I_t, std_real_I_t, min_probabilistic_I_t, max_probabilistic_I_t, avg_probabilistic_I_t, std_probabilistic_I_t = returnProbabilisticInventory(I_t)
-
-        #calculate the interarrival time (average covering)
-        mean_interarrival_time_in, std_interarrival_time_in, _ = assessInterarrivalTime(I_t)
+for key in output_figures.keys():
+        output_figures[key].savefig(path_current+f"\\{key}.png") 
         
-        #calculate the fourier analysis of the inventory series
-        carrier, period = fourierAnalysisInventory(I_t)
 
-        #calculate the popularity
-        movements = movementfunctionfromInventory(I_t)
-        movements=movements.dropna()
-        if len(movements)>0:
-            #POP_IN, POP_OUT, POP_IN_TOT, POP_OUT_TOT = calculatePopularity(movements['QUANTITY'])
 
-            #calculate the COI
-            #COI_IN, COI_OUT = calculateCOI(I_t)
+# %% INVENTORY PARAMETERS
 
-            #calculate the TURN
-            TURN = calculateTurn(I_t)
+from logproj.P8_performanceAssessment.wh_inventory_assessment import updateInventoryParams
+D_SKUs = updateInventoryParams(D_SKUs)
 
-        #update the database
-        model_log.part.objects(ITEMCODE=part).update(INVENTORY_REAL_MIN=min_real_I_t,
-                                                     INVENTORY_REAL_AVG=avg_real_I_t,
-                                                     INVENTORY_REAL_MAX=max_real_I_t,
-                                                     INVENTORY_REAL_STD = std_real_I_t,
-                                                     INVENTORY_PROB_MIN=min_probabilistic_I_t,
-                                                     INVENTORY_PROB_AVG=avg_probabilistic_I_t,
-                                                     INVENTORY_PROB_MAX=max_probabilistic_I_t,
-                                                     INVENTORY_PROB_STD = std_probabilistic_I_t,
-                                                     INVENTORY_COVERING_AVG = mean_interarrival_time_in,
-                                                     INVENTORY_COVERING_STD = std_interarrival_time_in,
-                                                     POP_IN=POP_IN,
-                                                     POP_OUT=POP_OUT,
-                                                     COI_IN=COI_IN,
-                                                     COI_OUT=COI_OUT,
-                                                     TURN=TURN,
-                                                     OC = OC,
-                                                     POP_IN_TOT = POP_IN_TOT,
-                                                     POP_OUT_TOT = POP_OUT_TOT,
-                                                     FOURIER_CARRIER =carrier,
-                                                     FOURIER_PERIOD = period
-                                                     )
+
+# %% INTERARRIVAL TIME
+
+from logproj.P8_performanceAssessment.wh_inventory_assessment import updateInterarrivalTime
+D_SKUs = updateInterarrivalTime(D_SKUs)
+
+# %% INTERARRIVAL TIME
+
+from logproj.P8_performanceAssessment.wh_inventory_assessment import updateFourieranalysis
+D_SKUs = updateFourieranalysis(D_SKUs)
+
+
+
+
+
+
 
 
             
