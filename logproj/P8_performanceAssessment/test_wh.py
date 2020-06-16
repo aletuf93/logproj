@@ -8,7 +8,6 @@ sys.path.append(root_folder)
 
 import pandas as pd
 
-
 # %% generate warehouse data
 from logproj.data_generator_warehouse import generateWarehouseData
 D_locations, D_SKUs, D_movements, D_inventory = generateWarehouseData()
