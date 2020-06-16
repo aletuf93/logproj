@@ -1,101 +1,26 @@
-# -*- coding: utf-8 -*
 
-'''
-# %%
-#specify root folder path
-root_folder="C:\\Users\\aletu\\Documents\\GitHub\\OTHER\\ZENON"
-root_folder="D:\\OneDrive - Alma Mater Studiorum Università di Bologna\\ACADEMICS\\[514]Dottorato\\Projects\\Z_WAREHOUSE\\00_SOFTWARE\\GitHub\\ZENON"
-
-#%% import packages from other folders
-import sys
-sys.path.append(root_folder)
-'''
 
 import pandas as pd  
 import numpy as np
-import os
+#import os
 
 #Importa pacchetti grafici
 import matplotlib.pyplot as plt
-import seaborn as sns
+#import seaborn as sns
 from matplotlib.patches import Ellipse
 
 #Import pacchetti clustering
-from sklearn import cluster, datasets
-from scipy.spatial.distance import pdist, jaccard,squareform
+from sklearn import cluster
+from scipy.spatial.distance import pdist,squareform
 from scipy.cluster.hierarchy import linkage, dendrogram, cut_tree
 from sklearn.mixture import GaussianMixture
 
 #Import pacchetti statistici
 from sklearn.preprocessing import MinMaxScaler
 
-'''
-# %% DEBUG AREA
 
-from sklearn.datasets import load_digits
-#Load the dataset
-data = load_digits()
-
-# define X dataframe
-X = data.data
-X = pd.DataFrame(X)
-
-# define y dataframe
-y = data.target
-y = pd.DataFrame(y,columns=['target'])
-
-inputColumns = X.columns
-from logproj import ml_dimensionalityReduction as dr
-
-# %% USE K-means
-
-
-X_clustered =  groupVariableKMean(X,inputColumns,k=10)
-X_res, out_fig_dict, output_df = dr.PCAplot(n_comp=2,XX=X, diagnose=True)
-
-plt.figure()
-plt.scatter(X_res[0],X_res[1],c = X_clustered['CLUSTER_KMEANS_10'])
-
-plt.figure()
-plt.scatter(X_res[0],X_res[1],c = y['target'])
-
-
-# %% USE GMM
-
-X_clustered =  GroupingVariableGMM(X,inputColumns,k=10)
-X_res, out_fig_dict, output_df = dr.PCAplot(n_comp=2,XX=X, diagnose=True)
-
-plt.figure()
-plt.scatter(X_res[0],X_res[1],c = X_clustered['CLUSTER_GMM_10'])
-
-plt.figure()
-plt.scatter(X_res[0],X_res[1],c = y['target'])
-
-# %% USE HIERARCHICAL
-X_clustered =  GroupingVariableHierarchical(X,inputColumns,k=10,metodoGrouping='single')
-X_res, out_fig_dict, output_df = dr.PCAplot(n_comp=2,XX=X, diagnose=True)
-
-plt.figure()
-plt.scatter(X_res[0],X_res[1],c = X_clustered['CLUSTER_HIER_10'])
-
-plt.figure()
-plt.scatter(X_res[0],X_res[1],c = y['target'])
-
-# %% DENDROGRAM
-out = HierarchicalClusteringDendrogram(X,
-                                       metodoGrouping='single',
-                                       medotoDistanze='euclidean')
-out['dendrogram'].show()
-'''
 # %% K-MEANS
-'''
-def groupVariableKMean(D_table,inputColumns,k):
-    
-    X=D_table[inputColumns]
-    km = cluster.KMeans(n_clusters=k).fit(X)
-    D_table[f"CLUSTER_KMEANS_{str(k)}"]=pd.DataFrame(km.labels_)
-    return D_table
-'''
+
 def groupVariableKMean(D_table,inputColumns,k):
     
     X=D_table[inputColumns]
@@ -103,14 +28,7 @@ def groupVariableKMean(D_table,inputColumns,k):
     D_table[f"CLUSTER_KMEANS_{str(k)}"]=[i for i in km.labels_]
     return D_table
 
-'''
-# %% GAUSSIAN MIXTURE MODEL
-def GroupingVariableGMM(D_table,inputColumns,k):
-    X=D_table[inputColumns]
-    gmm = GaussianMixture(n_components=k, covariance_type='full').fit(X)
-    D_table[f"CLUSTER_GMM_{str(k)}"]=pd.DataFrame(gmm.predict(X))
-    return D_table
-'''
+
 
 def GroupingVariableGMM(D_table,inputColumns,k):
     X=D_table[inputColumns]

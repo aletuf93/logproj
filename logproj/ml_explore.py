@@ -1,14 +1,4 @@
-﻿#import py_compile
-'''
-# %%
-#specify root folder path
-root_folder="C:\\Users\\aletu\\Documents\\GitHub\\OTHER\\ZENON"
-root_folder="D:\\OneDrive - Alma Mater Studiorum Università di Bologna\\ACADEMICS\\[514]Dottorato\\Projects\\Z_WAREHOUSE\\00_SOFTWARE\\GitHub\\ZENON"
-
-#%% import packages from other folders
-import sys
-sys.path.append(root_folder)
-'''
+﻿
 
 import numpy as np
 import random as rn
@@ -23,30 +13,7 @@ import sklearn.metrics as metrics
 from logproj.ml_dataCleaning import dummyColumns
 
 
-#developed libraries
-#from gitPackages.logproj.ml_regression_linear_models import  LassoCV
 
-
-
-# %% DEBUG AREA
-'''
-from sklearn.datasets import load_wine
-import pandas as pd
-data = load_wine()
-
-# define X dataframe
-X = data.data
-X_labels = data.feature_names
-X = pd.DataFrame(X,columns=X_labels)
-
-# define y dataframe
-y = data.target
-y = pd.DataFrame(y,columns=['target'])
-
-output_figures = correlationMatrix(X,annotationCell=True)
-for fig in output_figures.keys():
-    output_figures[fig].show()
-'''
 
 # %%
 def paretoDataframe(df, field):

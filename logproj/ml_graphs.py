@@ -46,7 +46,7 @@ def printGraph(G,distance, weight, title, arcLabel=False, nodeLabel=True, traffi
         y=[y for (x,y) in pos.values()]
         plt.scatter(x,y,c='black',marker='s',s=1)
     
-    edges = G.edges()
+    #edges = G.edges()
     weights = [G[u][v][weight] for u,v in G.edges]
     labels = nx.get_edge_attributes(G,weight)
     
@@ -67,26 +67,15 @@ def printGraph(G,distance, weight, title, arcLabel=False, nodeLabel=True, traffi
     nx.draw(G,pos,node_size=0,edge_color='white',with_labels = nodeLabel)
     #nodes = nx.draw_networkx_nodes(G, pos, node_size=node_sizes, node_color='Orange')
     if trafficGraph:
-        edges = nx.draw_networkx_edges(G, pos, width=edge_width, arrowstyle='->',
+        nx.draw_networkx_edges(G, pos, width=edge_width, arrowstyle='->',
                                     edge_color=edge_colors,
                                    edge_cmap=plt.cm.Wistia)
     else:
-        edges = nx.draw_networkx_edges(G, pos)
+        nx.draw_networkx_edges(G, pos)
     if arcLabel:
         nx.draw_networkx_edge_labels(G,pos,edge_labels=labels,font_size =5)
     
-    # set alpha value for each edge
-    #for k in range(M):
-    #    edges[k].set_alpha(edge_alphas[k]/max(edge_alphas))
-    '''
-    if trafficGraph:
-        pc = mpl.collections.PatchCollection(edges, cmap=plt.cm.Wistia)
-        pc.set_array(edge_colors)
-        plt.colorbar(pc)
-        
-        ax = plt.gca()
-        ax.set_axis_off()
-    '''
+    
 
 
 def plotGraph(df,edgeFrom,edgeTo,distance,weight,title,arcLabel=True):

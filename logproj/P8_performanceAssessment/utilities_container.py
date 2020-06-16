@@ -2,12 +2,6 @@
 
 
 # %%
-
-
-
-
-
-# %%
 def convertContainerISOcodeToTEUFEU(D_hu,codeField='_id'):
     #la funzione considera i codici ISO sulle dimensioni dei container per stabilire se sono TEU o FEU
     

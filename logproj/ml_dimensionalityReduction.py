@@ -1,14 +1,4 @@
-# -*- coding: utf-8 -*-
-'''
-# %%
-#specify root folder path
-root_folder="C:\\Users\\aletu\\Documents\\GitHub\\OTHER\\ZENON"
-root_folder="D:\\OneDrive - Alma Mater Studiorum Università di Bologna\\ACADEMICS\\[514]Dottorato\\Projects\\Z_WAREHOUSE\\00_SOFTWARE\\GitHub\\ZENON"
 
-#%% import packages from other folders
-import sys
-sys.path.append(root_folder)
-'''
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -44,46 +34,7 @@ y = data.target
 y = pd.DataFrame(y,columns=['target'])
 
 
-# %%
-'''
-Z, out_fig_dict = selectByCorrelation(X,y,corrThreshold=0.2, diagnose=True)
-for fig in out_fig_dict.keys():
-    out_fig_dict[fig].show()
-    
-# %%
-Z, out_fig_dict = selectByVariance(X, perc=0.3,diagnose=True)
-for fig in out_fig_dict.keys():
-    out_fig_dict[fig].show()
-    
-# %%
-Z, out_fig_dict = selectByLassoL1(X,y,value=0.5,diagnose=True)
-for fig in out_fig_dict.keys():
-    out_fig_dict[fig].show()
 
-# %%
-Z = selectByTree(X,y)
-
-# %%
-out_fig_dict = ridgePath(X,y)
-for fig in out_fig_dict.keys():
-    out_fig_dict[fig].show()
-    
-# %%
-out_fig_dict = lassoPath(X,y)
-for fig in out_fig_dict.keys():
-    out_fig_dict[fig].show()
-    
-# %%
-X_res, out_fig_dict, output_df = selectByForwardStepwiseSelection(X,y,n_feat=5)
-for fig in out_fig_dict.keys():
-    out_fig_dict[fig].show()
-    
-    
-# %% 
-X_res, out_fig_dict, output_df = PCAplot(n_comp=2,XX=X, diagnose=True)
-for fig in out_fig_dict.keys():
-    out_fig_dict[fig].show()
-'''
 # %%
 def diagnoseForFeatureSelection(X,y,dirResultsMachineLearning,diagnoseModels):
     Q=dummyColumns(X)
@@ -641,72 +592,6 @@ def PCAplot(n_comp,XX, diagnose=False):
             
             plt.close('all')
     return pd.DataFrame(PC), output_figure, output_df
-# %% 
-''' too slow
-def bestSubsetSelection(X,y,dirResults):
 
-    #Converto eventuali variabili categoriche
-    for column in X.columns:
-     if X[column].dtype==object:
-         dummyCols=pd.get_dummies(X[column])
-         X=pd.concat([X,dummyCols], axis=1)
-         del X[column]
-
-    k = len(X.columns)
-
-    RSS_list, R_squared_list, feature_list = [],[], []
-    numb_features = []
-
-    #Looping over k = 1 to k = 11 features in X
-    for k in tnrange(1,len(X.columns) + 1, desc = 'Loop...'):
-
-        #Looping over all possible combinations: from 11 choose k
-        for combo in itertools.combinations(X.columns,k):
-            tmp_result = fit_linear_reg(X[list(combo)],y)   #Store temp result
-            RSS_list.append(tmp_result[0])                  #Append lists
-            R_squared_list.append(tmp_result[1])
-            feature_list.append(combo)
-            numb_features.append(len(combo))
-
-
-
-    #Salvo le variabili da testare con un dataset piccolo
-    #s =resultFSs['Features']
-    #mlb = MultiLabelBinarizer()
-    #aaa=pd.DataFrame(mlb.fit_transform(s),columns=mlb.classes_, index=resultFSs.index)
-    #bbb=pd.concat([resultFSs,aaa],axis=1)
-    #bbb.to_html(dirResults+'\\00-ForwardStepwiseSelection2.html')
-
-    #Store in DataFrame
-    df = pd.DataFrame({'numb_features': numb_features,'RSS': RSS_list, 'R_squared':R_squared_list,'features':feature_list})
-    df_min = df[df.groupby('numb_features')['RSS'].transform(min) == df['RSS']]
-    #df_max = df[df.groupby('numb_features')['R_squared'].transform(max) == df['R_squared']]
-    df_min.to_html(dirResults+'\\00-BestSubSetSelection_min.html')
-
-
-    df['min_RSS'] = df.groupby('numb_features')['RSS'].transform(min)
-    df['max_R_squared'] = df.groupby('numb_features')['R_squared'].transform(max)
-
-    fig = plt.figure(figsize = (16,6))
-    ax = fig.add_subplot(1, 2, 1)
-
-    ax.scatter(df.numb_features,df.RSS, alpha = .2, color = 'darkblue' )
-    ax.set_xlabel('# Features')
-    ax.set_ylabel('RSS')
-    ax.set_title('RSS - Best subset selection')
-    ax.plot(df.numb_features,df.min_RSS,color = 'r', label = 'Best subset')
-    ax.legend()
-
-    ax = fig.add_subplot(1, 2, 2)
-    ax.scatter(df.numb_features,df.R_squared, alpha = .2, color = 'darkblue' )
-    ax.plot(df.numb_features,df.max_R_squared,color = 'r', label = 'Best subset')
-    ax.set_xlabel('# Features')
-    ax.set_ylabel('R squared')
-    ax.set_title('R_squared - Best subset selection')
-    ax.legend()
-    plt.show()
-    fig.savefig(dirResults+'\\00_BestSubsetSelection.pdf')
-    return True
-'''
 
 

@@ -3,8 +3,8 @@
 # %% geocode
 import geocoder
 import time
-mykey = 'AqzvHYViQuOrRhcnuDL977rDIqyIT09IOEJ45RX39JrEHpslTC84uQkU6mQCJXEX'
 
+mykey = '' #insert here your bing API key
 def bruteforceGeocoding(dict_address,apiKey,waitTime):
     #la funziona tenta un approccio di georeferenziazione a forza bruta prendendo
     #prima tutti i dati a disposizione e poi andando a scalare se questi

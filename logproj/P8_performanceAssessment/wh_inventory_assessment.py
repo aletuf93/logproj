@@ -1,14 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# %%
-#specify root folder path
-#root_folder="D:\\OneDrive - Alma Mater Studiorum Università di Bologna\\ACADEMICS\\[514]Dottorato\\Projects\\Z_WAREHOUSE\\00_SOFTWARE\\GitHub\\ZENON"
-root_folder="C:\\Users\\aletu\\Documents\\GitHub\\OTHER\\ZENON"
-
-#%% import packages from other folders
-import sys
-sys.path.append(root_folder)
-
 
 #%% import packages from other folders
 

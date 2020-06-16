@@ -10,22 +10,7 @@ import math
 import random
 import datetime
 
-'''
-num_nodes = 25
-min_latitude = 41.413896
-max_latitude = 41.945192
-min_longitude = 13.972079
-max_longitude = 15.056329
-num_plants = 2
-num_parts = 2
-num_users = 8
-num_movements = 100
-movements_per_voyage = 25
-average_advance_planning = 7 #days
-average_time_window_days = 1/24 #days (1 hour)
-average_time_between_movements = 1/24*2 #average two hours between movements
-first_day = datetime.datetime(year=2020, month=1, day = 2)
-'''
+
 
 def generateDistributionData(   num_nodes = 25,
                                 min_latitude = 41.413896,
