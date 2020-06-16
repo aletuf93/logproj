@@ -33,7 +33,7 @@ def paretoDataframe(df, field):
         DESCRIPTION. pandas dataframe with cumulative and percentage columns
 
     '''
-    
+    df = df.dropna(subset=[field])
     df = df.sort_values(by = [field], ascending=False)
     df[f"{field}_PERC"] = df[field]/sum(df[field])
     df[f"{field}_CUM"] = df[f"{field}_PERC"].cumsum()

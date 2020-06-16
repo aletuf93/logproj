@@ -32,6 +32,13 @@ def spaceProductivity(D_movements,variableToPlot,inout_column, x_col,  y_col, z_
         DESCRIPTION. dictionary of output figures
 
     '''
+    
+    def scaleSize(series):
+        if min(series)==max(series):
+            return [1 for i in range(0,len(series))]
+        else:
+            return (series - min(series))/(max(series)-min(series))
+         
                       
     figure_output={}
     #group data
@@ -70,17 +77,19 @@ def spaceProductivity(D_movements,variableToPlot,inout_column, x_col,  y_col, z_
         for period in set(D_warehouse_grouped['PERIOD']):
             #period = list(set(D_warehouse_grouped['PERIOD']))[0]
             D_warehouse_grouped_filtered = D_warehouse_grouped[D_warehouse_grouped['PERIOD']==period]
-            D_warehouse_grouped_filtered['SIZE'] = 1 +(D_warehouse_grouped_filtered['POPULARITY'] - min(D_warehouse_grouped_filtered['POPULARITY']))/(0.1 + max(D_warehouse_grouped_filtered['POPULARITY'])-min( D_warehouse_grouped_filtered['POPULARITY']))
+            D_warehouse_grouped_filtered['SIZE'] = scaleSize(D_warehouse_grouped_filtered['POPULARITY'])
             
             #scale size
-            D_warehouse_grouped_filtered['SIZE'] =3*D_warehouse_grouped_filtered['SIZE'] 
+            D_warehouse_grouped_filtered['SIZE'] =100*D_warehouse_grouped_filtered['SIZE'] 
             
             #graphType 2-Dimensional
             if graphType == '2D':
                 fig1 = plt.figure()
                 plt.scatter(D_warehouse_grouped_filtered['LOCCODEX'],
                                    D_warehouse_grouped_filtered['LOCCODEY'],
-                                   D_warehouse_grouped_filtered['SIZE'])
+                                   D_warehouse_grouped_filtered['SIZE'],
+                                   c=D_warehouse_grouped_filtered['SIZE'])
+                plt.colorbar()
                 plt.title(f"Warehouse INBOUND productivity, period:{period}")
                 plt.xlabel("Warehouse front (x)")
                 plt.ylabel("Warehouse depth (y)")
@@ -93,8 +102,10 @@ def spaceProductivity(D_movements,variableToPlot,inout_column, x_col,  y_col, z_
                 plt.scatter(x = D_warehouse_grouped_filtered['LOCCODEX'],
                             y = D_warehouse_grouped_filtered['LOCCODEY'],
                             zs = D_warehouse_grouped_filtered['LOCCODEZ'],
-                            s = D_warehouse_grouped_filtered['SIZE']
+                            s = D_warehouse_grouped_filtered['SIZE'],
+                            c = D_warehouse_grouped_filtered['SIZE']
                                    )
+                plt.colorbar()
                 plt.xlabel("Warehouse front (x)")
                 plt.ylabel("Warehouse depth (y)")
                 plt.title(f"Warehouse INBOUND productivity, period:{period}")
@@ -112,17 +123,19 @@ def spaceProductivity(D_movements,variableToPlot,inout_column, x_col,  y_col, z_
         for period in set(D_warehouse_grouped['PERIOD']):
             #period = list(set(D_warehouse_grouped['PERIOD']))[0]
             D_warehouse_grouped_filtered = D_warehouse_grouped[D_warehouse_grouped['PERIOD']==period]
-            D_warehouse_grouped_filtered['SIZE'] = 1 +(D_warehouse_grouped_filtered['POPULARITY'] - min(D_warehouse_grouped_filtered['POPULARITY']))/(0.1 + max(D_warehouse_grouped_filtered['POPULARITY'])-min( D_warehouse_grouped_filtered['POPULARITY']))
+            D_warehouse_grouped_filtered['SIZE'] = scaleSize(D_warehouse_grouped_filtered['POPULARITY'])
             
             #scale size
-            D_warehouse_grouped_filtered['SIZE'] =3*D_warehouse_grouped_filtered['SIZE'] 
+            D_warehouse_grouped_filtered['SIZE'] =100*D_warehouse_grouped_filtered['SIZE'] 
             
             #graphType 2-Dimensional
             if graphType == '2D':
                 fig1 = plt.figure()
                 plt.scatter(D_warehouse_grouped_filtered['LOCCODEX'],
                                    D_warehouse_grouped_filtered['LOCCODEY'],
-                                   D_warehouse_grouped_filtered['SIZE'])
+                                   D_warehouse_grouped_filtered['SIZE'],
+                            c = D_warehouse_grouped_filtered['SIZE'])
+                plt.colorbar()
                 plt.title(f"Warehouse OUTBOUND productivity, period:{period}")
                 plt.xlabel("Warehouse front (x)")
                 plt.ylabel("Warehouse depth (y)")
@@ -135,8 +148,10 @@ def spaceProductivity(D_movements,variableToPlot,inout_column, x_col,  y_col, z_
                 plt.scatter(x = D_warehouse_grouped_filtered['LOCCODEX'],
                             y = D_warehouse_grouped_filtered['LOCCODEY'],
                             zs = D_warehouse_grouped_filtered['LOCCODEZ'],
-                            s = D_warehouse_grouped_filtered['SIZE']
+                            s = D_warehouse_grouped_filtered['SIZE'],
+                            c = D_warehouse_grouped_filtered['SIZE']
                                    )
+                plt.colorbar()
                 plt.xlabel("Warehouse front (x)")
                 plt.ylabel("Warehouse depth (y)")
                 plt.title(f"Warehouse OUTBOUND productivity, period:{period}")
