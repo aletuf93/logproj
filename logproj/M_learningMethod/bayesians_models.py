@@ -105,47 +105,5 @@ def OneDimensionalKalmanFilter(measurements_prior, motions_posterior):
     return hidden_state_mean_predict, hidden_state_sigma_predict
 
 
-# %% OLD CLASSIFICATION METHODS
-'''
-def naiveBayesCV(X,y,dirResults,nFolds,saveFig):
-    
-    X=ZO_ml.dummyColumns(X)
-    kf = KFold(n_splits=nFolds)
-    kf.get_n_splits(X)
-    
-    k=0
-    resultScore=[]
-    fig1=[]
-    if saveFig:
-        fig1= plt.figure()
-    cm=[]
-    
-    for train_index, test_index in kf.split(X):
-            k=k+1 #identifico il fold
-           
-            X_train, X_test = X.iloc[train_index,:], X.iloc[test_index,:]
-            y_train, y_test = y.iloc[train_index], y.iloc[test_index]
-        
-            #Costruisco modello sul training set
-            model = GaussianNB().fit(X_train, y_train)
-        
-            #Testo modello sul test set
-            y_pred = model.predict(X_test)
-            score=np.round(metrics.roc_auc_score(y_test, y_pred),3)   
-            resultScore.append(score)
-            cm.append(metrics.confusion_matrix(y_test, y_pred))
-            
-    #plot
-    if saveFig:
-        ave_cm=np.mean(cm,axis=0)
-        fig=plot_confusion_matrix_fromAvecm(ave_cm,['True','False'], title='Naive bayes')
-        fig.savefig(dirResults+'\\confusionMatrixNaiveBayes.png')
-                
-            
-            
-    mean_AUC=np.mean(resultScore)
-    std_AUC=np.std(resultScore)
-    plt.close('all')
-    return mean_AUC, std_AUC, fig1 
-'''
+
     
