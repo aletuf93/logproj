@@ -49,6 +49,31 @@ for fig in output_figures.keys():
 '''
 
 # %%
+def paretoDataframe(df, field):
+    '''
+    
+
+    Parameters
+    ----------
+    df : TYPE pandas  dataframe
+        DESCRIPTION. pandas dataframe with unsorted values
+    field : TYPE string
+        DESCRIPTION. column name to build the pareto
+
+    Returns
+    -------
+    df : TYPE pandas dataframe
+        DESCRIPTION. pandas dataframe with cumulative and percentage columns
+
+    '''
+    
+    df = df.sort_values(by = [field], ascending=False)
+    df[f"{field}_PERC"] = df[field]/sum(df[field])
+    df[f"{field}_CUM"] = df[f"{field}_PERC"].cumsum()
+    
+    return df
+
+# %%
 
 def paretoChart(df, barVariable, paretoVariable,titolo):
 
