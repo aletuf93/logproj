@@ -164,6 +164,26 @@ D_SKUs.to_excel(path_current+"\\SKUs.xlsx")
 
 
 
+# %% update global inventory
+from logproj.P8_performanceAssessment.wh_inventory_assessment import updateGlobalInventory
+
+_, path_current = creaCartella(path_results,f"Inventory")
+
+D_global_inventory = updateGlobalInventory(D_SKUs)
+D_global_inventory.to_excel(path_current+"\\global inventory.xlsx")
+
+        
+# %%
+from logproj.P8_performanceAssessment.wh_inventory_assessment import inventoryAnalysis
+
+output_figures = inventoryAnalysis(D_global_inventory)
+
+for key in output_figures.keys():
+        output_figures[key].savefig(path_current+f"\\{key}.png") 
+
+
+
+
 
 
 

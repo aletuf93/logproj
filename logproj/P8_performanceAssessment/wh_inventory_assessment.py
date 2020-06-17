@@ -219,6 +219,7 @@ def assessInterarrivalTime(I_t):
 def updatePartInventory(D_SKUs,D_movements,D_inventory,timecolumn_mov,itemcodeColumns_sku,itemcodeColumns_mov,itemcodeColumns_inv):
     
     D_SKUs['INVENTORY_QTY'] = [[] for i in range(0,len(D_SKUs))]
+    D_SKUs['INVENTORY_DAYS'] = [[] for i in range(0,len(D_SKUs))]
     
     #  define the inventory quantity
     firstDay = min(D_movements[timecolumn_mov]).date()
@@ -245,6 +246,7 @@ def updatePartInventory(D_SKUs,D_movements,D_inventory,timecolumn_mov,itemcodeCo
 
         #update the dataframe
         D_SKUs.at[index,'INVENTORY_QTY'] = array_inventory
+        D_SKUs.at[index,'INVENTORY_DAYS'] = array_days
     return D_SKUs
 
 
@@ -465,5 +467,106 @@ def whIndexParetoPlot(D_SKUs,columnIndex):
     
     
     return output_figures
+
+
+# %% UPDATE GLOBAL INVENTORY
+def updateGlobalInventory(D_SKUs):
+
+ 
+
+        D_inventory=pd.DataFrame([],columns=['WH_INVENTORY_VOLUME', 'WH_INVENTORY_NORMALISED'])
+        givenVolumes = 0 #count the number of SKUs with a given volume
+        for i in range(0,len(D_SKUs)):
+            #i=33159
+            volume = D_SKUs.iloc[i]['VOLUME']
+            list_days = D_SKUs.iloc[i]['INVENTORY_DAYS']
+
+            #go on only if an inventory has been saved
+            if isinstance(list_days,list):
+
+                list_inventory = np.array(D_SKUs.iloc[i]['INVENTORY_QTY'])
+                list_inventory = np.nan_to_num(list_inventory) #convert nan to 0
+                list_inventory_volume = list_inventory*volume
+                list_inventory_normalised = (list_inventory - min(list_inventory))/(max(list_inventory)-min(list_inventory))
+
+
+
+
+                D_temp = pd.DataFrame(list_inventory_normalised,index=list_days,columns=['SKU_INVENTORY_NORMALISED'] )
+                D_inventory = pd.concat([D_temp, D_inventory], axis=1, sort=False)
+                D_inventory=D_inventory.fillna(0)
+                D_inventory['WH_INVENTORY_NORMALISED'] = D_inventory['WH_INVENTORY_NORMALISED'] + D_inventory['SKU_INVENTORY_NORMALISED']
+                D_inventory=D_inventory.drop(columns=['SKU_INVENTORY_NORMALISED'])
+
+                if str(volume)!='nan': # se il volume e' noto
+                    D_temp = pd.DataFrame(list_inventory_volume,index=list_days,columns=['SKU_INVENTORY_VOLUME'] )
+                    D_inventory = pd.concat([D_temp, D_inventory], axis=1, sort=False)
+                    D_inventory=D_inventory.fillna(0)
+                    D_inventory['WH_INVENTORY_VOLUME'] = D_inventory['WH_INVENTORY_VOLUME'] + D_inventory['SKU_INVENTORY_VOLUME']
+                    D_inventory=D_inventory.drop(columns=['SKU_INVENTORY_VOLUME'])
+                    givenVolumes=givenVolumes+1
+
+        return D_inventory
     
-            
+
+# %% INVENTORY ANALYSIS
+def inventoryAnalysis(D_global_inventory):
+    def cumulativeFunction(ser):
+        ser = ser.sort_values()
+        cum_dist = np.linspace(0.,1.,len(ser))
+        ser_cdf = pd.Series(cum_dist, index=ser)
+        return ser_cdf
+    
+    output_figures={}
+    
+    #histogram
+    fig1 = plt.figure()
+    plt.hist(D_global_inventory['WH_INVENTORY_VOLUME'])
+    plt.xlabel('Inventory values')
+    plt.ylabel('Frequency')
+    plt.title('Inventory histogram')
+    
+    output_figures['INVENTORY_HIST']=fig1
+    
+    fig2 = plt.figure()
+    plt.hist(D_global_inventory['WH_INVENTORY_NORMALISED'])
+    plt.xlabel('Normalised Inventory values')
+    plt.ylabel('Frequency')
+    plt.title('Normalised inventory histogram')
+    output_figures['INVENTORY_NORM_HIST']=fig2
+    
+    #trend
+    fig3 = plt.figure()
+    plt.plot(D_global_inventory.index,D_global_inventory['WH_INVENTORY_VOLUME'])
+    plt.xlabel('Timeline')
+    plt.ylabel('Inventory values')
+    plt.title('Inventory time series')
+    plt.xticks(rotation=45)
+    output_figures['INVENTORY_TS']=fig3
+    
+    fig4 = plt.figure()
+    plt.plot(D_global_inventory.index,D_global_inventory['WH_INVENTORY_NORMALISED'])
+    plt.xlabel('Timeline')
+    plt.ylabel('Normalised inventory values')
+    plt.title('Normalised inventory time series')
+    plt.xticks(rotation=45)
+    output_figures['INVENTORY_NORM_TS']=fig4
+    
+    #cumulative function
+    
+    cdf_inventory = cumulativeFunction(D_global_inventory['WH_INVENTORY_NORMALISED'])
+    fig5 = plt.figure()
+    cdf_inventory.plot(drawstyle='steps')
+    plt.xlabel('Normalised inventory values')
+    plt.ylabel('Probability')
+    plt.title('Normalised inventory cumulative probability function')
+    output_figures['INVENTORY_CUM']=fig5
+    
+    cdf_inventory = cumulativeFunction(D_global_inventory['WH_INVENTORY_VOLUME'])
+    fig6 = plt.figure()
+    cdf_inventory.plot(drawstyle='steps')
+    plt.xlabel('Inventory values')
+    plt.ylabel('Probability')
+    plt.title('Inventory cumulative probability function')
+    output_figures['INVENTORY_NORM_CUM']=fig6
+    return output_figures            
