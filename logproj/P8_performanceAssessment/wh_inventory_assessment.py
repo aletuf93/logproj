@@ -213,21 +213,21 @@ def assessInterarrivalTime(I_t):
     mean_interarrival_time_in = np.mean(interarrival_time)
     std_interarrival_time_in = np.std(interarrival_time)
     return mean_interarrival_time_in, std_interarrival_time_in, interarrival_time
-   
+
 
 # %%
 def updatePartInventory(D_SKUs,D_movements,D_inventory,timecolumn_mov,itemcodeColumns_sku,itemcodeColumns_mov,itemcodeColumns_inv):
-    
+
     D_SKUs['INVENTORY_QTY'] = [[] for i in range(0,len(D_SKUs))]
     D_SKUs['INVENTORY_DAYS'] = [[] for i in range(0,len(D_SKUs))]
-    
+
     #  define the inventory quantity
     firstDay = min(D_movements[timecolumn_mov]).date()
     lastDay = max(D_movements[timecolumn_mov]).date()
     timeLine = pd.date_range(start=firstDay, end=lastDay).to_frame()
     timeLineDays= ts.sampleTimeSeries(timeLine[0],'day').to_frame()
     timeLineDays.columns=['TIMELINE']
-   
+
     D_SKUs = D_SKUs.reset_index(drop=True)
     #  Build a daily inventory array for each part
     for index, row in D_SKUs.iterrows():
@@ -252,13 +252,13 @@ def updatePartInventory(D_SKUs,D_movements,D_inventory,timecolumn_mov,itemcodeCo
 
 # %% UPDATE POPULARITY INDEX
 def updatePopularity(D_SKUs):
-    
+
     #create result columns
     D_SKUs['POP_IN']=np.nan
     D_SKUs['POP_OUT']=np.nan
     D_SKUs['POP_IN_TOT']=np.nan
     D_SKUs['POP_OUT_TOT']=np.nan
-    
+
     for index, row in D_SKUs.iterrows():
         #select inventory curve
         I_t = D_SKUs.loc[index]['INVENTORY_QTY']
@@ -267,7 +267,7 @@ def updatePopularity(D_SKUs):
         movements=movements.dropna()
         if len(movements)>0:
             POP_IN, POP_OUT, POP_IN_TOT, POP_OUT_TOT = calculatePopularity(movements['QUANTITY'])
-            
+
             #update the dataframe
             D_SKUs.at[index,'POP_IN']=POP_IN
             D_SKUs.at[index,'POP_OUT']=POP_OUT
@@ -277,7 +277,7 @@ def updatePopularity(D_SKUs):
 
 # %% UPDATE COI INDEX
 def updateCOI(D_SKUs):
-    
+
     #create result columns
     D_SKUs['COI_IN']=np.nan
     D_SKUs['COI_OUT']=np.nan
@@ -289,19 +289,19 @@ def updateCOI(D_SKUs):
         movements=movements.dropna()
         if len(movements)>0:
             COI_IN, COI_OUT = calculateCOI(I_t)
-            
+
             #update the dataframe
             D_SKUs.at[index,'COI_IN']=COI_IN
             D_SKUs.at[index,'COI_OUT']=COI_OUT
-            
+
     return D_SKUs
 
 # %% UPDATE TURN INDEX
 def updateTURN(D_SKUs):
-    
+
     #create result columns
     D_SKUs['TURN']=np.nan
-    
+
     for index, row in D_SKUs.iterrows():
         #select inventory curve
         I_t = D_SKUs.loc[index]['INVENTORY_QTY']
@@ -310,41 +310,41 @@ def updateTURN(D_SKUs):
         movements=movements.dropna()
         if len(movements)>0:
             TURN = calculateTurn(I_t)
-            
+
             #update the dataframe
             D_SKUs.at[index,'TURN']=TURN
-            
-            
+
+
     return D_SKUs
 
 
 # %% UPDATE OC INDEX
 def updateOrderCompletion(D_SKUs, D_mov):
-    
-    
-    
+
+
+
     #create result columns
     D_SKUs['OC']=np.nan
-    
-    
+
+
     for index, row in D_SKUs.iterrows():
-        
+
         part = row['ITEMCODE']
-        
+
         #calculate the popularity
         OC = calculateOrderCompletion(D_mov, part, itemfield='ITEMCODE', ordercodefield='ORDERCODE')
-        
-        
+
+
         #update the dataframe
         D_SKUs.at[index,'OC']=OC
-            
+
     return D_SKUs
 
 
 # %% UPDATE INVENTORY PARAMETERS
 
 def updateInventoryParams(D_SKUs):
-    
+
     #create result columns
     D_SKUs['INVENTORY_REAL_MIN']=np.nan
     D_SKUs['INVENTORY_REAL_MAX']=np.nan
@@ -354,7 +354,7 @@ def updateInventoryParams(D_SKUs):
     D_SKUs['INVENTORY_PROB_MAX']=np.nan
     D_SKUs['INVENTORY_PROB_AVG']=np.nan
     D_SKUs['INVENTORY_PROB_STD']=np.nan
-    
+
     for index, row in D_SKUs.iterrows():
         #select inventory curve
         I_t = D_SKUs.loc[index]['INVENTORY_QTY']
@@ -363,9 +363,9 @@ def updateInventoryParams(D_SKUs):
         movements=movements.dropna()
         if len(movements)>0:
             min_real_I_t, max_real_I_t, avg_real_I_t, std_real_I_t, min_probabilistic_I_t, max_probabilistic_I_t, avg_probabilistic_I_t, std_probabilistic_I_t = returnProbabilisticInventory(I_t)
-            
+
             #update the dataframe
-            
+
             D_SKUs.at[index,'INVENTORY_REAL_MIN']=min_real_I_t
             D_SKUs.at[index,'INVENTORY_REAL_MAX']=max_real_I_t
             D_SKUs.at[index,'INVENTORY_REAL_AVG']=avg_real_I_t
@@ -374,20 +374,20 @@ def updateInventoryParams(D_SKUs):
             D_SKUs.at[index,'INVENTORY_PROB_MAX']=max_probabilistic_I_t
             D_SKUs.at[index,'INVENTORY_PROB_AVG']=avg_probabilistic_I_t
             D_SKUs.at[index,'INVENTORY_PROB_STD']=std_probabilistic_I_t
-            
-            
+
+
     return D_SKUs
 
 
 # %% UPDATE INTERARRIVAL TIME
 
 def updateInterarrivalTime(D_SKUs):
-    
+
     #create result columns
     D_SKUs['INTERARRIVAL_MEAN_IN']=np.nan
     D_SKUs['INTERARRIVAL_STD_IN']=np.nan
-    
-    
+
+
     for index, row in D_SKUs.iterrows():
         #select inventory curve
         I_t = D_SKUs.loc[index]['INVENTORY_QTY']
@@ -396,24 +396,24 @@ def updateInterarrivalTime(D_SKUs):
         movements=movements.dropna()
         if len(movements)>0:
             mean_interarrival_time_in, std_interarrival_time_in, _ = assessInterarrivalTime(I_t)
-            
+
             #update the dataframe
-            
+
             D_SKUs.at[index,'INTERARRIVAL_MEAN_IN']=mean_interarrival_time_in
             D_SKUs.at[index,'INTERARRIVAL_STD_IN']=std_interarrival_time_in
-       
+
     return D_SKUs
 
 
 # %% UPDATE FOURIER ANALYSIS
 
 def updateFourieranalysis(D_SKUs):
-    
+
     #create result columns
     D_SKUs['FOURIER_CARRIER']=np.nan
     D_SKUs['FOURIER_PERIOD']=np.nan
-    
-    
+
+
     for index, row in D_SKUs.iterrows():
         #select inventory curve
         I_t = D_SKUs.loc[index]['INVENTORY_QTY']
@@ -422,12 +422,12 @@ def updateFourieranalysis(D_SKUs):
         movements=movements.dropna()
         if len(movements)>0:
             carrier, period = fourierAnalysisInventory(I_t)
-            
+
             #update the dataframe
-            
+
             D_SKUs.at[index,'FOURIER_CARRIER']=carrier
             D_SKUs.at[index,'FOURIER_PERIOD']=period
-       
+
     return D_SKUs
 
 
@@ -437,42 +437,42 @@ def updateFourieranalysis(D_SKUs):
 
 
 def whIndexParetoPlot(D_SKUs,columnIndex):
-    
-    
+
+
     output_figures = {}
-    
-    
+
+
     #define the pareto values
     D_SKUs_pop = paretoDataframe(D_SKUs,columnIndex)
-    
+
     #build the pareto figures
     fig1 = plt.figure()
     plt.plot(np.arange(0,len(D_SKUs_pop)),D_SKUs_pop[f"{columnIndex}_CUM"])
     plt.title(f"{columnIndex} Pareto curve")
     plt.xlabel("N. of SKUs")
     plt.ylabel("Popularity percentage")
-    
+
     #save the Pareto figure
     output_figures[f"{columnIndex}_pareto"] = fig1
-    
-    
+
+
     fig2 = plt.figure()
     plt.hist(D_SKUs_pop[columnIndex])
     plt.title(f"{columnIndex} histogram")
     plt.xlabel(f"{columnIndex}")
     plt.ylabel("Frequency")
-    
+
     #save the Pareto figure
     output_figures[f"{columnIndex}_hist"] = fig2
-    
-    
+
+
     return output_figures
 
 
 # %% UPDATE GLOBAL INVENTORY
-def updateGlobalInventory(D_SKUs):
+def updateGlobalInventory(D_SKUs,inventoryColumn):
 
- 
+
 
         D_inventory=pd.DataFrame([],columns=['WH_INVENTORY_VOLUME', 'WH_INVENTORY_NORMALISED'])
         givenVolumes = 0 #count the number of SKUs with a given volume
@@ -484,7 +484,7 @@ def updateGlobalInventory(D_SKUs):
             #go on only if an inventory has been saved
             if isinstance(list_days,list):
 
-                list_inventory = np.array(D_SKUs.iloc[i]['INVENTORY_QTY'])
+                list_inventory = np.array(D_SKUs.iloc[i][inventoryColumn])
                 list_inventory = np.nan_to_num(list_inventory) #convert nan to 0
                 list_inventory_volume = list_inventory*volume
                 list_inventory_normalised = (list_inventory - min(list_inventory))/(max(list_inventory)-min(list_inventory))
@@ -507,7 +507,7 @@ def updateGlobalInventory(D_SKUs):
                     givenVolumes=givenVolumes+1
 
         return D_inventory
-    
+
 
 # %% INVENTORY ANALYSIS
 def inventoryAnalysis(D_global_inventory):
@@ -516,25 +516,25 @@ def inventoryAnalysis(D_global_inventory):
         cum_dist = np.linspace(0.,1.,len(ser))
         ser_cdf = pd.Series(cum_dist, index=ser)
         return ser_cdf
-    
+
     output_figures={}
-    
+
     #histogram
     fig1 = plt.figure()
     plt.hist(D_global_inventory['WH_INVENTORY_VOLUME'])
     plt.xlabel('Inventory values')
     plt.ylabel('Frequency')
     plt.title('Inventory histogram')
-    
+
     output_figures['INVENTORY_HIST']=fig1
-    
+
     fig2 = plt.figure()
     plt.hist(D_global_inventory['WH_INVENTORY_NORMALISED'])
     plt.xlabel('Normalised Inventory values')
     plt.ylabel('Frequency')
     plt.title('Normalised inventory histogram')
     output_figures['INVENTORY_NORM_HIST']=fig2
-    
+
     #trend
     fig3 = plt.figure()
     plt.plot(D_global_inventory.index,D_global_inventory['WH_INVENTORY_VOLUME'])
@@ -543,7 +543,7 @@ def inventoryAnalysis(D_global_inventory):
     plt.title('Inventory time series')
     plt.xticks(rotation=45)
     output_figures['INVENTORY_TS']=fig3
-    
+
     fig4 = plt.figure()
     plt.plot(D_global_inventory.index,D_global_inventory['WH_INVENTORY_NORMALISED'])
     plt.xlabel('Timeline')
@@ -551,9 +551,9 @@ def inventoryAnalysis(D_global_inventory):
     plt.title('Normalised inventory time series')
     plt.xticks(rotation=45)
     output_figures['INVENTORY_NORM_TS']=fig4
-    
+
     #cumulative function
-    
+
     cdf_inventory = cumulativeFunction(D_global_inventory['WH_INVENTORY_NORMALISED'])
     fig5 = plt.figure()
     cdf_inventory.plot(drawstyle='steps')
@@ -561,7 +561,7 @@ def inventoryAnalysis(D_global_inventory):
     plt.ylabel('Probability')
     plt.title('Normalised inventory cumulative probability function')
     output_figures['INVENTORY_NORM_CUM']=fig5
-    
+
     cdf_inventory = cumulativeFunction(D_global_inventory['WH_INVENTORY_VOLUME'])
     fig6 = plt.figure()
     cdf_inventory.plot(drawstyle='steps')
@@ -569,4 +569,4 @@ def inventoryAnalysis(D_global_inventory):
     plt.ylabel('Probability')
     plt.title('Inventory cumulative probability function')
     output_figures['INVENTORY_CUM']=fig6
-    return output_figures            
+    return output_figures
