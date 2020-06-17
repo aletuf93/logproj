@@ -169,7 +169,7 @@ from logproj.P8_performanceAssessment.wh_inventory_assessment import updateGloba
 
 _, path_current = creaCartella(path_results,f"Inventory")
 
-D_global_inventory = updateGlobalInventory(D_SKUs)
+D_global_inventory = updateGlobalInventory(D_SKUs,inventoryColumn='INVNETORY_QTY')
 D_global_inventory.to_excel(path_current+"\\global inventory.xlsx")
 
         

@@ -560,7 +560,7 @@ def inventoryAnalysis(D_global_inventory):
     plt.xlabel('Normalised inventory values')
     plt.ylabel('Probability')
     plt.title('Normalised inventory cumulative probability function')
-    output_figures['INVENTORY_CUM']=fig5
+    output_figures['INVENTORY_NORM_CUM']=fig5
     
     cdf_inventory = cumulativeFunction(D_global_inventory['WH_INVENTORY_VOLUME'])
     fig6 = plt.figure()
@@ -568,5 +568,5 @@ def inventoryAnalysis(D_global_inventory):
     plt.xlabel('Inventory values')
     plt.ylabel('Probability')
     plt.title('Inventory cumulative probability function')
-    output_figures['INVENTORY_NORM_CUM']=fig6
+    output_figures['INVENTORY_CUM']=fig6
     return output_figures            
