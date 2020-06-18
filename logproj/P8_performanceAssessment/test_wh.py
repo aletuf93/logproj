@@ -173,13 +173,94 @@ D_global_inventory = updateGlobalInventory(D_SKUs,inventoryColumn='INVNETORY_QTY
 D_global_inventory.to_excel(path_current+"\\global inventory.xlsx")
 
         
-# %%
+# %% analyse the inventory behavious
 from logproj.P8_performanceAssessment.wh_inventory_assessment import inventoryAnalysis
 
 output_figures = inventoryAnalysis(D_global_inventory)
 
 for key in output_figures.keys():
         output_figures[key].savefig(path_current+f"\\{key}.png") 
+        
+        
+# %% LAYOUT ANALYSIS
+from logproj.P6_placementProblem.warehouse_graph_definition import prepareCoordinates
+import numpy as np
+_, path_current = creaCartella(path_results,f"Layout")
+
+
+D_layout, D_IO, D_fake,  allLocs = prepareCoordinates(D_locations)
+D_layout['aislecodex'] =np.nan 
+
+
+# %% PREPARE DATA FOR GRAPH DEFINITION
+from logproj.P6_placementProblem.warehouse_graph_definition import defineWHgraph
+G, D_res, D_layout = defineWHgraph(D_layout=D_layout, 
+              D_IO=D_IO, 
+              D_fake=D_fake,
+              allLocs = len(D_locations), 
+              draw=False, 
+              arcLabel=False, 
+              nodeLabel=False, 
+              trafficGraph=True)
+
+# %% DEFINE THE GRAPH
+from  logproj.ml_graphs import printGraph
+# print the graph
+distance=weight='length'
+title='Warehouse graph'
+printNodecoords=False
+
+fig1 = printGraph(G, 
+           distance, 
+           weight, 
+           title, 
+           arcLabel=False, 
+           nodeLabel=False, 
+           trafficGraph=False,
+           printNodecoords=True,
+           D_layout=D_layout)
+fig1.savefig(path_current+"//layout_graph.png") 
+
+# %% DEFINA TRAFFIC CHART
+fig2 = printGraph(G, 
+           distance, 
+           weight, 
+           title, 
+           arcLabel=False, 
+           nodeLabel=False, 
+           trafficGraph=True,
+           printNodecoords=False,
+           D_layout=D_layout)
+fig2.savefig(path_current+"//traffic_graph.png") 
+
+# %% CALCULATE SAVINGS FROM EXCHANGE
+from logproj.P6_placementProblem.warehouse_graph_definition import calculateExchangeSaving
+D_results = calculateExchangeSaving(D_movements, D_res, G, useSameLevel=False)
+
+# %% DRAW AS IS and TO-BE BUBBLES
+from logproj.P6_placementProblem.warehouse_graph_definition import returnbubbleGraphAsIsToBe
+output_figures = returnbubbleGraphAsIsToBe(D_results)
+for key in output_figures.keys():
+        output_figures[key].savefig(path_current+f"\\{key}.png") 
+        
+        
+# %% POP-DIST FIGURE
+from logproj.P6_placementProblem.warehouse_graph_definition import asisTobeBubblePopDist
+output_figures = asisTobeBubblePopDist(D_results)
+for key in output_figures.keys():
+        output_figures[key].savefig(path_current+f"\\{key}.png") 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

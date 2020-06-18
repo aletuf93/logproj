@@ -27,7 +27,7 @@ def printGraph(G,distance, weight, title, arcLabel=False, nodeLabel=True, traffi
     # G is the graph object
         
     # print the coordinates
-    plt.figure()
+    fig1 = plt.figure()
     
     if len(D_layout)>0:
         plt.scatter(D_layout.loccodex,D_layout.loccodey,c='black',marker='s',s=1)
@@ -62,7 +62,7 @@ def printGraph(G,distance, weight, title, arcLabel=False, nodeLabel=True, traffi
     
     #edge_alphas = weights
     
-    #fig1=plt.figure(figsize=(20,10))
+    
     plt.title(title)
     nx.draw(G,pos,node_size=0,edge_color='white',with_labels = nodeLabel)
     #nodes = nx.draw_networkx_nodes(G, pos, node_size=node_sizes, node_color='Orange')
@@ -74,7 +74,7 @@ def printGraph(G,distance, weight, title, arcLabel=False, nodeLabel=True, traffi
         nx.draw_networkx_edges(G, pos)
     if arcLabel:
         nx.draw_networkx_edge_labels(G,pos,edge_labels=labels,font_size =5)
-    
+    return fig1
     
 
 

@@ -66,7 +66,7 @@ def estimateMissingAislecoordX(D_layout,draw=False):
     #####################################################
     #### sostituisco i nulli in loccodex e loccodey #####
     #####################################################
-
+    D_layout = D_layout.reset_index()
     #se ho l'indicazione dei rack
     if 'rack' in D_layout.columns:
             D_layout=D_layout.sort_values(['rack', 'bay'], ascending=[True, True])
@@ -184,7 +184,10 @@ def estimateMissingAislecoordX(D_layout,draw=False):
     #check if coordinates exist otherwise replace with rack/bay/level
 
     #remove rack/bay/level
-    D_layout=D_layout.sort_values(by=['rack','bay'])
+    if 'rack' in D_layout.columns:
+        D_layout=D_layout.sort_values(by=['rack','bay'])
+    else:
+        D_layout=D_layout.sort_values(by=['aislecodex'])
     D_layout=D_layout[['idlocation', 'aislecodex', 'loccodex', 'loccodey']]
 
     #interpolo eventuali coordinate y rimaste scoperte (ultima spiaggia)
@@ -674,7 +677,8 @@ def defineWHgraph(D_layout, D_IO, D_fake, allLocs, draw=False, arcLabel=False, n
 
     '''
     # la funzione ritorna un grafo G e una tabella D_res con la corrispondenza ra idlocation e i nodi del grafo
-
+    
+    D_layout.columns = [i.lower() for i in D_layout.columns]
    
     
     
@@ -1028,7 +1032,7 @@ def returnbubbleGraphAsIsToBe(D_results):
     fig1 = plt.figure()
     plt.scatter(D_graph.loccodex, D_graph.loccodey, D_graph['size'])
     plt.title("Warehouse as-is")
-    figure_out['asis']=fig1
+    figure_out['pick_layout_asis']=fig1
     
     
     #graph to/be
@@ -1038,7 +1042,7 @@ def returnbubbleGraphAsIsToBe(D_results):
     fig2=plt.figure()
     plt.scatter(D_graph.loccodexTOBE, D_graph.loccodeyTOBE, D_graph['size'])
     plt.title("Warehouse to-be")
-    figure_out['tobe']=fig2
+    figure_out['pick_layout_tobe']=fig2
     
     return figure_out
 
@@ -1150,4 +1154,89 @@ def calculateStorageLocationsDistance(D_loc,input_loccodex, input_loccodey, outp
     D_loc = D_loc.dropna(subset=['LOCCODEX','LOCCODEY'])
     D_loc['INPUT_DISTANCE'] = np.abs(input_loccodex - D_loc['LOCCODEX']) + np.abs(input_loccodey - D_loc['LOCCODEY'])
     D_loc['OUTPUT_DISTANCE'] = np.abs(output_loccodex - D_loc['LOCCODEX']) + np.abs(output_loccodey - D_loc['LOCCODEY'])
-    return D_loc  
+    return D_loc 
+
+    
+# %%
+def prepareCoordinates(D_layout, D_IO=[], D_fake=[]):
+    
+    D_layout.columns=D_layout.columns.str.lower()
+    D_check=D_layout[['loccodex','loccodey']]
+
+    
+    allLocs=len(D_layout)
+
+    # se ho almeno una coordinata procedo
+    if len(D_check.drop_duplicates())>2:
+
+        #importo i punti di IO (scartando i duplicati)
+        if len(D_IO)==0:
+            D_IO = pd.DataFrame(columns = ['idlocation','inputloc','outputloc','loccodex','loccodey','loccodez'])
+        D_IO.columns=D_IO.columns.str.lower()
+        D_IO=D_IO.dropna()
+        
+        #se il punto di input non e' mappato, viene posizionato al centro
+        if len(D_IO[D_IO.inputloc==1]) ==0 :
+            idlocation=-1
+            loccodey = np.nanmin(D_layout.loccodey) -1
+            loccodex = np.nanmean(list(set(D_layout.loccodex)))
+            loccodez = 0
+            inputloc=1
+            outputloc=0
+            D_IO=D_IO.append(pd.DataFrame([[idlocation,inputloc,outputloc,loccodex,loccodey,loccodez]],columns=D_IO.columns))
+            print(f"=======Input point unmapped. I is set to x:{loccodex},y:{loccodey}")
+        
+        #se il punto di output non e' mappato, viene posizionato al centro
+        if len(D_IO[D_IO.outputloc==1])==0:
+            idlocation=-2
+            loccodey = np.nanmin(D_layout.loccodey) -1
+            loccodex = np.nanmean(list(set(D_layout.loccodex)))
+            loccodez = 0
+            inputloc=0
+            outputloc=1
+            D_IO=D_IO.append(pd.DataFrame([[idlocation,inputloc,outputloc,loccodex,loccodey,loccodez]],columns=D_IO.columns))
+            print(f"=======Output point unmapped. O is set to x:{loccodex},y:{loccodey}")
+
+        #identifico le fittizie
+        if len(D_fake)==0:
+            D_fake = pd.DataFrame(columns = ['idlocation','inputloc','outputloc','loccodex','loccodey','loccodez'])
+        D_fake.columns=D_fake.columns.str.lower()
+        
+        # identifico il primo punto di IO
+        
+        
+        return D_layout, D_IO, D_fake, allLocs
+    
+    else:
+        print("======EXIT===== No coordinates mapped to define a graph")
+        return [], [], [], []
+    
+# %%
+def asisTobeBubblePopDist(D_results):
+    D_results['distance'] = D_results['distance'].astype(float)
+    
+    #ASIS GRAPH
+    D_graph=D_results.groupby(['idNode']).agg({'popularity':['sum'],'distance':['mean']}).reset_index()
+    D_graph.columns = ['idNode','popularity','distance']
+    
+    output_figures={}
+    fig1 = plt.figure()
+    plt.scatter(D_graph['distance'],D_graph['popularity'])
+    plt.xlabel('Distance (m)')
+    plt.ylabel('Popularity')
+    plt.title("AS-IS configuration")
+    output_figures['pop_dist_asis'] = fig1
+    
+    #TOBE GRAPH
+    D_results['new_distance'] = D_results['new_distance'].astype(float)
+    D_graph=D_results.groupby(['new_idNode']).agg({'popularity':['sum'],'new_distance':['mean']}).reset_index()
+    D_graph.columns = ['idNode','popularity','distance']
+    
+    
+    fig2 = plt.figure()
+    plt.scatter(D_graph['distance'],D_graph['popularity'])
+    plt.xlabel('Distance (m)')
+    plt.ylabel('Popularity')
+    plt.title("TO-BE configuration")
+    output_figures['pop_dist_tobe'] = fig2
+    return output_figures
