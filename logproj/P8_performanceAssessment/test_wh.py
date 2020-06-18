@@ -221,7 +221,7 @@ fig1 = printGraph(G,
            D_layout=D_layout)
 fig1.savefig(path_current+"//layout_graph.png") 
 
-# %% DEFINA TRAFFIC CHART
+# %% DEFINE TRAFFIC CHART
 fig2 = printGraph(G, 
            distance, 
            weight, 
