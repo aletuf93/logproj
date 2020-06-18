@@ -66,6 +66,7 @@ def generateWarehouseData(num_SKUs = 100,
             self.LOCCODEZ = loccodez
             
             self.ORDERCODE = ordercode
+            self.PICKINGLIST = ordercode
             self.QUANTITY = quantity
             self.VOLUME = volume*quantity
             self.WEIGHT = weight*quantity
