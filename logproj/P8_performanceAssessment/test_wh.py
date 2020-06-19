@@ -301,7 +301,7 @@ D_loc=calculateStorageLocationsDistance(D_loc,input_loccodex, input_loccodey, ou
 
 
 
-# %% calculate storafe locations classes
+# %% calculate storage locations classes
 
 from logproj.P2_assignmentProblem.warehousing_ABC_saving import defineABCclassesOfStorageLocations 
 AclassPerc = 0.20
@@ -317,7 +317,7 @@ BclassPerc = 0.50
 D_assignment = defineABCclassesOfParts(D_SKUs,columnWeightList, AclassPerc = AclassPerc, BclassPerc = BclassPerc)
 D_assignment.to_excel(path_current+f"\\locations assignment.xlsx")
 
-# %%
+# %% calculate saving for different Pareto cuts
 from logproj.P8_performanceAssessment.wh_inventory_assessment import plotSavingABCclass
 p =max(D_loc['LOCCODEX']) - min(D_loc['LOCCODEX'])
 q =max(D_loc['LOCCODEY']) - min(D_loc['LOCCODEY'])
