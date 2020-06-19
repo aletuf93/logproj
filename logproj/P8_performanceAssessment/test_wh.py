@@ -249,7 +249,31 @@ from logproj.P6_placementProblem.warehouse_graph_definition import asisTobeBubbl
 output_figures = asisTobeBubblePopDist(D_results)
 for key in output_figures.keys():
         output_figures[key].savefig(path_current+f"\\{key}.png") 
+        
+        
+# %% STUDY CORRELATIONS
+_, path_current = creaCartella(path_results,f"Correlations")
+from logproj.P8_performanceAssessment.wh_inventory_assessment import buildLearningTablePickList
+# extract learning table for each picking list
+D_learning=buildLearningTablePickList(D_movements)
+D_learning.to_excel(path_results+"\\learning table.xlsx")
 
+# %% histograms
+from logproj.P8_performanceAssessment.wh_inventory_assessment import histogramKeyVars
+output_figures = histogramKeyVars(D_learning)
+for key in output_figures.keys():
+        output_figures[key].savefig(path_current+f"\\{key}.png") 
+
+
+# %% correlation matrices
+from logproj.P8_performanceAssessment.wh_inventory_assessment import exploreKeyVars
+output_figures = exploreKeyVars(D_learning)
+for key in output_figures.keys():
+        output_figures[key].savefig(path_current+f"\\{key}.png") 
+
+
+
+# %%
 
 
 
