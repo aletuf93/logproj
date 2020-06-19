@@ -256,7 +256,7 @@ _, path_current = creaCartella(path_results,f"Correlations")
 from logproj.P8_performanceAssessment.wh_inventory_assessment import buildLearningTablePickList
 # extract learning table for each picking list
 D_learning=buildLearningTablePickList(D_movements)
-D_learning.to_excel(path_results+"\\learning table.xlsx")
+D_learning.to_excel(path_current+"\\learning table.xlsx")
 
 # %% histograms
 from logproj.P8_performanceAssessment.wh_inventory_assessment import histogramKeyVars

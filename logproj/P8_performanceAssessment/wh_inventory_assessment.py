@@ -615,19 +615,36 @@ def buildLearningTablePickList(D_movements):
 
 def histogramKeyVars(D_learning):
     output_figure={}
+    
+    
+    
     columnToAnalyse = list(D_learning.columns)
     columnToAnalyse.remove('NODECODE')
     columnToAnalyse.remove('PICKINGLIST')
     columnToAnalyse.remove('INOUT')
     
+    #split inbound and outbound
+    D_learning_positive = D_learning[D_learning['INOUT']=='+']
+    D_learning_negative = D_learning[D_learning['INOUT']=='-']
+    
     for col in columnToAnalyse:
+        
+        #inbound
         fig = plt.figure()
-        plt.hist(D_learning[col])
-        plt.title(f"Histogram: {col}")
+        plt.hist(D_learning_positive[col])
+        plt.title(f"Histogram: {col}, INBOUND")
         plt.xlabel(f"{col}")
         plt.ylabel("frequency")
+        output_figure[f"{col}_inbound_histogram"]=fig
         
-        output_figure[f"{col}_histogram"]=fig
+        #outbound
+        fig = plt.figure()
+        plt.hist(D_learning_negative[col])
+        plt.title(f"Histogram: {col}, OUTBOUND")
+        plt.xlabel(f"{col}")
+        plt.ylabel("frequency")
+        output_figure[f"{col}_outbound_histogram"]=fig
+        
     return output_figure
 
 # %%
