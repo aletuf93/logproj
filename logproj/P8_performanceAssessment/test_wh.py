@@ -173,7 +173,7 @@ D_global_inventory = updateGlobalInventory(D_SKUs,inventoryColumn='INVNETORY_QTY
 D_global_inventory.to_excel(path_current+"\\global inventory.xlsx")
 
         
-# %% analyse the inventory behavious
+# %% analyse the inventory behaviour
 from logproj.P8_performanceAssessment.wh_inventory_assessment import inventoryAnalysis
 
 output_figures = inventoryAnalysis(D_global_inventory)
@@ -273,7 +273,58 @@ for key in output_figures.keys():
 
 
 
+# %% ALLOCATION EQS, EQT, OPT
+_, path_current = creaCartella(path_results,f"Allocation")
+
+from logproj.P5_powerProblem.warehouseAllocation import AllocateSKUs
+
+D_allocation = AllocateSKUs(D_movements, D_SKUs)
+D_allocation.to_excel(path_current+"\\allocation continuous.xlsx")
+
+# %% DISCRETE ALLOCATION
+from logproj.P5_powerProblem.warehouseAllocation import discreteAllocationParts
+
+availableSpacedm3 = 10000 #available space in dm3
+for method in ['EQS', 'EQT', 'OPT']:
+    D_allocated = discreteAllocationParts(D_allocation, availableSpacedm3, method='OPT')
+    D_allocated.to_excel(path_current+f"\\discrete allocation {method}.xlsx")
+
+# %% ASSIGNMENT
+from logproj.P6_placementProblem.warehouse_graph_definition import calculateStorageLocationsDistance, extractIoPoints
+_, path_current = creaCartella(path_results,f"Assignment")
+
+#prepare input table locations
+D_loc = D_layout.append(D_IO)
+D_loc.columns=[i.upper() for i in D_loc.columns ]
+input_loccodex, input_loccodey, output_loccodex, output_loccodey = extractIoPoints(D_loc)
+D_loc=calculateStorageLocationsDistance(D_loc,input_loccodex, input_loccodey, output_loccodex, output_loccodey)
+
+
+
+# %% calculate storafe locations classes
+
+from logproj.P2_assignmentProblem.warehousing_ABC_saving import defineABCclassesOfStorageLocations 
+AclassPerc = 0.20
+BclassPerc = 0.50
+D_loc = defineABCclassesOfStorageLocations(D_loc, AclassPerc=AclassPerc, BclassPerc=BclassPerc)
+D_loc.to_excel(path_current+f"\\locations assignment.xlsx")
+
+# %% calculate part classes
+from logproj.P2_assignmentProblem.warehousing_ABC_saving import defineABCclassesOfParts
+columnWeightList=['POP_IN','POP_OUT']
+AclassPerc = 0.20
+BclassPerc = 0.50
+D_assignment = defineABCclassesOfParts(D_SKUs,columnWeightList, AclassPerc = AclassPerc, BclassPerc = BclassPerc)
+D_assignment.to_excel(path_current+f"\\locations assignment.xlsx")
+
 # %%
+from logproj.P8_performanceAssessment.wh_inventory_assessment import plotSavingABCclass
+p =max(D_loc['LOCCODEX']) - min(D_loc['LOCCODEX'])
+q =max(D_loc['LOCCODEY']) - min(D_loc['LOCCODEY'])
+
+figure_output=plotSavingABCclass(p,q,D_SKUs)
+for key in figure_output.keys():
+        figure_output[key].savefig(path_current+f"\\{key}.png") 
 
 
 

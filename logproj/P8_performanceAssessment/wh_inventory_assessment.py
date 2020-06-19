@@ -16,6 +16,9 @@ import logproj.stat_time_series as ts
 from logproj.information_framework import returnInventoryPart
 from logproj.information_framework import returnProbabilisticInventory
 
+
+from logproj.P2_assignmentProblem.warehousing_ABC_saving import calculateABCsaving
+
 from logproj.ml_explore import paretoDataframe
 
 
@@ -681,4 +684,43 @@ def exploreKeyVars(D_learning):
     output_figures['correlation_outbound'] = fig
     
     return output_figures
+
+
+# %%
+def plotSavingABCclass(p,q,D_SKUs):
+    figure_output={}
+    
+    #calculate saving
+    soglieA, soglieB, SAVING_IN, SAVING_OUT,best_A,best_B, SAV_TOT  = calculateABCsaving(p,q,D_SKUs)
+    
+    #inbound saving
+    fig1 = plt.figure()
+    ax = fig1.add_subplot(111, projection='3d')
+    ax.scatter(soglieA,
+                soglieB,
+                SAVING_IN
+                
+                       )
+    
+    plt.xlabel("A class threshold")
+    plt.ylabel("B class threshold")
+    plt.title("Inbound saving ")
+    figure_output[f"IN_saving_ABC_inbound"] = fig1
+    
+    #outbound saving
+    fig1 = plt.figure()
+    ax = fig1.add_subplot(111, projection='3d')
+    ax.scatter(soglieA,
+                soglieB,
+                SAVING_OUT
+                
+                       )
+                   
+    plt.xlabel("A class threshold")
+    plt.ylabel("B class threshold")
+    plt.title("Outbound saving ")
+    figure_output[f"IN_saving_ABC_outbound"] = fig1
+    
+    return figure_output
+
 
