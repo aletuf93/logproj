@@ -40,7 +40,7 @@ def generateWarehouseData(num_SKUs = 100,
     #% CLASS STORAGE LOCATION
     class STORAGE_LOCATION():
         
-        def __init__(self,nodecode, idwh, whsubarea, idlocation, loccodex, loccodey, loccodez):
+        def __init__(self,nodecode, idwh, whsubarea, idlocation, loccodex, loccodey, loccodez, rack, bay, level):
             
             self.NODECODE = nodecode
             self.IDWH = idwh
@@ -49,6 +49,9 @@ def generateWarehouseData(num_SKUs = 100,
             self.LOCCODEX = loccodex
             self.LOCCODEY = loccodey
             self.LOCCODEZ = loccodez
+            self.RACK = rack
+            self.BAY = bay 
+            self.LEVEL = level
             
             
     # % CLASS MOVEMENTS 
@@ -111,7 +114,16 @@ def generateWarehouseData(num_SKUs = 100,
                 LOCCODEZ = livello*alt_livello
                 
                 #create storage location
-                dict_locations[idlocation] = STORAGE_LOCATION(NODECODE, IDWH, WHSUBAREA, IDLOCATION, LOCCODEX, LOCCODEY, LOCCODEZ)
+                dict_locations[idlocation] = STORAGE_LOCATION(NODECODE, 
+                                                              IDWH, 
+                                                              WHSUBAREA, 
+                                                              IDLOCATION, 
+                                                              LOCCODEX, 
+                                                              LOCCODEY, 
+                                                              LOCCODEZ, 
+                                                              corsia, 
+                                                              campata, 
+                                                              livello)
              
     # %% CREATE MOVEMENTS
     
