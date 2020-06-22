@@ -14,127 +14,6 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-def filterD_pop(D_pop, listVehicle, listSubarea, listIdwh, nodeCode):
-    esito=True
-    errore=""
-
-    ####################### get orderlist ######################################
-    D_pop_filtered=D_pop
-
-    #filter by nodecode
-    D_pop_filtered=D_pop_filtered[D_pop_filtered['NODECODE'].isin([nodeCode])]
-    if len(D_pop_filtered)==0: # no SKU descriptions in this nodecode
-        esito=False
-        errore=f'There are no movements associated to the node code: {nodeCode}'
-        return esito, errore, []
-
-    #filter by idwh
-    if len(listIdwh)>0:
-        D_pop_filtered=D_pop_filtered[D_pop_filtered['IDWH'].isin(listIdwh)]
-        if len(D_pop_filtered)==0: # no SKU descriptions in this Idwh
-            esito=False
-            errore=f'There are no movements associated to the selected idwh'
-            return esito, errore, []
-
-    #filter by subarea
-    if len(listSubarea)>0:
-        D_pop_filtered=D_pop_filtered[D_pop_filtered['WHSUBAREA'].isin(listSubarea)]
-        if len(D_pop_filtered)==0: # no SKU descriptions in this whsubarea
-            esito=False
-            errore=f'There are no movements associated to the selected logical warehouses (whsubarea)'
-            return esito, errore, []
-
-    #filter by vehicle
-    if len(listVehicle)>0:
-        D_pop_filtered=D_pop_filtered[D_pop_filtered['VEHICLECATEGORY'].isin(listVehicle)]
-        if len(D_pop_filtered)==0: # no SKU descriptions in this vehicle
-            esito=False
-            errore=f'There are no movements associated to the selected vehicle'
-            return esito, errore, []
-
-    D_pop_filtered=D_pop_filtered.reset_index()
-
-    return esito,errore,D_pop_filtered
-
-
-def filterD_popD_WH(D_pop,D_WH, listVehicle, listSubarea, listIdwh, nodeCode):
-    esito=True
-    errore=""
-
-    ####################### get orderlist ######################################
-    D_pop_filtered=D_pop
-
-    #filter by nodecode
-    D_pop_filtered=D_pop_filtered[D_pop_filtered['NODECODE'].isin([nodeCode])]
-    if len(D_pop_filtered)==0: # no SKU descriptions in this nodecode
-        esito=False
-        errore=f'There are no movements associated to the node code: {nodeCode}'
-        return esito, errore, [],[],[]
-
-    #filter by idwh
-    if len(listIdwh)>0:
-        D_pop_filtered=D_pop_filtered[D_pop_filtered['IDWH'].isin(listIdwh)]
-        if len(D_pop_filtered)==0: # no SKU descriptions in this Idwh
-            esito=False
-            errore=f'There are no movements associated to the selected idwh'
-            return esito, errore, [],[],[]
-
-    #filter by subarea
-    if len(listSubarea)>0:
-        D_pop_filtered=D_pop_filtered[D_pop_filtered['WHSUBAREA'].isin(listSubarea)]
-        if len(D_pop_filtered)==0: # no SKU descriptions in this whsubarea
-            esito=False
-            errore=f'There are no movements associated to the selected logical warehouses (whsubarea)'
-            return esito, errore, [],[],[]
-
-    #filter by vehicle
-    if len(listVehicle)>0:
-        D_pop_filtered=D_pop_filtered[D_pop_filtered['VEHICLECATEGORY'].isin(listVehicle)]
-        if len(D_pop_filtered)==0: # no SKU descriptions in this vehicle
-            esito=False
-            errore=f'There are no movements associated to the selected vehicle'
-            return esito, errore, [],[],[]
-
-    D_pop_filtered=D_pop_filtered.reset_index()
-
-    ########################## get P and Q #############################################à
-    D_WH_filtered=D_WH
-
-    #filter by nodecode
-    D_WH_filtered=D_WH_filtered[D_WH_filtered['NODECODE'].isin([nodeCode])]
-    if len(D_WH_filtered)==0: # no SKU descriptions in this nodecode
-        esito=False
-        errore=f'There are no coordinates (locations table) associated to the node code: {nodeCode}'
-        return esito, errore, [],[],[]
-
-    #filter by idwh
-    if len(listIdwh)>0:
-        D_WH_filtered=D_WH_filtered[D_WH_filtered['IDWH'].isin(listIdwh)]
-        if len(D_WH_filtered)==0: # no SKU descriptions in this Idwh
-            esito=False
-            errore=f'There are no coordinates (locations table) associated to the selected idwh'
-            return esito, errore, [],[],[]
-
-    #filter by subarea
-    if len(listSubarea)>0:
-        D_WH_filtered=D_WH_filtered[D_WH_filtered['WHSUBAREA'].isin(listSubarea)]
-        if len(D_WH_filtered)==0: # no SKU descriptions in this whsubarea
-            esito=False
-            errore=f'There are no coordinates (locations table) associated to the selected logical warehouses (whsubarea)'
-            return esito, errore, [],[],[]
-
-    #filter by vehicle
-    if len(listVehicle)>0:
-        D_WH_filtered=D_WH_filtered[D_WH_filtered['VEHICLECATEGORY'].isin(listVehicle)]
-        if len(D_WH_filtered)==0: # no SKU descriptions in this vehicle
-            esito=False
-            errore=f'There are no coordinates (locations table) associated to the selected vehicle'
-            return esito, errore, [],[],[]
-
-    D_WH_filtered=D_WH_filtered.reset_index()
-    P=np.nanmax(D_WH_filtered.P)
-    Q=np.nanmax(D_WH_filtered.Q)
-    return esito,errore,D_pop_filtered,P,Q
 
 # In[1]:
 def calculateABCsaving(p,q,D_parts):
@@ -460,3 +339,40 @@ def defineABCclassesOfParts(D_parts,columnWeightList, AclassPerc = .2, BclassPer
             D_parts.iloc[i,D_parts.columns.get_loc('CLASS')] = 'C'
             
     return D_parts
+
+# %%
+def plotSavingABCclass(p,q,D_SKUs):
+    figure_output={}
+    
+    #calculate saving
+    soglieA, soglieB, SAVING_IN, SAVING_OUT,best_A,best_B, SAV_TOT  = calculateABCsaving(p,q,D_SKUs)
+    
+    #inbound saving
+    fig1 = plt.figure()
+    ax = fig1.add_subplot(111, projection='3d')
+    ax.scatter(soglieA,
+                soglieB,
+                SAVING_IN
+                
+                       )
+    
+    plt.xlabel("A class threshold")
+    plt.ylabel("B class threshold")
+    plt.title("Inbound saving ")
+    figure_output[f"IN_saving_ABC_inbound"] = fig1
+    
+    #outbound saving
+    fig1 = plt.figure()
+    ax = fig1.add_subplot(111, projection='3d')
+    ax.scatter(soglieA,
+                soglieB,
+                SAVING_OUT
+                
+                       )
+                   
+    plt.xlabel("A class threshold")
+    plt.ylabel("B class threshold")
+    plt.title("Outbound saving ")
+    figure_output[f"IN_saving_ABC_outbound"] = fig1
+    
+    return figure_output

@@ -279,7 +279,7 @@ def returnInventoryPart(D_movements, D_inventory, timeLineDays,quantityColums='Q
 
 
 
-
+# %%
 def movementfunctionfromInventory(I_t_cleaned):
     '''
 
@@ -301,7 +301,7 @@ def movementfunctionfromInventory(I_t_cleaned):
     M_t=pd.DataFrame(M_t,columns=['QUANTITY'])
     return M_t
 
-# %%
+# %% measure the interarrival time between inbound activities
 
 def assessInterarrivalTime(I_t):
     #remove nan values
@@ -322,4 +322,100 @@ def assessInterarrivalTime(I_t):
     mean_interarrival_time_in = np.mean(interarrival_time)
     std_interarrival_time_in = np.std(interarrival_time)
     return mean_interarrival_time_in, std_interarrival_time_in, interarrival_time
-#%% ESTIMATE INVENTORY FUNCTION
+
+# %%
+def updatePartInventory(D_SKUs,D_movements,D_inventory,timecolumn_mov,itemcodeColumns_sku,itemcodeColumns_mov,itemcodeColumns_inv):
+
+    D_SKUs['INVENTORY_QTY'] = [[] for i in range(0,len(D_SKUs))]
+    D_SKUs['INVENTORY_DAYS'] = [[] for i in range(0,len(D_SKUs))]
+
+    #  define the inventory quantity
+    firstDay = min(D_movements[timecolumn_mov]).date()
+    lastDay = max(D_movements[timecolumn_mov]).date()
+    timeLine = pd.date_range(start=firstDay, end=lastDay).to_frame()
+    timeLineDays= ts.sampleTimeSeries(timeLine[0],'day').to_frame()
+    timeLineDays.columns=['TIMELINE']
+
+    D_SKUs = D_SKUs.reset_index(drop=True)
+    #  Build a daily inventory array for each part
+    for index, row in D_SKUs.iterrows():
+        #print(part)
+        #part = list(set(D_mov['ITEMCODE']))[0]
+        part = row[itemcodeColumns_sku]
+
+        #filter movements by itemcode
+        D_mov_part = D_movements[D_movements[itemcodeColumns_mov]==part]
+
+        #filter inventory by itemcode
+        D_inv_part = D_inventory[D_inventory[itemcodeColumns_inv]==part]
+
+        array_days, array_inventory = returnInventoryPart(D_mov_part, D_inv_part, timeLineDays)
+        #plt.plot(array_days,array_inventory)
+
+        #update the dataframe
+        D_SKUs.at[index,'INVENTORY_QTY'] = array_inventory
+        D_SKUs.at[index,'INVENTORY_DAYS'] = array_days
+    return D_SKUs
+
+# %% UPDATE INVENTORY PARAMETERS
+
+def updateInventoryParams(D_SKUs):
+
+    #create result columns
+    D_SKUs['INVENTORY_REAL_MIN']=np.nan
+    D_SKUs['INVENTORY_REAL_MAX']=np.nan
+    D_SKUs['INVENTORY_REAL_AVG']=np.nan
+    D_SKUs['INVENTORY_REAL_STD']=np.nan
+    D_SKUs['INVENTORY_PROB_MIN']=np.nan
+    D_SKUs['INVENTORY_PROB_MAX']=np.nan
+    D_SKUs['INVENTORY_PROB_AVG']=np.nan
+    D_SKUs['INVENTORY_PROB_STD']=np.nan
+
+    for index, row in D_SKUs.iterrows():
+        #select inventory curve
+        I_t = D_SKUs.loc[index]['INVENTORY_QTY']
+        #calculate the popularity
+        movements = movementfunctionfromInventory(I_t)
+        movements=movements.dropna()
+        if len(movements)>0:
+            min_real_I_t, max_real_I_t, avg_real_I_t, std_real_I_t, min_probabilistic_I_t, max_probabilistic_I_t, avg_probabilistic_I_t, std_probabilistic_I_t = returnProbabilisticInventory(I_t)
+
+            #update the dataframe
+
+            D_SKUs.at[index,'INVENTORY_REAL_MIN']=min_real_I_t
+            D_SKUs.at[index,'INVENTORY_REAL_MAX']=max_real_I_t
+            D_SKUs.at[index,'INVENTORY_REAL_AVG']=avg_real_I_t
+            D_SKUs.at[index,'INVENTORY_REAL_STD']=std_real_I_t
+            D_SKUs.at[index,'INVENTORY_PROB_MIN']=min_probabilistic_I_t
+            D_SKUs.at[index,'INVENTORY_PROB_MAX']=max_probabilistic_I_t
+            D_SKUs.at[index,'INVENTORY_PROB_AVG']=avg_probabilistic_I_t
+            D_SKUs.at[index,'INVENTORY_PROB_STD']=std_probabilistic_I_t
+
+
+    return D_SKUs
+
+
+# %% UPDATE INTERARRIVAL TIME
+
+def updateInterarrivalTime(D_SKUs):
+
+    #create result columns
+    D_SKUs['INTERARRIVAL_MEAN_IN']=np.nan
+    D_SKUs['INTERARRIVAL_STD_IN']=np.nan
+
+
+    for index, row in D_SKUs.iterrows():
+        #select inventory curve
+        I_t = D_SKUs.loc[index]['INVENTORY_QTY']
+        #calculate the popularity
+        movements = movementfunctionfromInventory(I_t)
+        movements=movements.dropna()
+        if len(movements)>0:
+            mean_interarrival_time_in, std_interarrival_time_in, _ = assessInterarrivalTime(I_t)
+
+            #update the dataframe
+
+            D_SKUs.at[index,'INTERARRIVAL_MEAN_IN']=mean_interarrival_time_in
+            D_SKUs.at[index,'INTERARRIVAL_STD_IN']=std_interarrival_time_in
+
+    return D_SKUs
