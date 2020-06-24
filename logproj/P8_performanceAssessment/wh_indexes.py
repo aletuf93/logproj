@@ -295,7 +295,7 @@ def whIndexParetoPlot(D_SKUs,columnIndex):
 
     #build the pareto figures
     fig1 = plt.figure()
-    plt.plot(np.arange(0,len(D_SKUs_pop)),D_SKUs_pop[f"{columnIndex}_CUM"])
+    plt.plot(np.arange(0,len(D_SKUs_pop)),D_SKUs_pop[f"{columnIndex}_CUM"],color='orange')
     plt.title(f"{columnIndex} Pareto curve")
     plt.xlabel("N. of SKUs")
     plt.ylabel("Popularity percentage")
@@ -305,7 +305,7 @@ def whIndexParetoPlot(D_SKUs,columnIndex):
 
 
     fig2 = plt.figure()
-    plt.hist(D_SKUs_pop[columnIndex])
+    plt.hist(D_SKUs_pop[columnIndex],color='orange')
     plt.title(f"{columnIndex} histogram")
     plt.xlabel(f"{columnIndex}")
     plt.ylabel("Frequency")

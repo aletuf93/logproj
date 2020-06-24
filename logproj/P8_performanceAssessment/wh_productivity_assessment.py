@@ -195,7 +195,7 @@ def timeProductivity(D_movements,variableToPlot, inout_column):
      
         fig1 = plt.figure()
         plt.plot(D_loc_positive['PERIOD'],
-                 D_loc_positive['MOVEMENTS'])
+                 D_loc_positive['MOVEMENTS'],color='orange')
         plt.title(f"Warehouse INBOUND productivity")
         plt.xticks(rotation=45)
         plt.xlabel("Timeline")
@@ -207,7 +207,7 @@ def timeProductivity(D_movements,variableToPlot, inout_column):
      
         fig1 = plt.figure()
         plt.plot(D_loc_negative['PERIOD'],
-                 D_loc_negative['MOVEMENTS'])
+                 D_loc_negative['MOVEMENTS'],color='orange')
         plt.title(f"Warehouse OUTBOUND productivity")
         plt.xticks(rotation=45)
         plt.xlabel("Timeline")

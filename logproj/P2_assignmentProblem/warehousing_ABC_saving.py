@@ -353,7 +353,7 @@ def plotSavingABCclass(p,q,D_SKUs):
     ax = fig1.add_subplot(111, projection='3d')
     ax.scatter(soglieA,
                 soglieB,
-                SAVING_IN
+                SAVING_IN, color='orange'
                 
                        )
     
@@ -367,7 +367,7 @@ def plotSavingABCclass(p,q,D_SKUs):
     ax = fig1.add_subplot(111, projection='3d')
     ax.scatter(soglieA,
                 soglieB,
-                SAVING_OUT
+                SAVING_OUT,color='orange'
                 
                        )
                    

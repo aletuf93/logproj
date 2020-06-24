@@ -1030,7 +1030,7 @@ def returnbubbleGraphAsIsToBe(D_results):
     D_graph['size'] = normaliseVector(D_graph['sum'])*100
     
     fig1 = plt.figure()
-    plt.scatter(D_graph.loccodex, D_graph.loccodey, D_graph['size'])
+    plt.scatter(D_graph.loccodex, D_graph.loccodey, D_graph['size'],color='orange')
     plt.title("Warehouse as-is")
     figure_out['pick_layout_asis']=fig1
     
@@ -1040,7 +1040,7 @@ def returnbubbleGraphAsIsToBe(D_results):
     D_graph['size'] = normaliseVector(D_graph['sum'])*100
     
     fig2=plt.figure()
-    plt.scatter(D_graph.loccodexTOBE, D_graph.loccodeyTOBE, D_graph['size'])
+    plt.scatter(D_graph.loccodexTOBE, D_graph.loccodeyTOBE, D_graph['size'],color='orange')
     plt.title("Warehouse to-be")
     figure_out['pick_layout_tobe']=fig2
     
@@ -1221,7 +1221,7 @@ def asisTobeBubblePopDist(D_results):
     
     output_figures={}
     fig1 = plt.figure()
-    plt.scatter(D_graph['distance'],D_graph['popularity'])
+    plt.scatter(D_graph['distance'],D_graph['popularity'],color='orange')
     plt.xlabel('Distance (m)')
     plt.ylabel('Popularity')
     plt.title("AS-IS configuration")
@@ -1234,7 +1234,7 @@ def asisTobeBubblePopDist(D_results):
     
     
     fig2 = plt.figure()
-    plt.scatter(D_graph['distance'],D_graph['popularity'])
+    plt.scatter(D_graph['distance'],D_graph['popularity'],color='orange')
     plt.xlabel('Distance (m)')
     plt.ylabel('Popularity')
     plt.title("TO-BE configuration")

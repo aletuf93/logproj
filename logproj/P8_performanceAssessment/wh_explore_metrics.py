@@ -64,7 +64,7 @@ def histogramKeyVars(D_learning):
         
         #inbound
         fig = plt.figure()
-        plt.hist(D_learning_positive[col])
+        plt.hist(D_learning_positive[col],color='orange')
         plt.title(f"Histogram: {col}, INBOUND")
         plt.xlabel(f"{col}")
         plt.ylabel("frequency")
@@ -72,7 +72,7 @@ def histogramKeyVars(D_learning):
         
         #outbound
         fig = plt.figure()
-        plt.hist(D_learning_negative[col])
+        plt.hist(D_learning_negative[col],color='orange')
         plt.title(f"Histogram: {col}, OUTBOUND")
         plt.xlabel(f"{col}")
         plt.ylabel("frequency")

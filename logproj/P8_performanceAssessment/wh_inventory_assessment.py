@@ -61,7 +61,7 @@ def inventoryAnalysis(D_global_inventory):
 
     #histogram
     fig1 = plt.figure()
-    plt.hist(D_global_inventory['WH_INVENTORY_VOLUME'])
+    plt.hist(D_global_inventory['WH_INVENTORY_VOLUME'],color='orange')
     plt.xlabel('Inventory values')
     plt.ylabel('Frequency')
     plt.title('Inventory histogram')
@@ -69,7 +69,7 @@ def inventoryAnalysis(D_global_inventory):
     output_figures['INVENTORY_HIST']=fig1
 
     fig2 = plt.figure()
-    plt.hist(D_global_inventory['WH_INVENTORY_NORMALISED'])
+    plt.hist(D_global_inventory['WH_INVENTORY_NORMALISED'],color='orange')
     plt.xlabel('Normalised Inventory values')
     plt.ylabel('Frequency')
     plt.title('Normalised inventory histogram')
@@ -77,7 +77,7 @@ def inventoryAnalysis(D_global_inventory):
 
     #trend
     fig3 = plt.figure()
-    plt.plot(D_global_inventory.index,D_global_inventory['WH_INVENTORY_VOLUME'])
+    plt.plot(D_global_inventory.index,D_global_inventory['WH_INVENTORY_VOLUME'],color='orange')
     plt.xlabel('Timeline')
     plt.ylabel('Inventory values')
     plt.title('Inventory time series')
@@ -85,7 +85,7 @@ def inventoryAnalysis(D_global_inventory):
     output_figures['INVENTORY_TS']=fig3
 
     fig4 = plt.figure()
-    plt.plot(D_global_inventory.index,D_global_inventory['WH_INVENTORY_NORMALISED'])
+    plt.plot(D_global_inventory.index,D_global_inventory['WH_INVENTORY_NORMALISED'],color='orange')
     plt.xlabel('Timeline')
     plt.ylabel('Normalised inventory values')
     plt.title('Normalised inventory time series')
@@ -96,7 +96,7 @@ def inventoryAnalysis(D_global_inventory):
 
     cdf_inventory = cumulativeFunction(D_global_inventory['WH_INVENTORY_NORMALISED'])
     fig5 = plt.figure()
-    cdf_inventory.plot(drawstyle='steps')
+    cdf_inventory.plot(drawstyle='steps',color='orange')
     plt.xlabel('Normalised inventory values')
     plt.ylabel('Probability')
     plt.title('Normalised inventory cumulative probability function')
@@ -104,7 +104,7 @@ def inventoryAnalysis(D_global_inventory):
 
     cdf_inventory = cumulativeFunction(D_global_inventory['WH_INVENTORY_VOLUME'])
     fig6 = plt.figure()
-    cdf_inventory.plot(drawstyle='steps')
+    cdf_inventory.plot(drawstyle='steps',color='orange')
     plt.xlabel('Inventory values')
     plt.ylabel('Probability')
     plt.title('Inventory cumulative probability function')
