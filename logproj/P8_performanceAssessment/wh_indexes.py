@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import numpy as np
+import matplotlib.pyplot as plt
 
 import logproj.stat_time_series as ts
 from logproj.information_framework import movementfunctionfromInventory
+from logproj.ml_explore import paretoDataframe
 
 # %% POPULARITY INDEX
 def calculatePopularity(movements):
