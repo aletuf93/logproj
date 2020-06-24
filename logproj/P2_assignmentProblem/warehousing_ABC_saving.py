@@ -9,6 +9,7 @@ Created on Fri May 17 10:07:31 2019
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 import warnings
 warnings.filterwarnings('ignore')

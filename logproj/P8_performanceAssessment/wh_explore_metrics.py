@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-imprt matplotlib.pyplot as plt
-import seabors as sn
+import matplotlib.pyplot as plt
+import seaborn as sn
 
 
 # %%
