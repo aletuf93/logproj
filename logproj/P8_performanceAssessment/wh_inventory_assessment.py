@@ -111,6 +111,33 @@ def inventoryAnalysis(D_global_inventory):
     output_figures['INVENTORY_CUM']=fig6
     return output_figures
 
+def defineStockoutCurve(inventorySeries):
+
+    def cumulativeFunction(ser):
+            ser = ser.sort_values()
+            cum_dist = np.linspace(0.,1.,len(ser))
+            ser_cdf = pd.Series(cum_dist, index=ser)
+            return ser_cdf
+        
+    output_figure={}
+    
+    #calculate the cumulative and the risk
+    cumulative = cumulativeFunction(inventorySeries)
+    risk = 1 - cumulative
+    
+    #plot the curve
+    fig1 = plt.figure()
+    plt.plot(cumulative.index, cumulative.values, drawstyle='steps', color='skyblue')
+    plt.plot(risk.index, risk.values, drawstyle='steps', color='orange')
+    plt.legend(['Cumulative distribution function','Stockout risk'])
+    plt.title("Stockout risk function")
+    plt.xlabel("Inventory value")
+    plt.ylabel("Risk or probability")
+    
+    output_figure['stockout curve'] = fig1
+    
+    return output_figure
+
 
 
 
