@@ -1,6 +1,7 @@
 \documentclass{book}
 \usepackage[utf8]{inputenc}
-\usepackage[paperheight=23.5cm,paperwidth=16.5cm,margin=2.5cm,heightrounded, showframe]{geometry}
+\usepackage[paperheight=23.5cm,paperwidth=16.5cm,margin=2.5cm,heightrounded]{geometry}
+% use attribute showframe to show the page frames
 %\usepackage[a4paper,margin=2.5cm,heightrounded, showframe]{geometry}
 
 %bibliography for each chapter
@@ -41,10 +42,16 @@
 %package per simbolo gradi celsius
 \usepackage{gensymb}
 
+%package per caratteri greci
+\usepackage[greek,english]{babel}
 
-%PAckage draft watermark
+%package per tabelle
+\usepackage{booktabs}
+
+
+%Package draft watermark
 \usepackage{draftwatermark}
-\SetWatermarkText{draft version 0.8}
+\SetWatermarkText{draft version 0.9}
 \SetWatermarkColor[rgb]{1,1,0.8}
 \SetWatermarkScale{3}
 
@@ -85,9 +92,11 @@
 
 %part 1
 \part{DATA-DRIVEN MODELLING}
-\include{SectionIntroduction/dataDrivenModelling}
+\include{SectionIntroduction/introduction}
+\include{SectionIntroduction/researchBackground}
 \include{SectionIntroduction/informationFramework}
 \include{SectionIntroduction/dataDrivenDecisions}
+
 
 
 %part 2
@@ -106,9 +115,9 @@
 
 %part 3
 \part{DISTRIBUTION SYSTEMS}
-%\include{SectionDistribution/diagnosticModels}
-%\include{SectionDistribution/control}
-%\include{SectionDistribution/design}
+\include{SectionDistribution/diagnosticModels}
+\include{SectionDistribution/control}
+\include{SectionDistribution/design}
 
 
 %part 4
@@ -120,9 +129,11 @@
 
 %part 5
 \part{PRODUCTION SYSTEMS}
-%\include{sectionProduction/diagnosticModels}
-%\include{sectionProduction/control}
-%\include{sectionProduction/design_plant}
-%\include{sectionProduction/design_process}
+\include{sectionProduction/diagnosticModels}
+\include{sectionProduction/control}
+\include{sectionProduction/design_plant}
+\include{sectionProduction/design_process}
+
+
 
 \end{document}

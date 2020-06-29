@@ -150,7 +150,7 @@ Each marginal density distribution can be estimated using one-dimensional kernel
 \label{eq_naiveBayes3}
 \end{equation}
 
-\subsection{Markov Chain}
+\subsection{Markov Chain} \label{secMarkovChain}
 The hypothesis of the independence between the input variables is hardly often valid. On the other side, the definition of an accurate joint probability distribution requires a huge amount of data and a significant computational time. To overcome these obstacles, Markov chains assume that the probability of an event only depends on the current state of a system. \par
 
 The p attributes of the input dataset $X$ define the state of a system, and they are linked together by a transition probability. This way, even if the number of features $p$ is high, the number of transition probabilities $t$ calculate is still limited. Figure \ref{fig_markovChain} introduce the graphical model of a Markov chain, whose information content is described by a transition matrix $T$ with states $i$ and $j$ as rows and columns labels. The entries $t_{ij}\in T$ identifies the probabilities from $i$ to $j$.
