@@ -51,22 +51,33 @@
 
 %Package draft watermark
 \usepackage{draftwatermark}
-\SetWatermarkText{draft version 0.9}
+\SetWatermarkText{Draft Version 1.0}
 \SetWatermarkColor[rgb]{1,1,0.8}
 \SetWatermarkScale{3}
 
 
-\title{thesis}
-\author{aletuf }
-\date{April 2020}
+%Chapter style
+%Options: Sonny, Lenny, Glenn, Conny, Rejne, Bjarne, Bjornstrup
+\usepackage[Bjornstrup]{fncychap}
+
+%quotation package
+\usepackage{epigraph}
+
+
+
+\title{PhD Thesis}
+\author{Eng. Alessandro Tufano}
+\date{September 2020}
 
 \begin{document}
 
 
 
+
 \frontmatter
 
-%\maketitle
+
+\maketitle
 
 %\include{Dedication/dedication}
 %\include{Declaration/declaration}
@@ -74,6 +85,7 @@
 %\include{Abstract/abstract}
 
 % *********************** Adding TOC and List of Figures ***********************
+\include{other/preface}
 
 \tableofcontents
 
@@ -112,7 +124,6 @@
 \include{SectionLetsMath/prescriptive}
 
 
-
 %part 3
 \part{DISTRIBUTION SYSTEMS}
 \include{SectionDistribution/diagnosticModels}
@@ -133,7 +144,6 @@
 \include{sectionProduction/control}
 \include{sectionProduction/design_plant}
 \include{sectionProduction/design_process}
-
 
 
 \end{document}

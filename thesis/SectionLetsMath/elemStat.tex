@@ -1,4 +1,7 @@
-\chapter{Elements of probability and statistics}{Let math do its work}
+\chapter{Elements of probability and statistics}
+
+%citazione introduttiva
+\epigraph{\textit{Let math do its work.}}{}
 
 This work comes with the idea that probability and statistics can solve the majority of the problem from logistics and operations. Unfortunately, many logistics and operations manager forgot about the superpowers of statistics. Software developers do the same while deploying warehouse management systems (WMS), transportation management system (TMS) and manufacturing execution system (MES). For this reason, this chapter reviews the most essential elements of statistics and probability upon which are the base of the method implemented in the following chapters. 
 
@@ -30,7 +33,7 @@ F_X(x)=\int_{-\infty}^{+\infty}{f_X\left(t\right)\ dt}
 
 Probability theory defines many “famous” probability functions where $f$ and $F$ are defined on a continuous domain by using closed-form equations. The Gaussian, exponential, uniform, beta, Weibull distributions are examples of continuous probability distributions. Discrete distributions as the binomial and Poisson are used to define a discrete realisation of an event (e.g. heads or tails, '0' or '1'). In practice, a researcher tries to find the best fit between a series of $n$ realisations collected on-field and a “famous” probability distribution with known $f$ and $F$. When he/she finds an adequate fit, the probability distribution models the behaviour of the random variable and can be used to infer relevant information on the observed event.\par
 
-In practice, we interpret the as a frequency analysis (i.e. the histogram) of the random variable $X$. On the other side, the CDF measures the relative importance of every single observed value cumulated to all the previous. Figure \ref{fig_empiricalPdfCdf} shows the empirical and the best-fit PDF and CDF of a sample with $n=200$ observations.\footnote{The source code of Figure \ref{fig_empiricalPdfCdf} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/01_elemStat/01.\%20Probability\%20Theory.ipynb}{here}.
+In practice, we interpret the as a frequency analysis (i.e. the histogram) of the random variable $X$. On the other side, the CDF measures the relative importance of every single observed value cumulated to all the previous. Figure \ref{fig_empiricalPdfCdf} shows the empirical and the best-fit PDF and CDF of a sample with $n=200$ observations.\footnote{The source code of Figure \ref{fig_empiricalPdfCdf} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/01.\%20Probability\%20Theory.ipynb}{here}.
 }
 
 % INSERT fig_empiricalPdfCdf
@@ -88,7 +91,7 @@ Other important central moments (order 3 and 4) are used to describe the shape o
 \label{fig_skewnessKurtosis}
 \end{figure}
 
-Figure \ref{fig_skewnessKurtosis} presents an example of skewness and kurtosis of different distributions (here we use the lognormal). Skewness describes how the mode $M$ of the distribution is far from the mean $\mu$ (positive skewness when $M<\mu$ and negative skewness when $M>\mu$). Kurtosis defines the tailedness of the distribution, higher the kurtosis, higher the relevance of the tails of the distribution.\footnote{The source code of Figure \ref{fig_skewnessKurtosis} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/01_elemStat/01.\%20Probability\%20Theory.ipynb}{here}.
+Figure \ref{fig_skewnessKurtosis} presents an example of skewness and kurtosis of different distributions (here we use the lognormal). Skewness describes how the mode $M$ of the distribution is far from the mean $\mu$ (positive skewness when $M<\mu$ and negative skewness when $M>\mu$). Kurtosis defines the tailedness of the distribution, higher the kurtosis, higher the relevance of the tails of the distribution.\footnote{The source code of Figure \ref{fig_skewnessKurtosis} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/01.\%20Probability\%20Theory.ipynb}{here}.
 }
 
 \subsection{Covariance and Correlation} \label{secCovarianceCorrelation}
