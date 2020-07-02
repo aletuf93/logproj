@@ -826,12 +826,18 @@ def calculateExchangeSaving(D_mov_input, D_res, G, useSameLevel=False):
     
     
     for index, row  in D_bubbles.iterrows():
-        idNode=D_res[index]
-        D_bubbles['idNode'].loc[index]=idNode
-        D_bubbles['distance'].loc[index] = inputDistance[idNode] + outputDistance[idNode]
+        if index not in D_res.keys():
+            pass
+        else:
+            idNode=D_res[index]
+            D_bubbles['idNode'].loc[index]=idNode
+            D_bubbles['distance'].loc[index] = inputDistance[idNode] + outputDistance[idNode]
     
     #grafico la distanza di ogni punto dall'IO
     nodecoords = nx.get_node_attributes(G,'coordinates')
+    
+    #remove nan
+    D_bubbles=D_bubbles.dropna()
 
     # salvo coordinate
     D_bubbles['loccodex'] = [nodecoords[idNode][0] for idNode in D_bubbles['idNode']]
@@ -1030,7 +1036,7 @@ def returnbubbleGraphAsIsToBe(D_results):
     D_graph['size'] = normaliseVector(D_graph['sum'])*100
     
     fig1 = plt.figure()
-    plt.scatter(D_graph.loccodex, D_graph.loccodey, D_graph['size'],color='orange')
+    plt.scatter(D_graph.loccodex, D_graph.loccodey, D_graph['size'])
     plt.title("Warehouse as-is")
     figure_out['pick_layout_asis']=fig1
     
@@ -1040,7 +1046,7 @@ def returnbubbleGraphAsIsToBe(D_results):
     D_graph['size'] = normaliseVector(D_graph['sum'])*100
     
     fig2=plt.figure()
-    plt.scatter(D_graph.loccodexTOBE, D_graph.loccodeyTOBE, D_graph['size'],color='orange')
+    plt.scatter(D_graph.loccodexTOBE, D_graph.loccodeyTOBE, D_graph['size'])
     plt.title("Warehouse to-be")
     figure_out['pick_layout_tobe']=fig2
     
@@ -1221,7 +1227,7 @@ def asisTobeBubblePopDist(D_results):
     
     output_figures={}
     fig1 = plt.figure()
-    plt.scatter(D_graph['distance'],D_graph['popularity'],color='orange')
+    plt.scatter(D_graph['distance'],D_graph['popularity'])
     plt.xlabel('Distance (m)')
     plt.ylabel('Popularity')
     plt.title("AS-IS configuration")
@@ -1234,7 +1240,7 @@ def asisTobeBubblePopDist(D_results):
     
     
     fig2 = plt.figure()
-    plt.scatter(D_graph['distance'],D_graph['popularity'],color='orange')
+    plt.scatter(D_graph['distance'],D_graph['popularity'])
     plt.xlabel('Distance (m)')
     plt.ylabel('Popularity')
     plt.title("TO-BE configuration")
