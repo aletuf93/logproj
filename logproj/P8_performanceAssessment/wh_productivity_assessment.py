@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pandas as pd
 import matplotlib.pyplot as plt
 from logproj.ml_dataCleaning import cleanUsingIQR
 
@@ -195,7 +196,7 @@ def timeProductivity(D_movements,variableToPlot, inout_column):
      
         fig1 = plt.figure()
         plt.plot(D_loc_positive['PERIOD'],
-                 D_loc_positive['MOVEMENTS'],color='orange')
+                 D_loc_positive['MOVEMENTS'])
         plt.title(f"Warehouse INBOUND productivity")
         plt.xticks(rotation=45)
         plt.xlabel("Timeline")
@@ -207,11 +208,86 @@ def timeProductivity(D_movements,variableToPlot, inout_column):
      
         fig1 = plt.figure()
         plt.plot(D_loc_negative['PERIOD'],
-                 D_loc_negative['MOVEMENTS'],color='orange')
+                 D_loc_negative['MOVEMENTS'])
         plt.title(f"Warehouse OUTBOUND productivity")
         plt.xticks(rotation=45)
         plt.xlabel("Timeline")
         plt.ylabel("N. of lines")
         figure_output[f"OUT_productivity_trend"] = fig1
     return figure_output
+
+
+def movementsStatistics(D_movements):
+    
+    D_wh_stat=pd.DataFrame(columns=['Description','value'])
+    
+    #calculate the number of movements
+    n_mov = len(D_movements)
+    D_wh_stat = D_wh_stat.append(pd.DataFrame([['Num. Movements',n_mov]],columns = D_wh_stat.columns))
+    
+    #calculate the inbound movements
+    D_in = D_movements[D_movements['INOUT']=='+']
+    n_mov_in = len(D_in)
+    D_wh_stat = D_wh_stat.append(pd.DataFrame([['Num. Movements INBOUND',n_mov_in]], columns = D_wh_stat.columns))
+    
+    #calculate the inbound movements
+    D_out = D_movements[D_movements['INOUT']=='-']
+    n_mov_out = len(D_out)
+    D_wh_stat = D_wh_stat.append(pd.DataFrame([['Num. Movements OUTBOUND',n_mov_out]],columns = D_wh_stat.columns))
+      
+    
+    #calculate the number of movement days
+    n_days = (max(D_movements['TIMESTAMP_IN'])-min(D_movements['TIMESTAMP_IN'])).days
+    D_wh_stat = D_wh_stat.append(pd.DataFrame([['Num. Days',n_days]],columns = D_wh_stat.columns))
+    
+    #check layout data
+    D_lay = D_movements.dropna(subset=['RACK'])['RACK'].drop_duplicates()
+    if len(D_lay)>2:
+        lay = 'OK'
+    else:
+        lay='NO'
+    D_wh_stat = D_wh_stat.append(pd.DataFrame([['Layout data',lay]],columns = D_wh_stat.columns))
+    
+    #check coordinates data
+    D_lay = D_movements.dropna(subset=['LOCCODEX'])['LOCCODEX'].drop_duplicates()
+    if len(D_lay)>2:
+        lay = 'OK'
+    else:
+        lay='NO'
+    D_wh_stat = D_wh_stat.append(pd.DataFrame([['Coordinates data',lay]],columns = D_wh_stat.columns))
+    
+        
+    #calcualte the number of storage locations
+    n_loc = len(D_movements['IDLOCATION'].drop_duplicates())
+    D_wh_stat = D_wh_stat.append(pd.DataFrame([['Num. Locations',n_loc]],columns = D_wh_stat.columns)) 
+    
+    #calcualte the number of storage locations
+    n_idwh = len(D_movements['IDWH'].drop_duplicates())
+    D_wh_stat = D_wh_stat.append(pd.DataFrame([['Num. Wh systems',n_idwh]],columns = D_wh_stat.columns)) 
+    
+    
+    #calculate the number of SKUs
+    n_skus = len(D_movements['ITEMCODE'].drop_duplicates())
+    D_wh_stat = D_wh_stat.append(pd.DataFrame([['Num. SKUs',n_skus]],columns = D_wh_stat.columns)) 
+    
+    #check volume data
+    D_lay = D_movements.dropna(subset=['VOLUME'])['VOLUME'].drop_duplicates()
+    if len(D_lay)>2:
+        vol = 'OK'
+    else:
+        vol='NO'
+    D_wh_stat = D_wh_stat.append(pd.DataFrame([['Volume data',vol]],columns = D_wh_stat.columns))
+    
+    #check pickinglist data
+    D_lay = D_movements.dropna(subset=['PICKINGLIST'])['PICKINGLIST'].drop_duplicates()
+    if len(D_lay)>2:
+        vol = 'OK'
+    else:
+        vol='NO'
+    D_wh_stat = D_wh_stat.append(pd.DataFrame([['Picking list data',vol]],columns = D_wh_stat.columns))
+    
+    
+    
+    return D_wh_stat
+
 
