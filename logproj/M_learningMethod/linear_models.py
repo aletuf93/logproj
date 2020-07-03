@@ -1,7 +1,7 @@
 ﻿#import modelli
 from sklearn.linear_model import LinearRegression, Ridge,  Lasso,  ElasticNet,  Lars, LogisticRegression
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis, QuadraticDiscriminantAnalysis
-
+from sklearn import metrics
 # %%
 '''
 questo modulo costruisce le griglie con i parametri per i modelli
