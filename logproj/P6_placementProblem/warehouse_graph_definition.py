@@ -1009,7 +1009,7 @@ def returnPopularitydistanceGraphLocations(D_results):
     return figure_out
 
 # %%
-def returnbubbleGraphAsIsToBe(D_results):
+def returnbubbleGraphAsIsToBe(D_results,cleanData=False):
     '''
     Return the graph with storage plant layout and picking bubbles
 
@@ -1030,6 +1030,9 @@ def returnbubbleGraphAsIsToBe(D_results):
 
 
     figure_out={}
+    
+    if cleanData:
+        D_results=cleanUsingIQR(D_results, ['popularity'])
     
     #graph as/is
     D_graph=D_results.groupby(['loccodex','loccodey'])['popularity'].agg(['sum']).reset_index()
@@ -1218,14 +1221,19 @@ def prepareCoordinates(D_layout, D_IO=[], D_fake=[]):
         return [], [], [], []
     
 # %%
-def asisTobeBubblePopDist(D_results):
+def asisTobeBubblePopDist(D_results,cleanData=False):
+    
+    output_figures={}
+    if cleanData:
+        D_results=cleanUsingIQR(D_results, ['popularity'])
+    
     D_results['distance'] = D_results['distance'].astype(float)
     
     #ASIS GRAPH
     D_graph=D_results.groupby(['idNode']).agg({'popularity':['sum'],'distance':['mean']}).reset_index()
     D_graph.columns = ['idNode','popularity','distance']
     
-    output_figures={}
+    
     fig1 = plt.figure()
     plt.scatter(D_graph['distance'],D_graph['popularity'])
     plt.xlabel('Distance (m)')
