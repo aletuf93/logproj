@@ -15,7 +15,8 @@ from sklearn.feature_selection import VarianceThreshold,SelectFromModel
 
 from logproj.ml_dataCleaning import dummyColumns
 from logproj.ml_explore import correlationMatrix
-from logproj.ml_regression_linear_models import LassoCV, fit_linear_reg
+from logproj.M_learningMethod.linear_models import fit_linear_reg
+
 
 
 
@@ -233,7 +234,7 @@ def selectByLassoL1(X,y,value,diagnose=False):
     output_figure = {}
     #lasso feature selection works for regression models
     Q=dummyColumns(X)
-    clf = LassoCV(cv=5)
+    clf = linear_model.LassoCV(cv=5)
 
     if diagnose:
         numFeatSelected=[]
