@@ -15,5 +15,5 @@ checkbox during the setup)
 4) to run the code:
 -open the cmd
 -run the command "conda activate logproj_distribution" to activate the distribution environment
--or run the command "conda activate logproj" to activate the logproj environment
+-OR run the command "conda activate logproj" to activate the logproj environment
 -run the command "jupyter notebook" to run and edit the code
