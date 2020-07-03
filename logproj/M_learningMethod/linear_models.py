@@ -89,4 +89,12 @@ models_classification = {
 
 
 # %% other linear models
+#Linear regression fit
+def fit_linear_reg(X,Y):
+    #Fit linear regression model and return RSS and R squared values
+    model_k = LinearRegression(fit_intercept = True)
+    model_k.fit(X,Y)
+    RSS = metrics.mean_squared_error(Y,model_k.predict(X)) * len(Y)
+    R_squared = model_k.score(X,Y)
+    return RSS, R_squared
 
