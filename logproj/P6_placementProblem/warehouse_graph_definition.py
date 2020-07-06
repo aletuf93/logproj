@@ -1032,7 +1032,7 @@ def returnbubbleGraphAsIsToBe(D_results,cleanData=False):
     figure_out={}
     
     if cleanData:
-        D_results=cleanUsingIQR(D_results, ['popularity'])
+        D_results, _=cleanUsingIQR(D_results, ['popularity'])
     
     #graph as/is
     D_graph=D_results.groupby(['loccodex','loccodey'])['popularity'].agg(['sum']).reset_index()
@@ -1225,7 +1225,7 @@ def asisTobeBubblePopDist(D_results,cleanData=False):
     
     output_figures={}
     if cleanData:
-        D_results=cleanUsingIQR(D_results, ['popularity'])
+        D_results, _=cleanUsingIQR(D_results, ['popularity'])
     
     D_results['distance'] = D_results['distance'].astype(float)
     
