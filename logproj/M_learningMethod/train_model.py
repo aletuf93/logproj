@@ -1,13 +1,17 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 
 #import sklearn packages
-from sklearn.metrics import mean_squared_error, accuracy_score
+from sklearn.metrics import mean_squared_error, accuracy_score, confusion_matrix
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import scale
+
+
 # %% TRAINING WITH GRIDSEARCH CV REGRESSION
 
 
@@ -126,3 +130,212 @@ def plot_confusion_matrix_fromAvecm(ave_cm, classes,
                     color="white" if cm[i, j] > thresh else "black")
     fig.tight_layout()
     return fig
+
+# %%
+def analyseClassificationCoefficients(X,y,D_learning_results):
+    
+    
+    output_figures={}
+    #define the confusion matrix
+    x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)
+    
+    for index, row in D_learning_results.iterrows():
+        
+        
+        y_pred = row['MODEL'].predict(x_test)
+        cm = confusion_matrix(y_test, y_pred)
+        
+        #plot the confusion matrix
+        fig = plt.figure(figsize=(9,9))
+        sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square = True, cmap = 'Blues_r');
+        plt.ylabel('Actual label');
+        plt.xlabel('Predicted label');
+        all_sample_title = 'Accuracy Score: {0}'.format(np.round(row['SCORE_TEST'],2))
+        plt.title(f"Model: {row['MODEL_NAME']}, {all_sample_title}", size = 15)
+        output_figures[f"{row['MODEL_NAME']}_confusionMatrix"]=fig
+        
+        
+        #analyse output for QDA
+        if row['MODEL_NAME']=='quadratic_discriminant_analysis':
+            #Print the mean for each class
+            #create a dataframe with one row for each feature of X
+            features_list = list(X.columns)
+            
+            
+            #extract coefficients riprendere da qui
+            fig = plt.figure(figsize=(12, 10))
+            means = row['MODEL'].means_
+            
+            means_scaled = scale(means)
+            
+            
+            
+            plt.imshow(means_scaled,cmap='bwr')
+            ax = fig.gca()
+            
+            #set xticks
+            ax.set_xticks(range(0,len(features_list)))
+            ax.set_xticklabels(features_list,rotation=90)
+            
+            #set yticks
+            ax.set_yticks(range(0,len(row['MODEL'].classes_)))
+            ax.set_yticklabels(row['MODEL'].classes_,rotation=45)
+            
+            plt.colorbar()
+            plt.xlabel('Feature name')
+            plt.ylabel('Classes')
+            plt.title('QDA means per class')
+            output_figures[f"{row['MODEL_NAME']}_means"]=fig
+        
+        #analyse output for LDA
+        elif row['MODEL_NAME']=='linear_discriminant_analysis':
+            #Print coefficients
+            #create a dataframe with one row for each feature of X
+            features_list = list(X.columns)
+            
+            
+            #extract coefficients riprendere da qui
+            fig = plt.figure(figsize=(12, 10))
+            coefficients = row['MODEL'].coef_
+            
+            coefficients_scaled = scale(coefficients)
+            
+            
+            
+            plt.imshow(coefficients_scaled,cmap='bwr')
+            ax = fig.gca()
+            
+            #set xticks
+            ax.set_xticks(range(0,len(features_list)))
+            ax.set_xticklabels(features_list,rotation=90)
+            
+            #set yticks
+            ax.set_yticks(range(0,len(row['MODEL'].classes_)))
+            ax.set_yticklabels(row['MODEL'].classes_,rotation=45)
+            
+            plt.colorbar()
+            plt.xlabel('Feature name')
+            plt.ylabel('Classes')
+            plt.title('LDA coefficients')
+            output_figures[f"{row['MODEL_NAME']}_coefficients"]=fig
+        
+        #analyse output for logistic regression
+        elif row['MODEL_NAME']=='logistic_regression':
+            #Print coefficients
+            #create a dataframe with one row for each feature of X
+            features_list = list(X.columns)
+            
+            
+            #extract coefficients riprendere da qui
+            fig = plt.figure(figsize=(12, 10))
+            coefficients = row['MODEL'].coef_
+            
+            coefficients_scaled = scale(coefficients)
+            
+            
+            
+            plt.imshow(coefficients_scaled,cmap='bwr')
+            ax = fig.gca()
+            
+            #set xticks
+            ax.set_xticks(range(0,len(features_list)))
+            ax.set_xticklabels(features_list,rotation=90)
+            
+            #set yticks
+            ax.set_yticks(range(0,len(row['MODEL'].classes_)))
+            ax.set_yticklabels(row['MODEL'].classes_,rotation=45)
+            
+            plt.colorbar()
+            plt.xlabel('Feature name')
+            plt.ylabel('Classes')
+            plt.title('Logistic regression coefficients')
+            output_figures[f"{row['MODEL_NAME']}_coefficients"]=fig
+        elif row['MODEL_NAME']=='naive bayes':
+            
+            #Print coefficients
+            #create a dataframe with one row for each feature of X
+            features_list = list(X.columns)
+            
+            
+            #print variance
+            fig = plt.figure(figsize=(12, 10))
+            coefficients = row['MODEL'].sigma_
+            
+            coefficients_scaled = scale(coefficients)
+            
+            
+            
+            plt.imshow(coefficients_scaled,cmap='bwr')
+            ax = fig.gca()
+            
+            #set xticks
+            ax.set_xticks(range(0,len(features_list)))
+            ax.set_xticklabels(features_list,rotation=90)
+            
+            #set yticks
+            ax.set_yticks(range(0,len(row['MODEL'].classes_)))
+            ax.set_yticklabels(row['MODEL'].classes_,rotation=45)
+            
+            plt.colorbar()
+            plt.xlabel('Feature name')
+            plt.ylabel('Classes')
+            plt.title('Naive bayes sigma')
+            output_figures[f"{row['MODEL_NAME']}_sigma"]=fig
+            
+            #print mean
+            fig = plt.figure(figsize=(12, 10))
+            coefficients = row['MODEL'].theta_
+            
+            coefficients_scaled = scale(coefficients)
+            
+            
+            
+            plt.imshow(coefficients_scaled,cmap='bwr')
+            ax = fig.gca()
+            
+            #set xticks
+            ax.set_xticks(range(0,len(features_list)))
+            ax.set_xticklabels(features_list,rotation=90)
+            
+            #set yticks
+            ax.set_yticks(range(0,len(row['MODEL'].classes_)))
+            ax.set_yticklabels(row['MODEL'].classes_,rotation=45)
+            
+            plt.colorbar()
+            plt.xlabel('Feature name')
+            plt.ylabel('Classes')
+            plt.title('Naive bayes theta')
+            output_figures[f"{row['MODEL_NAME']}_theta"]=fig
+            
+        elif row['MODEL_NAME']=='decision tree':
+            
+            #Print coefficients
+            #create a dataframe with one row for each feature of X
+            features_list = list(X.columns)
+            
+            
+            #print variance
+            fig = plt.figure(figsize=(12, 10))
+            coefficients = row['MODEL'].feature_importances_
+            
+            #coefficients_scaled = scale(coefficients)
+                   
+            
+            plt.bar(features_list, coefficients)
+            ax = fig.gca()
+            
+            #set xticks
+            #ax.set_xticks(range(0,len(features_list)))
+            ax.set_xticklabels(features_list,rotation=45)
+            
+           
+            plt.xlabel('Feature name')
+            plt.ylabel('Feature importance')
+            plt.title('Decision tree Gini importance')
+            output_figures[f"{row['MODEL_NAME']}_Gini"]=fig
+            
+           
+        else:
+            print(f"{row['MODEL_NAME']}, model not considered")
+    return output_figures
+    
