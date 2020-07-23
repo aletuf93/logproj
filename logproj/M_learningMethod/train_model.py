@@ -10,6 +10,7 @@ from sklearn.metrics import mean_squared_error, accuracy_score, confusion_matrix
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import scale
+from sklearn import tree
 
 
 # %% TRAINING WITH GRIDSEARCH CV REGRESSION
@@ -132,7 +133,7 @@ def plot_confusion_matrix_fromAvecm(ave_cm, classes,
     return fig
 
 # %%
-def analyseClassificationCoefficients(X,y,D_learning_results):
+def analyseClassificationCoefficients(X,y,D_learning_results,outputPath):
     
     
     output_figures={}
@@ -333,6 +334,14 @@ def analyseClassificationCoefficients(X,y,D_learning_results):
             plt.ylabel('Feature importance')
             plt.title('Decision tree Gini importance')
             output_figures[f"{row['MODEL_NAME']}_Gini"]=fig
+            
+            
+            #save the decision tree
+            dotfile = open(f"{outputPath}//dt.dot", 'w')
+            tree.export_graphviz(row['MODEL'], out_file=dotfile, feature_names=features_list)
+            dotfile.close()
+            
+            #http://webgraphviz.com/
             
            
         else:
