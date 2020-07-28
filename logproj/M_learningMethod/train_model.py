@@ -375,3 +375,40 @@ def analyseClassificationCoefficients(X,y,D_learning_results,outputPath):
             print(f"{row['MODEL_NAME']}, model not considered")
     return output_figures
     
+# %% SAMPLE THe SAME NUMBER Of ELEMENTS PER CLASS
+
+def sampleClassWithSameCardinality(df, targetColumn, numRecordsPerclass=np.inf, minRecordPerclass=100, includeLower=False):
+    D_class_stat = df[targetColumn].value_counts()
+    
+    # if the minimum number of records is above the threshold
+    if min(D_class_stat) > minRecordPerclass:
+        numSample = min(numRecordsPerclass,min(D_class_stat))
+        df_learning = pd.DataFrame()
+        for target in set(df[targetColumn]):
+            df_learning = df_learning.append(df[df[targetColumn] == target].sample(numSample))
+    
+    # if for some classes there are few records than minRecordPerclass
+    else:
+        #identify the classes with few records
+        fewRecordLabelsList=[]
+        for target in set(df[targetColumn]):
+            if D_class_stat[target]<minRecordPerclass:
+                fewRecordLabelsList.append(target)
+        
+        D_class_stat_less = D_class_stat[fewRecordLabelsList]
+        D_class_stat_greater = D_class_stat[[(i not in fewRecordLabelsList) for i in D_class_stat.index]]
+        
+        
+        df_learning = pd.DataFrame()
+        
+        # same as before for the greater than
+        numSample = min(numRecordsPerclass,min(D_class_stat_greater))
+        for target in set(D_class_stat_greater.index):
+            df_learning = df_learning.append(df[df[targetColumn] == target].sample(numSample))
+        if includeLower:
+            # the maximum possible for the lower
+            numSample = min(D_class_stat_less)
+            for target in set(D_class_stat_less.index):
+                df_learning = df_learning.append(df[df[targetColumn] == target].sample(numSample))
+            
+    return df_learning
