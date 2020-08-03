@@ -3,11 +3,11 @@
 This chapter deals with the design of a distribution network (or the re-design of an existing supply chain). Controlling a supply chain focuses on the description of the processes and the day-by-day planning; on the other hand, the design of a network profoundly modify the distribution strategy for many actors of the chain. The design activities are classified depending on the decision patterns (see section \ref{secDecisionPatternsDistribution}) involved into:
 
 \begin{enumerate}
-    \item Location-allocation problem, i.e. clustering points of demand of the network into groups without exceeding the capacity of the resources assigned to each group;
-    \item Network topology design, i.e. the definition of service routes within each cluster;
-    \item Route frequency design, i. e. defining the frequency of service for each node of the network;
-    \item Service time windows design, i.e. defining the time interval when each node of the network should be served;
-    \item Shipping priority definition, i.e. identify dispatching rules for HUs.
+    \item location-allocation problem, i.e. clustering points of demand of the network into groups without exceeding the capacity of the resources assigned to each group;
+    \item network topology design, i.e. the definition of service routes within each cluster;
+    \item route frequency design, i. e. defining the frequency of service for each node of the network;
+    \item service time windows design, i.e. defining the time interval when each node of the network should be served;
+    \item shipping priority definition, i.e. identify dispatching rules for HUs.
 
 \end{enumerate}
 
@@ -34,17 +34,17 @@ Then, the location-allocation problem LAP (1) identifies the number of resources
 Location allocation problem (LAP) is a classic operations research problem defined as follows.
 Given:
 \begin{itemize}
-    \item The $n$ nodes of a distribution network;
-	\item The requirements for each node;
-	\item The shipping cost;
+    \item the $n$ nodes of a distribution network;
+	\item the requirements for each node;
+	\item the shipping cost;
 \end{itemize}
 
 Determining:
 
 \begin{enumerate}
-    \item A number $m$ of resources to place
-	\item Where to place each resource;
-	\item The capacity needed by each resource.
+    \item a number $m$ of resources to place
+	\item where to place each resource;
+	\item the capacity needed by each resource.
 
 \end{enumerate}
 
@@ -64,7 +64,7 @@ The total cost to minimise is given by $E=C^{PLANT}+C^{DIST}$ where:
 
 \begin{itemize}
     \item $C^{PLANT}$ represents the cost connected to opening a number of resources $m$ (e.g. the cost of the land, the building, the depreciation, the energy, the direct labour);
-    \item $C^{DIST}$ represents the cost connected to serving the n nodes of the network using the $m$ selected facilities (e.g. the cost of distribution).
+    \item $C^{DIST}$ represents the cost connected to serving the $n$ nodes of the network using the $m$ selected facilities (e.g. the cost of distribution).
 \end{itemize}
 
 From this perspective, the LAP problem represents a generalisation of the facility location problem introduced in section \ref{secFacilityLocationProd} where the optimal facility location is the coordinate where $C^{DIST}$ has a minimum.\par
@@ -79,7 +79,7 @@ Solving equation (\ref{eqLAP}) in the variable $m$ provides the optimal solution
 Nevertheless, in practice, both $C^{PLANT}$, and $C^{DIST}$ are easy and fast to estimate for a finite set of solutions of the LAP. A smart approach is to evaluate the total cost $E_\chi$ for a finite number of scenarios $\chi$. Often these scenarios already exist in the mind of the decision-makers. A comparison between these scenarios immediately leads to the most profitable one.
 
 \subsection{Application}
-We show an example of an application of the LAP problem by comparing a network in two alternative scenarios: as-is scenario describing the current situation of the network, and to-be scenario evaluating an alternative. The comparison method evaluates the differential cash flows in the two scenarios in a Montecarlo fashion.\footnote{An example of this application is available \href{https://github.com/aletuf93/logproj/blob/master/examples/DIST_04\%20Location-Allocation\%20problem.ipynb}{here}}  \par
+We show an example of an application of the LAP problem by comparing a network in two alternative scenarios: as-is scenario describing the current situation of the network, and to-be scenario evaluating an alternative. The comparison method evaluates the differential cash flows in the two scenarios in a Montecarlo fashion.\footnote{An example of this application is available \href{https://github.com/aletuf93/logproj/blob/master/examples/DIST_04\%20Location-Allocation\%20problem.ipynb}{here}.}  \par
 
 A cost model is defined to identify which cost items are relevant to compare the two scenarios, for example:
 
@@ -193,7 +193,7 @@ Data-driven methodologies involve unsupervised learning (see chapter \ref{chapUn
 \end{figure}
 
 \subsubsection{Capacitated similarity tree (CST)}
-This algorithm builds clusters using a similarity tree produced by hierarchical clustering (see section \ref{secHierarchicalClustering}). Hierarchical clustering aggregates the m observations relying on a proximity matrix $m \times m$, describing how close the observations are. To cluster terminals, we consider a similarity matrix $S$ whose entries $s_{ij}$ measure the closeness of two terminals. $S$ is calculated as the inverse of the matrix of the distances (e.g. the road distance) between nodes. At each step of the algorithm $s_{ij}$ are ordered and the two nodes with the maximum $s_{ij}$ are clustered together if the capacity constraint is respected; otherwise the following $s_{ij}$ is considered for clustering. The algorithm starts creating $m$ clusters. This number is progressively reduced grouping nodes together when the capacity is respected. Algorithm \ref{algo_dist_CST} illustrates the pseudocode for this algorithm.\footnote{The source code of Algorithm \ref{algo_dist_CST} is available \href{https://github.com/aletuf93/logproj/blob/master/logproj/ml_unsupervised_models.py}{here}.} 
+This algorithm builds clusters using a similarity tree produced by hierarchical clustering (see section \ref{secHierarchicalClustering}). Hierarchical clustering aggregates the $m$ observations relying on a proximity matrix $m \times m$, describing how close the observations are. To cluster terminals, we consider a similarity matrix $S$ whose entries $s_{ij}$ measure the closeness of two terminals. $S$ is calculated as the inverse of the matrix of the distances (e.g. the road distance) between nodes. At each step of the algorithm $s_{ij}$ are ordered and the two nodes with the maximum $s_{ij}$ are clustered together if the capacity constraint is respected; otherwise the following $s_{ij}$ is considered for clustering. The algorithm starts creating $m$ clusters. This number is progressively reduced grouping nodes together when the capacity is respected. Algorithm \ref{algo_dist_CST} illustrates the pseudocode for this algorithm.\footnote{The source code of Algorithm \ref{algo_dist_CST} is available \href{https://github.com/aletuf93/logproj/blob/master/logproj/ml_unsupervised_models.py}{here}.} 
 
 \begin{algorithm}[H]
 \DontPrintSemicolon
@@ -352,7 +352,7 @@ $S= \emptyset $ \;
 
 \subsubsection{Variable neighbourhood search K-means covering algorithm (VKCOV)}
 
-This algorithm works as the previous with a pre-selection on the value of $k$ (i.e. the number of clusters created by the k-means algorithm). All the values of $k$ (i.e., from 1 to the number of terminals) are tested, and it chooses the values of $k$ generating the highest fraction (e.g. the 95\%) of feasible columns (respect with the capacity constraints). Algorithm \ref{algo_dist_VKCOV} illustrates the pseudocode of this algorithm.
+This algorithm works as the previous with a pre-selection of the value of $k$ (i.e. the number of clusters created by the k-means algorithm). All the values of $k$ (i.e., from 1 to the number of terminals) are tested, and it chooses the values of $k$ generating the highest fraction (e.g. the 95\%) of feasible columns (respect with the capacity constraints). Algorithm \ref{algo_dist_VKCOV} illustrates the pseudocode of this algorithm.
 
 \begin{algorithm}[H]
 \DontPrintSemicolon
@@ -407,9 +407,9 @@ $S= \emptyset $ \;
 This algorithm uses an optimal approach to generate the columns of the SCP presented in paragraph \ref{secKCOV}. The columns are generated while they provide a benefit (i.e. a reduced cost) of the objective function, identifying the closeness of the points within the clusters. A column is generated if:
 
 \begin{itemize}
-    \item It has a positive profit;
-    \item It respects the capacity constraints;
-    \item It respects a distance constraint on the maximum distance of each arc.
+    \item it has a positive profit;
+    \item it respects the capacity constraints;
+    \item it respects a distance constraint on the maximum distance of each arc.
 \end{itemize}
 
 The primal model of the column generation problem is defined as follows. Table \ref{tab_CG_dist} illustrates the parameters of the problem.
@@ -442,7 +442,7 @@ where $c_s$ is the cost of serving the set $s$. The primal problem has the follo
 
 The model is defined as follows.
 \begin{equation}
-    min\ {c_sx}_S
+    \min{c_sx}_S
 \end{equation}
 
 \begin{equation}
@@ -505,7 +505,7 @@ The model is defined as follows.
 \end{equation}
 
 \subsection{Application}
-We test the five algorithms mentioned above in the field of urban logistics while designing the waste collection service of a wide urban area. The problem involves clustering point of waste production (POWP) together, to assign them to vehicles.\footnote{An example of this application is available \href{https://github.com/aletuf93/logproj/blob/master/examples/DIST_03\%20Route\%20topology\%20design.ipynb}{here}} \par
+We test the five algorithms mentioned above in the field of urban logistics while designing the waste collection service of a wide urban area. The problem involves clustering point of waste production (POWP) together, to assign them to vehicles.\footnote{An example of this application is available \href{https://github.com/aletuf93/logproj/blob/master/examples/DIST_03\%20Route\%20topology\%20design.ipynb}{here}.} \par
 
 We define three indicators to evaluate the performance of the algorithm from a computational point of view (see Table \ref{tab_ROMA_application}. The average number of cluster is a measure of the compactness of the outcome clusters. It gives an idea of which algorithm produces, on average, a higher number of classes. It is important to remark that this indicator cannot be directly used as a logistics indicator since it may not be related to the travelled distance within a cluster. The optimal solution of the bin-packing problem (BPP) is calculated, to measure the efficiency of the algorithm in clustering points in the minor number of cluster possible. This solution defines the lower bound of the number of clusters to create. For each algorithm, we measure the gap between its solution and the BPP solution. Besides, we measure the average solving time and the percentage of failing of the algorithms (i.e., the percentage of the instances when an algorithm is not able to find a feasible solution). Since CST and CHST are fully heuristic algorithms, they always provide a feasible solution in a relatively short time.
 

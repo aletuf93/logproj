@@ -1,7 +1,7 @@
 \chapter{Diagnostic Models}
 This section analyses distribution networks (also known as distribution systems). Distribution networks connect the nodes of a supply chain, that can have a worldwide extent. They involve the network infrastructure, i.e. roads, rails, water connections, air connection, pipelines and any other infrastructure needed to move goods from a point to another. Production network must be effective, by providing a fast and safe connection between customers and clients, and efficient since they add no value to the product transported.\par
 
-Special attention must be paid in the design of the infrastructure of these networks.The capacity and the velocity of the connection make a country powerful and competitive in the international market.  The design and control of the distribution on the network is a crucial issue as well. Decisions as the type of vehicle, or the frequency of a connection heavily affect the efficiency of the network.\par
+Special attention must be paid in the design of the infrastructure of these networks. The capacity and the velocity of the connection make a country powerful and competitive in the international market.  The design and control of the distribution on the network is a crucial issue as well. Decisions as the type of vehicle, or the frequency of a connection heavily affect the efficiency of the network.\par
 
 Distribution systems are modelled using the graph theory which is well explored from a mathematical and computational point of view; for this reason, there is room for the application of graph-based data-driven models in the field of distributions science.\par
 
@@ -18,7 +18,7 @@ We identify the following entities.\par
 
 \textbf{Processing node} ($j$): The resources in charge of loading and unloading parts from vehicles. These entities are terminals, platform or bays, depending on the type of vehicle to load/unload (aircraft, vessels, trains, trucks, vans). \par
 
-\textbf{Edge} ($j,k$):Any path connecting two processing nodes is an edge. Edges of a distribution network have a type, defining the type of vehicle able to travel on the edge (e.g. air, rail, water, road) and a capacity. \par
+\textbf{Edge} ($j,k$): Any path connecting two processing nodes is an edge. Edges of a distribution network have a type, defining the type of vehicle able to travel on the edge (e.g. air, rail, water, road) and a capacity. \par
 
 \textbf{Vehicle} ($v$): A vehicle is an element travelling on edges to transport HUs from a processing node to another. \par
 
@@ -107,7 +107,7 @@ The geographical level aims at defining the characteristic of macro-areas of the
 
 \subsubsection{Logistic level}
 
-The logistic level contains all the entities to populate the ontology presented in \ref{secOntologyDistribution}. A table node identifies all the processing nodes of the network connected by the edges whose material flow is mapped in the table \textit{Flow}. Each row of the table \textit{Node} identifies s a processing node of a specific type. Depending on the node type, the tables \textit{Crop}, \textit{ProcessingPlant}, \textit{StorageFacility}, \textit{Market}, \textit{Port}, \textit{Terminal}, \textit{MultimodalHub}, and \textit{RailConnection} identify the characteristics of the node. Table \ref{tab_log_attributes} illustrates the details of the attributes for each table of the logistic level.
+The logistic level contains all the entities to populate the ontology presented in \ref{secOntologyDistribution}. A table node identifies all the processing nodes of the network connected by the edges whose material flow is mapped in the table \textit{Flow}. Each row of the table \textit{Node} identifies a processing node of a specific type. Depending on the node type, the tables \textit{Crop}, \textit{ProcessingPlant}, \textit{StorageFacility}, \textit{Market}, \textit{Port}, \textit{Terminal}, \textit{MultimodalHub}, and \textit{RailConnection} identify the characteristics of the node. Table \ref{tab_log_attributes} illustrates the details of the attributes for each table of the logistic level.
 
 
 % INSERT tab_log_attributes
@@ -168,7 +168,7 @@ These benefits come with some important limitations:
 
 The model consists of three collections whose data are recorded by the transportation management system (TMS). \par
 
-A collection \textit{handling units} identifies all the parts i transported on the network. The code of the handling unit is the only attribute necessary to define the MVM. Other attributes can be stored as well, like:
+A collection \textit{handling units} identifies all the parts $i$ transported on the network. The code of the handling unit is the only attribute necessary to define the MVM. Other attributes can be stored as well, like:
 
 \begin{itemize}
     \item the description

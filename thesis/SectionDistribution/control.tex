@@ -13,17 +13,17 @@ A supply chain is complex since it involves actors, entities and procedures that
     \item The flow of money that pays the activities performed by each stakeholder.
 \end{enumerate}
 
-While thinking about these flows, it is easy to understand the complexity of managing all of them in a globally distributed supply chain. Carriers, shipper and freight forwarders make use of their practices for handling the physical flows, tracking shipping information and may have different currencies and protocols for the management of the flow of money.\par
+While thinking about these flows, it is easy to understand the complexity of managing all of them in a globally distributed supply chain. Carriers, shippers and freight forwarders make use of their practices for handling the physical flows, tracking shipping information and may have different currencies and protocols for the management of the flow of money.\par
 
 Market trends show the increasing awareness of companies on the value of their data ~\cite{Lamba2017}. They started using new technologies like analytics, big data and internet of things devices ~\cite{Govindan2018} to improve the knowledge of the processes and increase their efficiency ~\cite{Ku2018}. The information flow contains data whose content is not only intended to track a physical flow. Data embeds the value for making decisions about the design of the supply chain itself ~\cite{Zuidwijk2014}. In the era of big data, the number of records available from a logistics information flow increases dramatically with obvious obstacles and costs to maintain the IT infrastructures. There is an unexplored potential of learning from historical data to design efficient operations in the future. The stakeholders usually involved in a generic distribution supply chain are:\par
 
 \begin{itemize}
-    \item \textbf{producers} are any production or storage system connected to a processing node $j$ (i.e. a terminal) by road, rail or inland waterways;
-	\item \textbf{freight forwarders} are the operators in charge of organising door-to-door shipping. They get transportation orders from the producers, and they place them on one or many routes performed by one or more vehicles v to reach the destination;
-	\item \textbf{operators (carriers)}  get transportation orders of handling units from the freight forwarders, and they organise the single transportation routes from terminals to terminals.
-	\item \textbf{conveyance operators} perform transportation by driving vehicles according to its route schedule;
-	\item \textbf{terminal operators} perform loading and unloading of handling units at the processing nodes $j$. They use physical equipment as loading bays, cranes, and forklifts;
-	\item \textbf{customers} receive the goods at the end of the transport operations.
+    \item \textbf{producers}, are any production or storage system connected to a processing node $j$ (i.e. a terminal) by road, rail or inland waterways;
+	\item \textbf{freight forwarders}, are the operators in charge of organising door-to-door shipping. They get transportation orders from the producers, and they place them on one or many routes performed by one or more vehicles $v$ to reach the destination;
+	\item \textbf{operators (carriers)},  get transportation orders of handling units from the freight forwarders, and they organise the single transportation routes from terminals to terminals.
+	\item \textbf{conveyance operators}, perform transportation by driving vehicles according to its route schedule;
+	\item \textbf{terminal operators}, perform loading and unloading of handling units at the processing nodes $j$. They use physical equipment as loading bays, cranes, and forklifts;
+	\item \textbf{customers}, receive the goods at the end of the transport operations.
 
 \end{itemize}
 
@@ -44,7 +44,7 @@ Figure \ref{fig_actors} introduces these stakeholders, their decision-making act
 As Figure \ref{fig_actors} shows, coordination among different actors is a crucial issue to control the operations of a distribution network. The figure remarks the constraints imposed by each actor to the following one depicting the complexity of the system. In practice, a supply chain network is such constrained that can be thought as a system in unstable equilibrium where each actor found its equilibrium within the constraints imposed by the other. Unless a big player has the authority to change these constraints, it is difficult to improve the performance of the supply chain, and it is even challenging to collect the data to control it. During the last few years, the platform economy opened for new opportunities also in this field.\par
 
 \subsection{Logistics platforms} \label{secLogPlatform}
-The advent of new technologies as the internet of things, artificial intelligence and fast internet connections paved the way for the so-called “platform revolution”, i.e. the establishment of new business models based on the idea of platform connecting stakeholders ~\cite{Nambisan2019}. Often, the economic edge of a platform is based on the concept of arbitrage, since platforms can link stakeholders in different ways compared to the established companies in the market ~\cite{Dana2003,Kenney2016}. Platforms started by connecting the end-user to the supplier of a service. It is the case of platforms offering booking services for hotels, taxi or flight that started by offering a link between the supplier and the end-user and consequently started developing complex algorithms based on the collected data to improve their services and their edges ~\cite{Benjaafar2019, Guda2019}. The value of a platform on the market depends on the amount of data it can collect ~\cite{Guda2019}. Recently, platforms started to operate in the business-to-business (B2B) market, too ~\cite{Huang2013}.  In the B2B market, platforms connect companies using different data protocols and complex system by using interfaces and data exchange protocols ~\cite{Yu2007}. \par
+The advent of new technologies as the internet of things, artificial intelligence and fast internet connections paved the way for the so-called “platform revolution”, i.e. the establishment of new business models based on the idea of a platform connecting stakeholders ~\cite{Nambisan2019}. Often, the economic edge of a platform is based on the concept of arbitrage, since platforms can link stakeholders in different ways compared to the established companies in the market ~\cite{Dana2003,Kenney2016}. Platforms started by connecting the end-user to the supplier of a service. It is the case of platforms offering booking services for hotels, taxi or flight that started by offering a link between the supplier and the end-user and consequently started developing complex algorithms based on the collected data to improve their services and their edges ~\cite{Benjaafar2019, Guda2019}. The value of a platform on the market depends on the amount of data it can collect ~\cite{Guda2019}. Recently, platforms started to operate in the business-to-business (B2B) market, too ~\cite{Huang2013}.  In the B2B market, platforms connect companies using different data protocols and complex system by using interfaces and data exchange protocols ~\cite{Yu2007}. \par
 
 The market of logistics has seen a prolific increase in the development and use of logistic platforms during the last decade. A logistic platform is an IT infrastructure to store data and support storage, handling and transport operations across multiple stakeholders.\par
 
@@ -108,9 +108,9 @@ The role of a logistics platform stands in its ability to collect and merge data
 All these methods are data-driven and rely on an incomplete but broad data structure. All the data-driven methods presented in the following paragraphs are intended for a logistic platform using a non-relational structure to merge data from different actors of the supply chain.
 
 \subsection{The day-by-day of a distribution network}
-Before diving into the math of problems and methods, it is important to understand the operations of a distribution network. For this reason, we introduce some additional details keeping as a sample a port supply chain, one of the most complex types of supply chains. This choice is due to the fact that a port connects thousands of destinations globally distributed using any type of equipment and vehicle to transport any type of good. \par
+Before diving into the math of problems and methods, it is important to understand the operations of a distribution network. For this reason, we introduce some additional details keeping, for example, a port supply chain, one of the most complex types of supply chains. This choice is due to the fact that a port connects thousands of destinations globally distributed using any type of equipment and vehicle to transport any type of good. \par
 
-A port receives physical flows of many types. It always has road and rail connection. Commonly, a port collects goods from inland waterways, and it may be close to an airport collecting air flows. Terminals $j$ process all these flows using storage areas and handling units. Usually, inland terminals pre-process many flows from road and air by consolidating them on barges. Barges, then, reach the deepsea terminal where cargo vessels are loaded and unloaded. Cargo vessels operate:
+A port receives physical flows of many types. It always has road and rail connection, at least. Commonly, a port collects goods from inland waterways, and it may be close to an airport collecting air flows. Terminals $j$ process all these flows using storage areas and handling units. Usually, inland terminals pre-process many flows from road and air by consolidating them on barges. Barges, then, reach the deepsea terminal where cargo vessels are loaded and unloaded. Cargo vessels operate:
 
 \begin{itemize}
     \item liner shipping, when routes are predetermined, and the schedule is fixed;
@@ -142,7 +142,7 @@ Different types of cargo vessels exist, depending on the type of handling unit t
 \label{fig_cargoProducts}
 \end{figure}
 
-Loading and unloading different types of cargo vessels need a different type of equipment. For this reason, port terminals are specialised on specific types of cargo vessels and specific type of product. Figure \ref{fig_terminalInfrastructure} illustrates the typical equipment of a terminal working with container cargo vessels.
+Loading and unloading different types of cargo vessels need a different type of equipment. For this reason, port terminals are specialised on specific types of cargo vessels and specific type of products. Figure \ref{fig_terminalInfrastructure} illustrates the typical equipment of a terminal working with container cargo vessels.
 
 %insert figure fig_terminalInfrastructure
 \begin{figure}[hbt!]
@@ -153,20 +153,20 @@ Loading and unloading different types of cargo vessels need a different type of 
 \label{fig_terminalInfrastructure}
 \end{figure}
 
-Other supply chain nodes as airport and multimodal hubs are organised similarly. Generally, a logistic hub consists of multiple terminals (generally belonging to different companies) specialised in handling a specific type of product. Terminal companies own the equipment to load and unload cargos and connect a multitude of actors by using freight forwarders and brokers o manage the flow of money and information.
+Other supply chain nodes as airport and multimodal hubs are organised similarly. Generally, a logistic hub consists of multiple terminals (generally belonging to different companies) specialised in handling a specific type of product. Terminal companies own the equipment to load and unload cargos and connect a multitude of actors by using freight forwarders and brokers to manage the flow of money and information.
 
 \section{Performance assessment (P8)}
 
 This paragraph introduces models to assess the performance of a supply chain network from a model- and data-driven perspectives.
 
 \subsection{Model-driven methods (D4)}
-When the number of actors and flows is high and complex, qualitative business process mapping is always a good starting point to understand what is going on. A common technique is the Business Process Model and Notation (BPMN) (see section \ref{secBPMN}). It remarks the responsibility of each actor and their tasks (e.g. send an order, send confirmation, load container) remarking the activities triggered by each task.Applying the BPMN notation in a distribution network:
+When the number of actors and flows is high and complex, qualitative business process mapping is always a good starting point to understand what is going on. A common technique is the Business Process Model and Notation (BPMN) (see section \ref{secBPMN}). It remarks the responsibility of each actor and their tasks (e.g. send an order, send confirmation, load container) remarking the activities triggered by each task. Applying the BPMN notation in a distribution network:
 
 \begin{itemize}
-    \item Activities are tasks necessary for the storage, handling or transportation of a handling unit;
-    \item The events identify when an activity is terminated (e.g. delivery at the point of consumption, loading completed at a terminal);
-    \item Gateways describe a different variant of the process (e.g. store in cross-dock or storage area of the terminal depending on the delivery due date).
-    \item Pools identify the actor of the supply chain in charge of an activity.
+    \item activities are tasks necessary for the storage, handling or transportation of a handling unit;
+    \item events identify when an activity is terminated (e.g. delivery at the point of consumption, loading completed at a terminal);
+    \item gateways describe a different variant of the process (e.g. store in cross-dock or storage area of the terminal depending on the delivery due date).
+    \item pools identify the actor of the supply chain in charge of an activity.
 
 \end{itemize}
 
@@ -175,7 +175,7 @@ BPMN defines a qualitative map of the production processes useful for manager an
 \begin{enumerate}
     \item Logistic KPIs, evaluate the logistic impact of a certain solution. They use metrics like time, distance and the performance parameters introduced in section \ref{secOntologyDistribution}.
 	\item Cost KPIs, evaluate the economic sustainability of a given solution. They are expressed in \euro{} or other currency.
-	\item Energy KPIs, evaluate the energy needed to feed a given solution. They use metrics as kW and kW/h.
+	\item Energy KPIs, evaluate the energy needed to feed a given solution. They use metrics as kW and kWh.
 	\item Environmental KPIs, evaluate the environmental impact of a given solution. They are expressing the equivalent $CO_2$ produced per year.
 
 \end{enumerate}
@@ -314,7 +314,7 @@ Time series analysis focuses on the workload. From another perspective, it is im
 \label{fig_paretoClient}
 \end{figure}
 
-Similar information may be of interest when referred to a single terminal of the distribution network. Figure \ref{fig_violinClient} illustrates the violin chart of the most four congested terminals of a distribution network. The chart identifies the demand (e.g. the quantity or the number of movements) of each client assigned to each terminal. \footnote{The source code of Figure \ref{fig_violinClient} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/DIST_01\%20Supply\%20Chain\%20Assessment.ipynb}{here}.}
+Similar information may be of interest when referred to a single terminal of the distribution network. Figure \ref{fig_violinClient} illustrates the violin chart of the four most congested terminals of a distribution network. The chart identifies the demand (e.g. the quantity or the number of movements) of each client assigned to each terminal. \footnote{The source code of Figure \ref{fig_violinClient} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/DIST_01\%20Supply\%20Chain\%20Assessment.ipynb}{here}.}
 
 %insert figure fig_violinClient
 \begin{figure}[hbt!]
@@ -337,7 +337,7 @@ Pareto analysis is important to assess the relevance of the information and the 
     \item The amount of information generated by the records uploaded.
 \end{enumerate}
 
-The last metric is not trivial since it considers the information added by a single operator compared to the information already known in the dataset. This metric is important when data are incomplete. Let assume we want to identify the route travelled by truck transporting a number of HUs. The truck receives order from multiple stakeholders. These stakeholders are operator since they upload data to our dataset.\par 
+The last metric is not trivial since it considers the information added by a single operator compared to the information already known in the dataset. This metric is important when data are incomplete. Let assume we want to identify the route travelled by truck transporting a number of HUs. The truck receives order from multiple stakeholders. These stakeholders are operators since they upload data to our dataset.\par 
 
 Assuming a single stakeholder load the 80\% of the truck, the amount of information generated by that single user is much more relevant than the others. The other operators have a low probability of adding information if a single operator generates 80\% of the knowledge. Figure \ref{fig_information} illustrates the behaviour of the information provided by different users of a vehicle. The first three users cover 80\% of all the destinations of the vehicle, providing the principal amount of information on its route. Even without the information provided by the last three users, it is possible to use the data to estimate the route of the vehicle correctly. \footnote{The source code of Figure \ref{fig_information} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/DIST_01\%20Supply\%20Chain\%20Assessment.ipynb}{here}.}
 
@@ -430,7 +430,7 @@ When there are no known values of the $WIP_v(\tau)$ (e.g. from observation at ti
 \end{figure}
 
 \paragraph{Terminal Productivity analysis}
-The network moves at speed defined by its terminal. It may sound weird that the speed of the distribution is imposed by fixed infrastructure, but it is easier the capacity of a terminal is the bottleneck of a distribution network, more than the capacity of a vehicle. It is always simpler to add a truck, a vessel, a train or even an air cargo than to add loading and discharging capacity of these vehicles.\par
+The network moves at speed defined by its terminals. It may sound weird that the speed of the distribution is imposed by fixed infrastructure, but it is easier the capacity of a terminal is the bottleneck of a distribution network, more than the capacity of a vehicle. It is always simpler to add a truck, a vessel, a train or even an air cargo than to add loading and discharging capacity of these vehicles.\par
 
 By collecting, for each movement, the information on the provisional and actual time windows, it is possible to say a lot on the planned and actual behaviour of the terminals. Figure \ref{fig_terminalLinearProductivity} illustrates a scatterplot of the planned time windows of a terminal. \footnote{The source code of Figure \ref{fig_terminalLinearProductivity} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/DIST_01\%20Supply\%20Chain\%20Assessment.ipynb}{here}.} The x-axis identifies the span of the time windows, while the y-axis the amount of HUs loaded or discharged. The plot identifies two patterns, almost linearly distributed. This pattern uncovers that the terminal may use one or two cranes at the same time to load/discharge a vehicle.
 
@@ -496,7 +496,7 @@ It is possible to identify with different colours the node served by a specific 
 \end{figure}
 
 \paragraph{Road graph analyses}
-Finally, it is possible to consider the road graph $G(V,E)$ of the network to perform analysis on the real distances. The top of Figure \ref{fig_road_graph} illustrates the edges of the graph. The subplot on the left use rays to connect the nodes of the network exchanging the more significant amount of HUs. The subplot on the right use a colour gradient to identify the arcs travelled the most by the vehicles of the network.\footnote{The source code of Figure \ref{fig_road_graph} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/DIST_02\%20Location\%20assessment.ipynb}{here}.}
+Finally, it is possible to consider the road graph $G(V,E)$ of the network to perform analysis on the real distances. The top of Figure \ref{fig_road_graph} illustrates the edges of the graph. The subplot on the left uses rays to connect the nodes of the network exchanging the more significant amount of HUs. The subplot on the right use a colour gradient to identify the arcs travelled the most by the vehicles of the network.\footnote{The source code of Figure \ref{fig_road_graph} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/DIST_02\%20Location\%20assessment.ipynb}{here}.}
 
 %insert figure fig_road_graph
 \begin{figure}[hbt!]
@@ -525,9 +525,9 @@ We introduce model-driven methods to forecast the number of orders, and data-dri
 Model-driven methods to forecast the workload are provided by the statistical analysis of the time series. When dealing with order data of a distribution network, it is possible to obtain a time series by:
 \begin{enumerate}
     \item considering the timestamp of the dataset;
-	\item clean the data by removing outliers;
-	\item group and sum the quantities of the dataset by the timestamps;
-	\item resample the dataset to obtain an equispaced series $y$ (e.g. weekly, daily or hourly).
+	\item cleaning the data by removing outliers;
+	\item grouping and summing the quantities of the dataset by the timestamps;
+	\item resampling the dataset to obtain an equispaced series $y$ (e.g. weekly, daily or hourly).
 
 \end{enumerate}
 
@@ -543,20 +543,20 @@ It is always necessary to consider the confidence interval. When it is too wide,
 
 \subsection{Data-driven methods (PD1)}
 
-As well as in storage and production system, forecasts on the number of movements (i.e. the number of HUs to handle) is essential for all the actors of a supply chain ~\cite{Moon2019}. Another crucial variable is the inventory position of a vehicle $v$, important to assign transportation orders to vehicle. These forecasts are possible by using time series methods; nevertheless, the $WIP(t)$, is more incline to be affected by multiple factors, than the movements function. For this reason, machine learning algorithms are suitable to approach the predictions of the $WIP(t)$.\par
+As well as in storage and production system, forecasts on the number of movements (i.e. the number of HUs to handle) is essential for all the actors of a supply chain ~\cite{Moon2019}. Another crucial variable is the inventory position of a vehicle $v$, important to assign transportation orders to vehicle. These forecasts are made by using time series methods; nevertheless, the $WIP(t)$, is more incline to be affected by multiple factors, than the movements function. For this reason, machine learning algorithms are suitable to approach the predictions of the $WIP(t)$.\par
 
 Once the route of a vehicle $v$, and its $WIP_v$ have been estimated, as illustrated in \ref{secDistOperationsProfiling}, it is possible to train learning models for the prediction of the inventory position of the vehicle. In particular, the residual capacity $r_j\left(t\right)=C_j-WIP_j(t)$ is of interest to investigate if a vehicle could handle more HUs than the ones already assigned to it. Learning models can be trained by using a training dataset $X^e$ containing information on the route $e$ (each row of the dataset is an arc travelled by a vehicle):
 \begin{itemize}
-    \item The code of the vehicle;
-    \item The capacity of the vehicle;
-    \item The node of departure;
-    \item The time of departure;
-    \item The node of arrival;
-    \item The time of arrival.
+    \item the id of the vehicle;
+    \item the capacity of the vehicle;
+    \item the node of departure;
+    \item the time of departure;
+    \item the node of arrival;
+    \item the time of arrival.
 
 \end{itemize}
 
-While the target variable is represented by $WIP_j(t)$. The input dataset $X^e$ contains many date and time information. Learning models work approximating functions, i.e. they need only numerical values as inputs. For this reason, pre-processing is necessary to convert timestamps and categorical variables. Timestamps are transformed using sin and cos functions to separate year, month, days, hours and minutes in different attribute, preserving a measure of proximity between them (e.g. 00.01 is hugely close to 23.59 even if the digits representing the timestamp are at the opposite of the hours and minute domains). This transformation produces nine numerical features for each timestamp (one representing the years, two representing the month numbers, two representing the day numbers, two representing the hours, two representing the minutes). Categorical variables are converted to dummy column having value one if the observation has the value of the column, zero otherwise. This conversion produces a number of additional columns to the dataset $X^e$ equal to the number of categories of a categorical variable.\par
+While the target variable is represented by $WIP_j(t)$. The input dataset $X^e$ contains many date and time information. Learning models work approximating functions, i.e. they need only numerical values as inputs. For this reason, pre-processing is necessary to convert timestamps and categorical variables. Timestamps are transformed using $sin$ and $cos$ functions to separate year, month, days, hours and minutes in different attribute, preserving a measure of proximity between them (e.g. 00.01 is hugely close to 23.59 even if the digits representing the timestamp are at the opposite of the hours and minute domains). This transformation produces nine numerical features for each timestamp (one representing the years, two representing the month numbers, two representing the day numbers, two representing the hours, two representing the minutes). Categorical variables are converted to dummy column having value one if the observation has the value of the column, zero otherwise. This conversion produces a number of additional columns to the dataset $X^e$ equal to the number of categories of a categorical variable.\par
 
 At this stage, man learning algorithms can be trained to approximate the value of $WIP_j(t)$. Any of the algorithms in chapters \ref{chapLinearRegression}, and \ref{cahpNonLinear} can be used, e.g. linear regression, lasso, ridge regression, elastic net, regression tree, random forest, gradient boosting, AdaBoost, support vector regression and single perceptron neural network. It is recommended to implement a validation procedure, as the cross-validation (see \ref{supervisedLearning}) and to choose a proper loss function (e.g. the MSE).\par
 
@@ -576,7 +576,7 @@ The example shows that many algorithms (i.e., neural network, gradient boosting,
 
 \section{Vehicle choice \& synchromodality (P2)}
 
-heavily affect the performance of the supply chain network in terms of the level of service and environmental impact. This problem is called \textit{synchromodality} when the choice is performed online, i.e. without a predefines association between the HU and the vehicle (e.g. truck, train, barge). Recent literature put a strong effort into developing synchromodality models. For the sake of brevity, we introduce an example inspired to the operations of a logistic platform, i.e. a company with a business model based on platform economy aiming at simplifying the operations of a distribution network (see section \ref{secLogPlatform}). \par
+The choice of an adequate vehicle to transport HUs from an origin to a destination can heavily affect the performance of the supply chain network in terms of the level of service and environmental impact. This problem is called \textit{synchromodality} when the choice is performed online, i.e. without a predefines association between the HU and the vehicle (e.g. truck, train, barge). Recent literature put a strong effort into developing synchromodality models. For the sake of brevity, we introduce an example inspired to the operations of a logistic platform, i.e. a company with a business model based on platform economy aiming at simplifying the operations of a distribution network (see section \ref{secLogPlatform}). \par
 
 \subsection{Data-driven methods (PS2)}
 We simulate the operations of a logistic platform by measuring the performance of the network using the transportation cost. The platform has to assign a set of containers to transportation services using barges or truck, where transportation of a container by truck costs 1.3 times more than a barge ~\cite{Fu2010,Konings2003}. For simplicity, we consider a single barge sailing the distribution network. The platform prefers to assign containers to the barge since it is cheaper than the truck. For this reason, their objective is the maximisation of the number of containers successfully transported by barge.
@@ -750,7 +750,8 @@ The most comprehensive prescriptive model in the field of distribution networks 
     \item a fleet of vehicles $v\in B$;
 	\item a set of pickup and delivery orders $o\in O$ to serve;
 	\item a set of pickup nodes $j\in P$ and a set of delivery nodes $j\in D$ defining a directed graph $G\left(V,A\right)$ where $V=P\bigcup D$ and $\left(i,j\right)\in A$.
-	
+\end{itemize}
+
 In this paragraph, we introduce a VRPPDTW problem to maximise the profit of a shipper of cargo vessels ~\cite{Accorsi2018}. Despite the scope of the problem, its formulation is valid for any distribution network with pickup and deliveries and time windows. The parameters of the problem are illustrated in Table \ref{tab_VRP_vessels}.
 
 \begin{figure}[hbt!]
@@ -761,7 +762,7 @@ In this paragraph, we introduce a VRPPDTW problem to maximise the profit of a sh
 \label{tab_VRP_vessels}
 \end{figure}
 
-\end{itemize}
+
 
 \clearpage
 The mathematical model admits the following decision variables.
@@ -849,13 +850,13 @@ u_{p,i,j}\le v_j, (p,i,j\in O)
 \end{equation}
 
 \begin{equation}
-load_{p,i}=\sum_{j}{q_{p,i,j}{\bullet u}_{p,i,j}}, p\in P,\ i\in V:a_i=1\ 
+load_{p,i}=\sum_{j}{q_{p,i,j}{\times u}_{p,i,j}}, p\in P,\ i\in V:a_i=1\ 
 \label{VRP_8}
 \end{equation}
 
 \begin{equation}
 \begin{split}
-load_{p,j}\geq-M\left(1-x_{i,j}\right)+load_{p,i}+\sum_{k} q_{p,j,k}{\bullet u}_{p,j,k}, \\
+load_{p,j}\geq-M\left(1-x_{i,j}\right)+load_{p,i}+\sum_{k} q_{p,j,k}{\times u}_{p,j,k}, \\
 p\in P\ \left(i,j\right)\in E;i,j\in V \backslash \{j:a_j=1\}\\
 \end{split}
 \label{VRP_9}
@@ -868,7 +869,7 @@ unload_{p,i}=0, p\in P,\ i\in V:a_i=1
 
 \begin{equation}
 \begin{split}
-unload_{p,j}\geq-M\left(1-x_{i,j}\right)+unload_{p,i}+\sum_{k} q_{p,k,j}{\bullet u}_{p,k,j},\\
+unload_{p,j}\geq-M\left(1-x_{i,j}\right)+unload_{p,i}+\sum_{k} q_{p,k,j}{\times u}_{p,k,j},\\
 p\in P\ \left(i,j\right)\in E;i,j\in V\ \backslash \{j:a_j=1\}\\
 \end{split}
 \label{VRP_11}
@@ -880,7 +881,7 @@ p\in P\ \left(i,j\right)\in E;i,j\in V\ \backslash \{j:a_j=1\}\\
 \end{equation}
 
 \begin{equation}
-u_{p,i,j}\bullet t_{p,i,j}\le s_j+time_{i,j}, \left(p,i,j\right)\in O
+u_{p,i,j}\times t_{p,i,j}\le s_j+time_{i,j}, \left(p,i,j\right)\in O
 \label{VRP_13}
 \end{equation}
 
@@ -919,7 +920,7 @@ Constraints (\ref{VRP_1}) and (\ref{VRP_2}) ensure the route is continuous among
 The maximisation of the profit of the shipper is chosen as objective function.
 
 \begin{equation}
-\sum_{p,i,j}{q_{p,i,j}\bullet u_{p,i,j}\bullet p r i c e_{p,i,j}-\sum_{i}{Cstop_i\bullet v_i}-\sum_{i,j}{c_{i,j}\bullet x_{i,j}\ }}
+\sum_{p,i,j}{q_{p,i,j}\times u_{p,i,j}\times p r i c e_{p,i,j}-\sum_{i}{Cstop_i\times v_i}-\sum_{i,j}{c_{i,j}\times x_{i,j}\ }}
 \end{equation}
 
 This problem has been solved using the branch and bound algorithm to test its functionality on a toy instance (i.e. an extremely small instance of the problem). The toy instance network is composed of the nine vertices illustrated in the left of Figure \ref{fig_vesselsOptimal}. The right part of Figure \ref{fig_vesselsOptimal} illustrates the solution of the toy instance, similarly to the descriptive analytics illustrated in \ref{secDistOperationsProfiling}.
@@ -978,7 +979,7 @@ The optimal solution to the VRP is the solution to the set covering problem (SCP
 The primal problem is defined as follows.
 
 \begin{equation}
-   min {c_sx}_S
+   \min{c_sx}_S
 \end{equation}
 
 \begin{equation}
@@ -1114,11 +1115,11 @@ Let consider a column generation problem setting the value of the decision varia
 The problem is defined as follows:
 
 \begin{equation}
-    \max{\sum_{o\in O}{(\pi_o^\ast-profit_o)}y_o\ }-\sum_{i}{Cstop_i\bullet v_i}-\sum_{i,j}{c_{i,j}\bullet x_{i,j}\ }
+    \max{\sum_{o\in O}{(\pi_o^\ast-profit_o)}y_o\ }-\sum_{i}{Cstop_i\times v_i}-\sum_{i,j}{c_{i,j}\times x_{i,j}\ }
 \end{equation}
 
 \begin{equation}
-    profit_o\le q_{p,i,j}\bullet u_{p,i,j}\bullet price_{p,i,j} , o=\left(p,i,j\right)
+    profit_o\le q_{p,i,j}\times u_{p,i,j}\times price_{p,i,j} , o=\left(p,i,j\right)
 \end{equation}
 
 \begin{equation}

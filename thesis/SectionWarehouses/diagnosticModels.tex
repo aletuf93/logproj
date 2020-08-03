@@ -1,8 +1,8 @@
 \chapter{Diagnostic Models}
 
-This section analyses storage systems (also known as warehousing systems). The scientific field analysing storage system is warehouse science ~\cite{Bartholdi2017}. This topic is profoundly important in the management of a supply chain since warehouses are the first source of inefficiencies in a supply chain. The assignment of a proper inventory level in the warehouses of a supply chain network is the first step to smooth the flow and improve the operations of the entire chain.\par
+This section analyses storage systems (also known as warehousing systems). The scientific field analysing storage system is warehouse science ~\cite{Bartholdi2017}. This topic is profoundly important in the management of a supply chain since warehouses are the first source of inefficiencies in a supply chain. The assignment of a proper inventory level in the warehouses of a supply chain network is the first step to smooth the flows and improve the operations of the entire chain.\par
 
-Warehouses work as decoupling points between other supply chain nodes ~\cite{Aguezzoul2014, Selviaridis2007}. Their role is unavoidable since they enhance the flexibility of the entire supply chain by separating the demand and the production rate. We often hear of \textit{zero inventory} as the central paradigm of lean thinking. In truth, it is impossible to build a supply chain without inventory. Contrarily, it is absolutely possible, and always recommendable, to design supply chain able to keep the inventory levels under control (that is the real meaning of the \textit{zero inventory} philosophy). \par
+Warehouses work as decoupling points between other supply chain nodes ~\cite{Aguezzoul2014, Selviaridis2007}. Their role is unavoidable since they enhance the flexibility of the entire supply chain by separating the demand and the production rates. We often hear of \textit{zero inventory} as the central paradigm of lean thinking. In truth, it is impossible to build a supply chain without inventory. Contrarily, it is absolutely possible, and always recommendable, to design supply chain able to keep the inventory levels under control (that is the real meaning of the \textit{zero inventory} philosophy). \par
 
 Nevertheless, the stock is a cost with, or without the control on the level of the inventory. Warehouses do not add any value to the product, but they always lead to costs. For this reason, it is necessary to pay close attention to the design and control of warehouses in order to avoid inefficiencies.\par
 
@@ -13,66 +13,66 @@ This chapter focuses on the definition of the keywords and key entities extendin
 Chapter \ref{chapWhControl} focuses on data- and model-driven methods to control a storage node, while chapter \ref{chapWhDesign} does the same focusing on the design methods.
 
 \section{Ontology} \label{secOntology_wh}
-Section \ref{chap_InformationFramework} introduces the general ontology of this book. This paragraph develops that ontology by applying its keys and metrics to a warehouse system
+Section \ref{chap_InformationFramework} introduces the general ontology of this book. This paragraph develops that ontology by applying its keys and metrics to a warehouse system.
 
 \subsubsection{Entities}
-We identify the following entities.\par
-\textbf{Part} ($i$): It is a storage unit, better known as a stock keeping unit (SKU). An SKU is usually:
+We identify the following entities:\par
+\textbf{Part} ($i$): it is a storage unit, better known as a stock keeping unit (SKU). An SKU is usually:
 \begin{itemize}
-    \item A part, i.e. a single product;
-    \item A carton, i.e. a (secondary) package, containing many parts, or 
-    \item A pallet, i.e. a (tertiary) package, containing many cartons.
+    \item a part, i.e. a single product;
+    \item a carton, i.e. a (secondary) package, containing many parts, or 
+    \item a pallet, i.e. a (tertiary) package, containing many cartons.
 \end{itemize}
 \par
 
-\textbf{Processing node} ($j$): It is a storage location. Each area able to host one or more SKUs is a processing node of the storage system. \par
+\textbf{Processing node} ($j$): it is a storage location. Each area able to host one or more SKUs is a processing node of the storage system. \par
 
-\textbf{Edge} ($j,k$): Paths connecting the storage locations (the aisles of the warehouse) are the edges. Generally, aisles can be travelled:
+\textbf{Edge} ($j,k$): paths connecting the storage locations (the aisles of the warehouse) are the edges. Generally, aisles can be travelled:
 \begin{itemize}
-    \item Traversal (using a single direction);
-    \item Return (using both the directions).
+    \item traversal (using a single direction);
+    \item teturn (using both the directions).
 \end{itemize}
 Traversal policy implies that the graph of the storage system is directed. Otherwise, return policy implies an undirected graph.
 \par
 
-\textbf{Vehicle} ($v$): A vehicle is any unit able to travel on edges and load or unload parts (e.g. a forklift). \par
+\textbf{Vehicle} ($v$): a vehicle is any unit able to travel on edges and load or unload parts (e.g. a forklift). \par
 
-\textbf{Consumable} ($s$): The energy to feed the vehicles, and the resources of a storage system.\par
+\textbf{Consumable} ($s$): the energy to feed the vehicles, and the resources of a storage system.\par
 
-\textbf{Route} ($e$): The routes in a storage system are the set of edges travelled in sequence by a vehicle to complete a put-away or picking job. Routes are usually not predefined and can continuously change depending on the set of orders. \par
+\textbf{Route} ($e$): the routes in a storage system are the set of edges travelled in sequence by a vehicle to complete a put-away or picking job. Routes are usually not predefined and can continuously change depending on the set of orders. \par
 
-\textbf{Order} ($o$): It is a set of products to put away or pick received by the customer \par
+\textbf{Order} ($o$): it is a set of products to put away or pick received by the customer \par
 
-\textbf{Job} ($b$): It is the sequence of locations to visit and the quantity of SKUs to move to complete an order. A picking/put-away list is a job. \par
+\textbf{Job} ($b$): it is the sequence of locations to visit and the quantity of SKUs to move to complete an order. A picking/put-away list is a job. \par
 
-\textbf{System network} The graph $G(V,A)$ of nodes $j\in V$ and edges $\left(j,k\right)\in A$ composing the warehouse system.
+\textbf{System network}: the graph $G(V,A)$ of nodes $j\in V$ and edges $\left(j,k\right)\in A$ composing the warehouse system.
 
 \subsubsection{Metrics}
 We identify the following metrics to assess the performances of a processing node $j$.\par
 
-\textbf{Throughput} ($TH_{j}$): The put-away or picking rate of a set of locations. (parts per hour).\par
+\textbf{Throughput} ($TH_{j}$): the put-away or picking rate of a set of locations. (parts per hour).\par
 
-\textbf{Work in process} ($WIP_{j}$): It is the number of parts stored in a location $j$.\par
+\textbf{Work in process} ($WIP_{j}$): it is the number of parts stored in a location $j$.\par
 
-\textbf{Work in process} ($WIP_{jk}$): It is the number of parts being transported by a vehicle $v$. \par
+\textbf{Work in process} ($WIP_{jk}$): it is the number of parts being transported by a vehicle $v$. \par
 
-\textbf{Capacity} ($C_j$): It is the maximum storage capacity of a storage location $j$, usually measured in quantity or volume ($dm^3$).\par
+\textbf{Capacity} ($C_j$): it is the maximum storage capacity of a storage location $j$, usually measured in quantity or volume ($dm^3$).\par
 
-\textbf{Capacity} ($C_v$): It is the maximum number of part transportable by a vehicle $v$ at the same time. \par
+\textbf{Capacity} ($C_v$): it is the maximum number of part transportable by a vehicle $v$ at the same time. \par
 
-\textbf{Utilisation} ($U_j$): It is the average saturation of the space of a storage location. \par
+\textbf{Utilisation} ($U_j$): it is the average saturation of the space of a storage location. \par
 
-\textbf{Utilisation} ($U_v$): It is the average fraction of non-empty space on a vehicle. \par
+\textbf{Utilisation} ($U_v$): it is the average fraction of non-empty space on a vehicle. \par
 
-\textbf{Lead time} ($LT_e$): It is the time allocated to perform a route (i.e. to complete a picking or put-away list). \par
+\textbf{Lead time} ($LT_e$): it is the time allocated to perform a route (i.e. to complete a picking or put-away list). \par
 
-\textbf{Cycle time} ($CT_e$): It is the average time from the receipt of an order to the completion of the associated picking list (job). \par
+\textbf{Cycle time} ($CT_e$): it is the average time from the receipt of an order to the completion of the associated picking list (job). \par
 
 \textbf{Service level} ($SL_e$): $Prob\{cycle\ time\le lead\ time\}$
 
 \subsubsection{Information functions}
 
-Finally, we define the three information functions introduced \ref{secInfoFramework}: Movements $M$ are referred to put-away (IN) and picks (OUT) of SKUs to or from a storage location $j$; the inventory $I$ are referred to the number of SKUs stored in a storage location $j$. The productivity $P$ refers to the inbound and outbound throughput of a set of locations. Usually, a set contains locations close to each other, depending on the warehouse technology (e.g. manual or automated) offering a different $TH_j$ and with different productivity patterns. Table \ref{tab_information_function_wh} summarises the definition of the three functions in a storage system.
+Finally, we define the three information functions introduced \ref{secInfoFramework}: movements $M$ are referred to put-away (IN) and picks (OUT) of SKUs to or from a storage location $j$; the inventory $I$ is referred to the number of SKUs stored in a storage location $j$. The productivity $P$ refers to the inbound and outbound throughput of a set of locations. Usually, a set contains locations close to each other, depending on the warehouse technology (e.g. manual or automated) offering a different $TH_j$ and with different productivity patterns. Table \ref{tab_information_function_wh} summarises the definition of the three functions in a storage system.
 
 % INSERT tab_information_function_wh
 \begin{figure}[hbt!]
@@ -124,8 +124,8 @@ Storage locations are the areas where each single SKU is stored and waits to be 
     \item the id of the storage system (i.e. the building);
     \item the id of the logical warehouse (i.e. a subset of locations that are logically but not necessarily physically separated by the others);
     \item the id of the location;
-    \item the coordinate of the aisle which serves the location (x coordinate);
-    \item the coordinates of the location (x,y,z coordinates);
+    \item the coordinate of the aisle which serves the location ($x$ coordinate);
+    \item the coordinates of the location ($x,y,z$ coordinates);
     \item the number of the rack;
     \item the number of the bay;
     \item the number of the level;
@@ -141,13 +141,13 @@ This information is beneficial to analyse the flows generated by the warehouse o
 The vehicles table identifies the macro category of vehicles handling SKUs within a warehouse. A non-exhaustive list comprises:
 
 \begin{itemize}
-    \item Manual operator (i.e. walking through aisles and shelves);
-    \item Forklift serving racks;
-    \item Forklift serving floor stack;
-    \item Man-on-board picking vehicle;
-    \item Vertical warehouse (e.g. Modula);
-    \item Miniload;
-    \item Automated storage \& retrieval system (AR/RS).
+    \item manual operator (i.e. walking through aisles and shelves);
+    \item forklift serving racks;
+    \item forklift serving floor stack;
+    \item man-on-board picking vehicle;
+    \item vertical warehouse (e.g. Modula);
+    \item miniload;
+    \item automated storage \& retrieval system (AR/RS).
 
 \end{itemize}
 
@@ -174,14 +174,14 @@ The movements table tracks each movement, i.e. put-away or picking activity modi
     \item the id of the logical warehouse (i.e. a subset of locations that are logically but not necessarily physically separated by the others) inherited from the table locations;
     \item the id of the location inherited from the table locations;
     \item the id of the item inherited from the SKU table;
-    \item The timestamp when the movement is recorded;
-    \item The id of the order;
-    \item The quantity picked or put away;
-    \item The id of the picking/put-away mission;
-    \item The sign of the movement (e.g. '+' for put-away and '-' for picking)
-    \item The type of the order;
-    \item The id of the picking operator/vehicle;
-    \item The id of the package associated with the SKU.
+    \item the timestamp when the movement is recorded;
+    \item the id of the order;
+    \item the quantity picked or put away;
+    \item the id of the picking/put-away mission;
+    \item the sign of the movement (e.g. '+' for put-away and '-' for picking)
+    \item the type of the order;
+    \item the id of the picking operator/vehicle;
+    \item the id of the package associated with the SKU.
 
 \end{itemize}
 
@@ -200,7 +200,7 @@ Figure \ref{fig_ER_wh} presents the relational model linking all these tables by
 
 ER databases are the most used in the design of the WMS. Nevertheless, non-relational structures allow flexibility and easiness of use with benefits applied to the field of warehousing science. In particular, traditional WMS does not store information on the layout coordinates of the storage locations. In addition, many locations are virtual and only exists in the WMS to provide relational integrity without any physical relevance. \par
 
-An important feature to control a storage system is the possibility to measure the distance between storage locations. While dealing with an ER structure, it is possible to define a block-layout based identifying:
+An important feature to control a storage system is the possibility to measure the distance between storage locations. While dealing with an ER structure, it is possible to define a block-layout identifying:
 
 \begin{itemize}
     \item the input and output points;
@@ -220,7 +220,7 @@ Figure \ref{fig_layout_wh} identifies the layout, and its coordinates identified
 \label{fig_layout_wh}
 \end{figure}
 
-Unluckily, the application of modular distances does not always correctly represent the distances within a storage system, adding an avoidable bias. There can be multiple storage blocks within the same warehouses using different technologies, or different storage areas whose distances are poorly represented by this modular pattern. To overcome this limitation, we aim at defining a graph $G(V,A)$ with a vertex $j\in V$ for each  storage location, and a set of arcs $\left(i,j\right)\in A$ representing the available connections with their distance. A non-relational structure is the natural tool to both contain all the information of the relational model, and to save the graph G to enhance warehouse design and control. We introduce the collections and attributes of the non-relational data structure first. Then we illustrate a method to define the warehouse graph. \par
+Unluckily, the application of modular distances does not always correctly represent the distances within a storage system, adding an avoidable bias. There can be multiple storage blocks within the same warehouses using different technologies, or different storage areas whose distances are poorly represented by this modular pattern. To overcome this limitation, we aim at defining a graph $G(V,A)$ with a vertex $j\in V$ for each  storage location, and a set of arcs $\left(i,j\right)\in A$ representing the available connections with their distance. A non-relational structure is the natural tool to both contain all the information of the relational model, and to save the graph $G$ to enhance warehouse design and control. We introduce the collections and attributes of the non-relational data structure first. Then we illustrate a method to define the warehouse graph. \par
 
 The non-relational data structure consists of five collections: \textit{parts}, \textit{storage locations}, \textit{movements}, \textit{inventory} and \textit{graph}. For each collection, a minimal number of attributes defines the minimal viable model (MVM) with the essential information to map the operations of a storage system. \par
 

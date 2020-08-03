@@ -5,11 +5,11 @@
 
 All the previous chapters of this mathematical section, introduced methods to describe and understand a dataset, and even to create knowledge by discovering hidden patterns within data.\par
 
-When the decision-maker has a clear description of the processes, it is necessary to find decision-support methods to leave a footprint in the real world. This should be the last stage of any serious data-driven process since starting building a decision support tool without a clear idea of the process where it is going to be embedded may lead to catastrophic results.\par
+When the decision-maker has a clear description of the processes, it is necessary to find decision-support methods to leave a footprint in the real world. This should be the last stage of any serious data-driven process since starting building a decision-support tool without a clear idea of the process where the decision-support tool has to be embedded may lead to catastrophic results.\par
 
 Besides, it is important to remember that statistics and learning algorithms provide much information. Sometimes, this information is enough for making a decision without additional biases introduced by complex decision-support tools.\par
 
-It is important to remember that prescriptive models are highly complex and incredibly problem-oriented. This fact suggests that they usually embed the highest bias possible and a limited generalisation of their mechanism, which also prevents their repeatability and their value for academics.\par
+We know that prescriptive models are highly complex and incredibly problem-oriented. This fact suggests that they usually embed the highest bias possible and a limited generalisation of their mechanism, which also prevents their reproducibility and their value for the scientific community.\par
 
 \section{Prescriptive models}
 Prescriptive models aim at setting the value of decision variables that mimic the decision alternatives in a real context. These models are defined using the following notation.
@@ -24,9 +24,9 @@ Prescriptive models aim at setting the value of decision variables that mimic th
 Prescriptive models are algorithms minimising (or maximising) $z$ by changing the entries of $x$ within the domain $\xi$. Prescriptive models outcome are the solution $\hat{x}$ and the solution value $\hat{z}$. Let assume $P$ being a minimisation problem, we define $\hat{x}$:
 
 \begin{itemize}
-    \item Optimal solution (indicated with $x^\ast$) if the value of $\hat{z}$ is the minimum among all the possible values of $\hat{z}$;
-    \item Feasible solution if $x\in\xi$;
-    \item Unfeasible solution if $x\notin\xi$.
+    \item optimal solution (indicated with $x^\ast$) if the value of $\hat{z}$ is the minimum among all the possible values of $\hat{z}$;
+    \item feasible solution if $x\in\xi$;
+    \item unfeasible solution if $x\notin\xi$.
 \end{itemize}
 
 \section{Heuristics and metaheuristics}
@@ -45,8 +45,8 @@ Considering a minimisation problem $P$, a heuristic procedure is any algorithm t
 Heuristics can be:
 
 \begin{itemize}
-    \item Greedy algorithms, i.e. they perform a number of steps to build a feasible solution;
-    \item Local search, i.e. they perform a number of steps to improve an initial feasible solution.
+    \item greedy algorithms, i.e. they perform a number of steps to build a feasible solution;
+    \item local search, i.e. they perform a number of steps to improve an initial feasible solution.
 \end{itemize}
 
 Metaheuristics usually start from a feasible solution (e.g. produced by a greedy algorithm), and they perform a number of moves according to the type of the algorithm. Examples of metaheuristics algorithms are simulated annealing, tabu search, ant colony algorithm, genetic algorithm (see section \ref{geneticSearch}). Each of them has a precise logic to generate the solution at each step, it checks (or recovers) the feasibility of the incumbent solution within $\xi$ improving $z$.
@@ -81,28 +81,28 @@ Let consider a primal problem $P$ defined as:
 \end{equation}
 The optimal solution value $z$ of the problem $P$ is obtained at $c^\prime x^\ast$.\par 
 
-Let consider the Lagrangian relaxation $L$ of the problem $P$, where the set of constraints $Ax\le b$ is replaced by a penalty addendum $p\prime\left(b-Ax\right)$ in the objective function.
+Let consider the Lagrangian relaxation $L$ of the problem $P$, where the set of constraints $Ax\le b$ is replaced by a penalty addendum $p^{\prime}\left(b-Ax\right)$ in the objective function.
 \begin{equation}
 \begin{split}
-    \min{c^\prime x-p\prime(b-Ax)}\\
+    \min{c^\prime x-p^{\prime}(b-Ax)}\\
     x\geq0\\
 \end{split}
 \label{eq_lagrangianRelaxation}
 \end{equation}
 
-Let $g(p)$ be the solution value of the relaxed problem $L$. $g(p)$ is a lower bound of $c\prime x$.
+Let $g(p)$ be the solution value of the relaxed problem $L$. $g(p)$ is a lower bound of $c^{\prime} x$.
 
 \begin{equation}
 g\left(p\right)\le c\prime x
 \label{eq_lagrangianRelaxationSolutionValue}
 \end{equation}
 
-Equation (\ref{eq_lagrangianRelaxationSolutionValue}) implies that it is possible to find a vector $p\prime$ such that $p^\prime\left(b-Ax\right)=0$ obtaining a solution value of the relaxed problem equal to the optimal solution value of the non-relaxed problem. The problem to find $p\prime$ is called dual problem $D$, and it is formally defined as:
+Equation (\ref{eq_lagrangianRelaxationSolutionValue}) implies that it is possible to find a vector $p^{\prime}$ such that $p^\prime\left(b-Ax\right)=0$ obtaining a solution value of the relaxed problem equal to the optimal solution value of the non-relaxed problem. The problem to find $p\prime$ is called dual problem $D$, and it is formally defined as:
 
 \begin{equation}
 \begin{split}
     v=\max{p^\prime b}\\
-    p\prime A\le c\\
+    p^{\prime} A\le c\\
     p\geq0\\
 \end{split}
 \label{eq_dualProblem}
@@ -121,8 +121,8 @@ A set of mathematical rules from the theorem of duality allows obtaining the def
 
 Sometimes, solving the dual problem is easier than solving the primal problem. In particular, the dual problem can be used to:
 \begin{enumerate}
-    \item find a lower bound of the solution value of a problem. $g\left(p\right)\le c\prime x$ (e.g. to start a branch \& bound procedure);
-    \item generate variables (i.e. columns) for a problem with an exponential number of variables $p\prime\left(b-Ax\right)$ (Branch \& Price algorithm).
+    \item find a lower bound of the solution value of a problem. $g\left(p\right)\le c^{\prime} x$ (e.g. to start a branch \& bound procedure);
+    \item generate variables (i.e. columns) for a problem with an exponential number of variables $p^{\prime}\left(b-Ax\right)$ (Branch \& Price algorithm).
 \end{enumerate}
 
 \subsubsection{Branch \& price algorithm}
@@ -171,10 +171,10 @@ If we relax the integrality of $P$  we obtain the dual problem D.
 \label{eq_dualProblemDual}
 \end{equation}
 
-We defined $P$ as an ILP problem with an exponential number of variables $x_s$. The dual problem, instead, has an exponential number of constraints $\sum_{i\in S}{\pi_i\le c_s\ \forall\ s\in S}$. To optimally solve $D$ we use the separation procedure (also known as \textit{branch \& cut}). Let solve $P$ and $D$ and obtain $x^\ast,cx^\ast,\pi^\ast,g\left(\pi^\ast\right)$. Let assume $x^\ast$ being feasible with no guarantee of optimality for $P$.
+We defined $P$ as an ILP problem with an exponential number of variables $x_s$. The dual problem, instead, has an exponential number of constraints $\sum_{i\in S}{\pi_i\le c_s\ \forall\ s\in S}$. To optimally solve $D$ we use the separation procedure (also known as \textit{branch \& cut}). Let solve $P$ and $D$ and obtain $x^\ast,cx^\ast,\pi^\ast,g\left(\pi^\ast\right)$. Let assume $x^\ast$ being feasible with no guarantee of optimality for $P$:
 \begin{itemize}
-    \item If $\pi^\ast$ is feasible for $D$, then $x^\ast$ is optimal for $P$ (weak duality theorem);
-    \item If $\pi^\ast$ is unfeasible for $D$, at least a dual constraint is violated, and a column (a variable of the primal problem $P$) must be added to $x$ to proceed towards optimality.
+    \item if $\pi^\ast$ is feasible for $D$, then $x^\ast$ is optimal for $P$ (weak duality theorem);
+    \item if $\pi^\ast$ is unfeasible for $D$, at least a dual constraint is violated, and a column (a variable of the primal problem $P$) must be added to $x$ to proceed towards optimality.
 \end{itemize}
 
 Since constraints of $D$ are in the form: $\sum_{i\in S}{\pi_i-c_s\le0\ \ \forall\ s\in S}$, a violated constraint of $D$ equals to a vector $s$ respecting the following constraints.
@@ -209,7 +209,7 @@ $\sum_{i\in s}{{(\pi}_i-c_i)}$ is the reduced cost of variable $s$. To identify 
 
 If the reduced cost $\sum_{i=1}^{m}{\mu_i(\pi_i-c_i)}$ is positive, it is worth to add this column to reduce the value of the primal objective function. The procedure of adding columns is repeated until the objective function of equations (\ref{eq_colGenProblem})  has a positive value (i.e., a reduced cost exists). When there is no reduced cost, all the necessary columns have been added to $S$ in the primal problem $P$. At this stage, the integrality constraints of $P$ are restored, and $P$ is solved to optimality. \par
 
-A column generation procedure needs that $S$ contains an initial feasible solution. For this reason, the initial value of $S$ is initialised to a $s_{ij}=1$ if $i=j$, '0' otherwise. Figure \ref{fig_columnsGeneration} illustrates the evolution of the set S from an initial feasible solution to the optimal solution obtained by a column generation algorithm; the x-axis identifies the iterations of the algorithm while the y-axis the value of the added column (i.e. yellow for ones and blue for zeros).
+A column generation procedure needs that $S$ contains an initial feasible solution. For this reason, the initial value of $S$ is initialised to a $s_{ij}='1'$ if $i=j$, '0' otherwise. Figure \ref{fig_columnsGeneration} illustrates the evolution of the set S from an initial feasible solution to the optimal solution obtained by a column generation algorithm; the x-axis identifies the iterations of the algorithm while the y-axis the value of the added column (i.e. yellow for ones and blue for zeros).
 
 % INSERT fig_columnsGeneration
 \begin{figure}[hbt!]

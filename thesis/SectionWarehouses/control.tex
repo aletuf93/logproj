@@ -10,10 +10,10 @@ This paragraph illustrates the approaches to evaluate the performance of a stora
 A storage system works as an intermediate buffer of a supply chain. It receives material flows from suppliers, and generate material flows directed to the customers. Many information flows connect suppliers and customers with the operations of a warehouse. Mapping this flow is a common technique to assess the exchange of materials and information from a qualitative point of view. The Business Process Model and Notation is used to identify entities, flows and responsibilities. When applying the BPMN to a storage system:
 
 \begin{itemize}
-    \item Activities are tasks necessary for the storage and handling of SKUs;
-    \item The events identify when an activity is terminated (e.g. a put-away or a picking list);
-    \item Gateways describe a different variant of the process (e.g. value-added activities as packing, quality control, labelling).
-    \item Pools identify the operators and the offices of the storage system, identifying their responsibilities.
+    \item activities are tasks necessary for the storage and handling of SKUs;
+    \item events identify when an activity is terminated (e.g. a put-away or a picking list);
+    \item gateways describe a different variant of the process (e.g. value-added activities as packing, quality control, labelling).
+    \item pools identify the operators and the offices of the storage system, identifying their responsibilities.
 
 \end{itemize}
 
@@ -22,7 +22,7 @@ BPMN defines a qualitative map of the production processes useful for manager an
 \begin{enumerate}
     \item Logistic KPIs, evaluate the logistic impact of a certain solution. They use metrics like time, distance and the performance parameters introduced in Paragraph \ref{secOntology_wh}.
 	\item Cost KPIs, evaluate the economic sustainability of a given solution. They are expressed in \euro{} or other currency.
-	\item Energy KPIs, evaluate the energy needed to feed a given solution. They use metrics as kW and kW/h.
+	\item Energy KPIs, evaluate the energy needed to feed a given solution. They use metrics as kW and kWh.
 	\item Environmental KPIs, evaluate the environmental impact of a given solution. They are expressing the equivalent $CO_2$ produced per year.
 
 \end{enumerate}
@@ -62,10 +62,10 @@ Warehouses contain thousands of different SKUs. For this reason, it is necessary
 We introduce four different profiling indexes; some indexes are defined differently for inbound and outbound operations.
 
 \begin{itemize}
-    \item The popularity index $Pop_i^+$, $Pop_i^-$ counting the number of put-away/picks of SKU $i$;
-    \item The turn index $Turn_i=\frac{Qty_i^-}{\bar{I_i\left(t\right)}\ }$; where $Qty_i^-$ is the outbound quantity of SKU $i$ measured in parts or $dm^3$, and $\bar{I_i\left(t\right)}$ is the mean value of the inventory function of part $i$ measured in parts or $dm^3$. The turn measures the rotation of the inventory of a part.
-    \item 	The cube-per-order index $COI_i^+=\frac{Pop_i^+}{\bar{I_i\left(t\right)}\ }$, $COI_i^-=\frac{Pop_i^-}{\bar{I_i\left(t\right)}\ }$; where $Pop_i^+$, and $Pop_i^-$ are the inbound or outbound popularity and $\bar{I_i\left(t\right)}$ is the mean value of the inventory function of part $i$ measured in $dm^3$. The COI mixes the two metrics above to have both a measure of the number of accesses and the space occupied by a part ~\cite{Haskett1963, Malmborg1990}.
-    \item 	The order completion index $OC_i\ =\sum_{e:i\in e}\frac{1}{card(e)}\ $; where $e$ is an order or a  picking list. The index measures the relative importance of a part $i$ to complete a single order.
+    \item the popularity index $Pop_i^+$, $Pop_i^-$ counting the number of put-away/picks of SKU $i$;
+    \item the turn index $Turn_i=\frac{Qty_i^-}{\bar{I_i\left(t\right)}\ }$; where $Qty_i^-$ is the outbound quantity of SKU $i$ measured in parts or $dm^3$, and $\overline{I_i\left(t\right)}$ is the mean value of the inventory function of part $i$ measured in parts or $dm^3$. The turn measures the rotation of the inventory of a part.
+    \item the cube-per-order index $COI_i^+=\frac{Pop_i^+}{\overline{I_i\left(t\right)}\ }$, $COI_i^-=\frac{Pop_i^-}{\overline{I_i\left(t\right)}\ }$; where $Pop_i^+$, and $Pop_i^-$ are the inbound or outbound popularity and $\overline{I_i\left(t\right)}$ is the mean value of the inventory function of part $i$ measured in $dm^3$. The COI mixes the two metrics above to have both a measure of the number of accesses and the space occupied by a part ~\cite{Haskett1963, Malmborg1990}.
+    \item the order completion index $OC_i\ =\sum_{e:i\in e}\frac{1}{card(e)}\ $; where $e$ is an order or a  picking list. The index measures the relative importance of a part $i$ to complete a single order.
 \end{itemize}
 
 Mapping all these indexes provide a behaviour of each single SKU. This indexes can be grouped using the Pareto curve, and the frequency analysis to investigate the behaviour of an entire storage system (see Figure \ref{fig_wh_profile}).\footnote{The source code of Figure \ref{fig_wh_profile} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/WH_02\%20Warehouse\%20indexes\%20assessment.ipynb}{here}.
@@ -117,9 +117,9 @@ By summing the inventory functions for all the SKUs, it is possible to measure t
 Workload profiling aims at assessing patterns of workload per different types of areas or vehicles of the storage system. The workload of a storage system is measurable using:
 
 \begin{itemize}
-    \item The popularity $Pop_i^+(t)$, $Pop_i^-(t)$, indicating the number of accesses to part $i$;
-	\item The volume $Vol_i^+(t)$, $Vol_i^-(t)$, indicating the put-away or picking volume of part $i$, calculates as quantity times volume of a single part;
-	\item The weight $W_i^+(t)$, $W_i^-(t)$, indicating the put-away or picking weight of part $i$, calculated as quantity times weight of a single part.
+    \item the popularity $Pop_i^+(t)$, $Pop_i^-(t)$, indicating the number of accesses to part $i$;
+	\item the volume $Vol_i^+(t)$, $Vol_i^-(t)$, indicating the put-away or picking volume of part $i$, calculates as quantity times volume of a single part;
+	\item the weight $W_i^+(t)$, $W_i^-(t)$, indicating the put-away or picking weight of part $i$, calculated as quantity times weight of a single part.
 
 \end{itemize}
 
@@ -147,11 +147,11 @@ These analyses consider a single independent variable (i.e. the time $t$). By co
 \clearpage
 
 \subsubsection{Layout profiling}
-Profiling the behaviour of the resource on the layout of a storage system is the key to identify sources of inefficiencies. By considering the rectangular (also known as “city-block”) distance between the I/O area and each single storage locations, it is possible to identify which locations are closer to reach. Placing the items with a high number of accesses close to the I/O point may increase the efficiency of a storage system.\par
+Profiling the behaviour of the resources on the layout of a storage system is the key to identify sources of inefficiencies. By considering the rectangular (also known as “city-block”) distance between the I/O area and each single storage location, it is possible to identify which locations are closer to reach. Placing the items with a high number of accesses close to the I/O point may increase the efficiency of a storage system.\par
 
-By analysing the distance to reach the storage location where an SKU $i$ is placed, and the popularity of the SKU $i$, it is easy to identify which SKUs are far from their optimal location, and generate a long travelling distance that can be avoided ~\cite{Manzini2018}.\par
+By analysing the distance to reach the storage location where an SKU $i$ is placed, and the popularity of the SKU $i$, it is easy to identify which SKUs are far from their optimal location, and generate a long travelling distance that can be avoided with a reassignment of SKUs to storage locations ~\cite{Manzini2018}.\par
 
-Finally, it is important to identify where the traffic is located within a storage system.  When storage location coordinates are known, it is possible to define a graph $G(V,E)$ as introduced in \ref{secNonRelStructWh}. The distance between a storage location and the input and output point is a piece of important information to identify the locations where t place SKUs with the highest popularity indexes (see the chart in the top left panel of Figure \ref{fig_layout_profile}).\footnote{The source code of Figure \ref{fig_layout_profile} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/WH_04\%20Warehouse\%20layout\%20assessment.ipynb}{here}.} \par
+Finally, it is important to identify where the traffic is located within a storage system.  When storage location coordinates are known, it is possible to define a graph $G(V,E)$ as introduced in \ref{secNonRelStructWh}. The distance between a storage location and the input and output point is a piece of important information to identify the locations where placing SKUs with the highest popularity indexes (see the chart in the top left panel of Figure \ref{fig_layout_profile}).\footnote{The source code of Figure \ref{fig_layout_profile} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/WH_04\%20Warehouse\%20layout\%20assessment.ipynb}{here}.} \par
 
 By solving the shortest path between the sequence of locations visited by a picking list, it is possible to identify the traffic within the aisles of the storage system. This procedure reveals the travelled distance for each picking list and the part of the aisles where each vehicle travelled. A traffic chart is used to reveal this information (see the chart in the top right panel of Figure \ref{fig_layout_profile}). \par
 
@@ -169,7 +169,7 @@ The optimisation of a storage system can be obtained by placing the SKUs in a di
 \clearpage
 
 \section{Workload prediction (P9)}
-Storage system datasets track both the behaviour of its supplier and customers by considering put-away (labelled with the “+” sign), and pickings (labelled with the “-“ sign). For this reason, they have all the data to make forecasts of the workload in the future.
+Storage system datasets track both the behaviour of its suppliers and customers by considering put-aways (labelled with the “+” sign), and pickings (labelled with the “-“ sign). For this reason, they have all the data to make forecasts of the workload in the future.
 
 \subsection{Model-driven methods (PD2)}
 Classic time series methods help to model and predict the workload of the storage system in the future. Usually, the number of movements (i.e. the lines) is much more representative than the quantities (more used in production forecasts) ~\cite{VanGils2017a}.\par
@@ -180,13 +180,13 @@ Storage systems have an additional peculiarity; their inventory function $I(t)$ 
 This section introduces data-driven methods to forecast the value of the key variables of a storage system in the future. In particular, a metric of the cost of a storage system can be estimated by the time to put-away/pick a line of a picking list. Multiple tasks compose this time, depending on the type of product and process of the warehouse. A non-exhaustive list comprises:
 \begin{itemize}
     \item travel time;
-    \item search Time;
+    \item search time;
     \item pick time;
     \item pack time.
 
 \end{itemize}
 
-A rigorous time and motion campaign measures all this component on-field. Nevertheless, setting an accurate campaign is costly. Consider that the generalisation of the results of a measurement campaign needs at least 30 samples to apply the central limit theorem. Some tasks are performed rarely, and collecting 30 samples may take forever. Besides, a campaign lasts months, there is the risk that the inventory function $I(t)$ already “rotated” (see section \ref{secDataDrivenAnalysisWh}), and the samples are unrepresentative of the operations. 
+A rigorous time and motion campaign measures all these components on-field. Nevertheless, setting an accurate campaign is costly. Consider that the generalisation of the results of a measurement campaign needs at least 30 samples to apply the central limit theorem. Some tasks are performed rarely, and collecting 30 samples may take forever. Besides, a campaign lasts months, there is the risk that the inventory function $I(t)$ already “rotated” (see section \ref{secDataDrivenAnalysisWh}), and the samples are unrepresentative of the operations. 
 
 To overcome these limits, we use a different approach, still rigorous, even if with a lower level of details. Since the WMS always records a timestamp for each operation, it is possible to estimate the starting and the ending time of a picking list. Depending on the attributes of the dataset, it is possible to aggregate quantitative values and to train machine learning models to predict the total time to execute a picking list. For example, the input dataset $X$, can be composed of the following attributes for each picking list (each picking list is an observation):
 
@@ -234,7 +234,7 @@ Despite our introduction already defines a graph $G(V,A)$ with vertices and dist
 
 Besides, VRP works offline, assuming that all the orders are known in advance. This is not always true for a WMS that can be frequently updated during the working shift. Finally, the set $V$ of the graph $G$ could have thousands of nodes (one for each storage location) resulting in a vast VRP problem, taking forever to solve.\par
 
-Sometimes heuristics are used to approach this problem; e.g. by printing picking list for each zone of the warehouse when zoning is used. Warehouses with traversal directions use a single-direction snake path travelling through all the aisles of the warehouses for each picking list.\par
+Sometimes heuristics are used to approach this problem; e.g. by printing a picking list for each zone of the warehouse when zoning is used. Warehouses with traversal directions use a single-direction snake path travelling through all the aisles of the warehouses for each picking list.\par
 
 Generally, simulation is used to investigate the best picking list generation policy ~\cite{Chew1999, Hall1993, Kim2002, Petersen1999}. In truth, this work does not approach the problem since it is highly warehouse-dependent involving, in our opinion, too many parameters to be integrated into a single approach generalisable for any storage system.
 

@@ -4,9 +4,9 @@
 \epigraph{\textit{Pure mathematics is, in its way, the poetry of logical ideas.}}{Albert Einstein}
 
 
-Supply chains involve a large number of connected entities, resources, actors and flows.  In this chapter, we introduce a framework to model the entities of storage systems, distribution network and production plants. In particular, this work investigates the room for the application of data science in the field of logistics and operations. For this reason, we are interested in mapping the information relationships between these entities.\par
+Supply chains involve a large number of connected entities, resources, actors and flows.  In this chapter, we introduce a framework to model the entities of storage systems, distribution networks and production plants. In particular, this work investigates the room for the application of data science in the field of logistics and operations. For this reason, we are interested in mapping the information relationships between these entities.\par
 
-Here we introduce an ontology of entities and metrics. This ontology meets the \textit{fractal manufacturing system} philosophy (see \cite{Sprock2018}), where each element of a supply chain can be seen as a black box with input and outputs. The elements can be aggregated or disaggregated into other black boxes. In the following parts of this book, we will re-define this ontology by applying it to smaller blocks of the supply chain, with specific references to storage systems, distribution networks and production plants.
+Here we introduce an ontology of entities and metrics. This ontology meets the \textit{fractal manufacturing system} philosophy (see \cite{Sprock2018}), where each element of a supply chain can be seen as a black box with inputs and outputs. The elements can be aggregated or disaggregated into other black boxes. In the following parts of this book, we will re-define this ontology by applying it to smaller blocks of the supply chain, with specific references to storage systems, distribution networks and production plants.
 
 \section{Ontology}\label{secOntology}
 We base our ontology on \cite{Hopp2011}, a milestone book in logistics and operations science. It was the first providing a scientific framework to model a factory. 
@@ -23,7 +23,7 @@ We identify the following entities.\par
 \par
 \textbf{Processing node} ($j$): we define the processing node using the concept of fractal manufacturing. From this perspective, a processing node is any entity that can be modelled as a black box with input and output. A production machine, a production line, a packing machine, a manufacturing robot, a production plant, a storage system, a port, a logistic platform, a train terminal are all examples of entities working as a processing node. A processing node usually performs value-added activities on a part. \par
 
-\textbf{Edge} ($j,k$): it is a physical connection between processing nodes. Aisles and conveyors are edges in a production plant while railways, rivers and roads are the edges of a distribution system.\par
+\textbf{Edge} ($j,k$): it is a physical connection between processing nodes. Aisles and conveyors are edges in a production plant; while railways, rivers and roads are the edges of a distribution system.\par
 
 \textbf{Vehicle} ($v$): a vehicle is a handling unit able to transport one or more parts from a processing node to another. Operators, forklifts, AGVs, trucks, trains, vessels are all examples of a vehicle. \par
 
@@ -69,7 +69,7 @@ WIP_j [pz]=TH_j \left[\frac{pz}{h}\right] \times CT_{e:e \in \{j\} } [h]
 
 Usually, managers have data on the entities at their disposal, but they need to get information on the metrics. This data can be dirty or incomplete. For this reason, we build upon this ontology to show how to infer the properties of entities and metrics when data are incomplete or missing.\par
 
-Our approach is highly generalisable and based on a few standard rules of a supply chain, with minimum bias. For this reason, the theoretical effort of this work stands in the definition of a structure for industrial data and the understanding the role of data features and the consistency rules among different features that can be used to increase the value of an incomplete dataset.\par
+Our approach is highly generalisable and based on a few standard rules of a supply chain, with minimum bias. For this reason, the theoretical effort of this work stands in the definition of a structure for industrial data, the understanding of the role of data, and the consistency rules among different features that can be used to increase the value of an incomplete dataset.\par
 
 The modelling of a system accordingly with a robust data structure allows using only logistics-relevant data and base the model on robust relationships. The following sections define this data structure for storage, distribution and production systems. We first introduce the law of physics to analyse the material flows of a supply chain. Then, a theorem regulating the consistency of the information flow is introduced and demonstrated.\par
 
@@ -124,14 +124,14 @@ q_t=\ q_{t-1}\ +\ p_t\ -\ d_t\
 \label{eq_physics1}
 \end{equation}
 
-The difference between the demand and production curves define the \textit{momentum} $p$ of the production node. The momentum indicates the direction in which the inventory function $q$ moves, and it is measured as the number of parts per unit of time.
+The difference between the demand and production functions define the \textit{momentum} $p$ of the production node. The momentum indicates the direction in which the inventory function $q$ moves, and it is measured as the number of parts per unit of time.
 
 \begin{equation}
 p=x-d=\dot{q}
 \label{eq_physics2}
 \end{equation}
 
-We identified an approach to model a supply chain using the law of physics. In particular, there is a relationship between the flows (demand $d$ and production $p$) and the inventory $q$. We can assume that some forces (may them be push or pull forces) play a role in changing the value of the inventory function $q$. Table \ref{tab_classicalMechanics} illustrates the parallelism between classical mechanics and the physics of a supply chain.
+We identified an approach to model a supply chain using the law of physics. In particular, there is a relationship between the flows (demand $d$ and production $p$) and the inventory $q$. We can assume that some forces (may them be "push" or "pull" forces) play a role in changing the value of the inventory function $q$. Table \ref{tab_classicalMechanics} illustrates the parallelism between classical mechanics and the physics of a supply chain.
 
 % INSERT tab_classicalMechanics
 \begin{figure}[hbt!]
@@ -142,14 +142,14 @@ We identified an approach to model a supply chain using the law of physics. In p
 \label{tab_classicalMechanics}
 \end{figure}
 
-\cite{Spearman2014} demonstrated that the energy conservation law is appliable to the physics of a supply chain to control the behaviour of the inventory curve $q$ The Lagrangian is used to express the equation of the force $\dot{p}$, representing the push and pull forces of a supply chain, i.e. the movements of the supply chain.
+\cite{Spearman2014} demonstrated that the energy conservation law is appliable to the physics of a supply chain to control the behaviour of the inventory curve $q$ The Lagrangian is used to express the equation of the force $\dot{p}$, representing the "push" and "pull" forces of a supply chain, i.e. the movements of the supply chain.
 
 \begin{equation}
 \dot{p}=\frac{\partial L(q,\dot{q})}{\partial q}
 \label{eq_physics3}
 \end{equation}
 
-Where $L\left(q,\dot{q}\right)=\frac{1}{2}p^2-V(q)$. The Lagrangian express a difference between kinetic and potential energy. The potential energy is defined using a linear potential $V\left(q\right)=-F_0q$. This means that, as it works with the force of gravity, the perturbation of the value of the inventory depends on the value of the inventory q with a linear law. We can assume conservation of energy using the Hamiltonian principle (the Principle of Least Action). This principle states that nature always chooses the lowest energy path (i.e. the difference between kinetic and potential energy) between all the feasible ones defined by forces. The inventory function q, is then, defined from the Lagrangian as:
+Where $L\left(q,\dot{q}\right)=\frac{1}{2}p^2-V(q)$. The Lagrangian express a difference between kinetic and potential energy. The potential energy is defined using a linear potential $V\left(q\right)=-F_0q$. This means that, as it works with the force of gravity, the perturbation of the value of the inventory depends on the value of the inventory $q$ with a linear law. We can assume conservation of energy using the Hamiltonian principle (the Principle of Least Action). This principle states that nature always chooses the lowest energy path (i.e. the difference between kinetic and potential energy) between all the feasible ones defined by forces. The inventory function $q$, is then, defined from the Lagrangian as:
 
 \begin{equation}
 S\left[q\right]=\int_{t_1}^{t_2}{\ L(q,\dot{q},t)dt}=0
@@ -242,9 +242,9 @@ P_j^{OUT} (t^* )=\frac{dQ_j^{OUT} (\tau)}{d\tau}\vert_{t^*}
 \label{eqProdOUT}
 \end{equation}
 
-Movements usually have redundant information on vehicles ad processing nodes. We overcome this redundancy by splitting this information into two separate functions of inventory $I$ and productivity $P$. Productivity function, in fact, does not suffer redundancies, and it converges to a value determined by the physical asset of a terminal. \par
+Movements usually have redundant information on vehicles ad processing nodes. We overcome this redundancy by splitting this information into two separate functions of inventory $I$ and productivity $P$. Productivity function, in fact, does not suffer redundancies, and it converges to a value determined by the physical assets of a terminal. \par
 
-At this stage, we want to demonstrate the relationship between these three functions. Fro this reason, we consider the movement function at the granularity of a processing node $M_j(t)=\sum_{v}\sum_{o}{M_o^{j,v}(t)}$  and we prove the following theorem that introduces consistency rules between the functions $M_j$, $I_j$ and $P_j$ calculated with the granularity of a processing node $j$. \par
+At this stage, we want to demonstrate the relationship between these three functions. For this reason, we consider the movement function at the granularity of a processing node $M_j(t)=\sum_{v}\sum_{o}{M_o^{j,v}(t)}$  and we prove the following theorem that introduces consistency rules between the functions $M_j$, $I_j$ and $P_j$ calculated with the granularity of a processing node $j$. \par
 
 Let us consider the supply chain system as a network $G(V,A)$ where $V$ is the set of the processing nodes connected by arcs $(j,k)\in A$. Let us define a set $B$ containing the vehicles $v\in B$, travelling on the arcs $(j,k)\in A$. We define a state function $\Lambda(\tau)$ to describe the state of the network $G$ at the time instant $\tau$.   
 
@@ -310,7 +310,7 @@ We start with the definition of a data structure able to host movements and inve
     \item actual data (i.e., recorded when it happens what they describe), describes how activities were performed.
 \end{itemize}
 
-Table \ref{tab_MIPinLS} qualitatively introduces different types of data recorded on-field and used in the following sections to populate the data structure, according to the M,I,P framework.
+Table \ref{tab_MIPinLS} qualitatively introduces different types of data recorded on-field and used in the following sections to populate the data structure, according to the $M, I, P$ framework.
 
 % INSERT tab_MIPinLS
 \begin{figure}[hbt!]

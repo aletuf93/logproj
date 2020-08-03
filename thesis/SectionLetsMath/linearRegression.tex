@@ -29,7 +29,7 @@ Our goal is to train a model to link $X$ and $y$ efficiently. This link is the a
     \item the testing set: used to test the performance of the model by measuring its error.
 \end{enumerate}
 
-The training set is needed to train the model by setting a number of parameters to maximise the fitting of the function f to the data. The tuning parameters are specific for each family of models, and their value is set during the training phase. Models may have other parameters (called hyperparameters) whose values are set before the beginning of the training phase. \par
+The training set is needed to train the model by setting a number of parameters to maximise the fitting of the function $f$ to the data. The tuning parameters are specific for each family of models, and their value is set during the training phase. Models may have other parameters (called hyperparameters) whose values are set before the beginning of the training phase. \par
 The testing set is used to compare the predictions obtained by the model with true values selected from the input dataset. If a model succeeded in this testing phase, it is ready for the implementation, i.e. to make predictions based on new data. Figure \ref{fig_trainTest} illustrates the dataflow to build a predictive model.
 
 % INSERT fig_trainTest
@@ -41,10 +41,10 @@ The testing set is used to compare the predictions obtained by the model with tr
 \label{fig_trainTest}
 \end{figure}
 
-The following chapters illustrate tens of machine learning model. It is necessary to understand how to choose the most proficient in practice. The main idea is to have an error metric and to choose the model that minimises the most this error metric. The prediction error can be calculated for the training set or the testing set. Given a training set $T$, we can define a prediction error on the training set  $\bar{err}$ and a prediction error $Err$ on the independent testing set as follows.
+The following chapters illustrate tens of machine learning model. It is necessary to understand how to choose the most proficient in practice. The main idea is to have an error metric and to choose the model that minimises the most this error metric. The prediction error can be calculated for the training set or the testing set. Given a training set $T$, we can define a prediction error on the training set  $\overline{err}$ and a prediction error $Err$ on the independent testing set as follows.
 
 \begin{equation}
-\bar{err}=\frac{1}{N}\sum_{i=1}^{N}L\left(y_i,f\left(x_i\right)\right)
+\overline{err}=\frac{1}{N}\sum_{i=1}^{N}L\left(y_i,f\left(x_i\right)\right)
 \label{eq_trainTestError1}
 \end{equation}
 
@@ -53,25 +53,25 @@ Err=E_{T}\left[E_{X^0,Y^0}\left[L\left(Y^0,\hat{f}(X^0)\right)|T\right]\right]
 \label{eq_trainTestError2}
 \end{equation}
 
-Where $L$ is our error metric, called loss function (e.g., the mean squared error (MSE) or the absolute error). The definition of $\bar{err}$ and $Err$ shows that an error metric can always be computed for both the training and the testing set. Unfortunately, the error $\bar{err}$ measured on the training set is not a good estimate for the error $Err$ in the testing set. We want to minimise the error $Err$ on the testing set since it is the best estimate of the error that the model will have while working with new data. Stressing the minimisation of $\bar{err}$ leads to a phenomenon called \textit{overfitting}; the training error is minimised, while the training error raises.\par
+Where $L$ is our error metric, called loss function (e.g., the mean squared error (MSE) or the absolute error). The definition of $\overline{err}$ and $Err$ shows that an error metric can always be computed for both the training and the testing set. Unfortunately, the error $\overline{err}$ measured on the training set is not a good estimate for the error $Err$ in the testing set. We want to minimise the error $Err$ on the testing set since it is the best estimate of the error that the model will have while working with new data. Stressing the minimisation of $\overline{err}$ leads to a phenomenon called \textit{overfitting}; the training error is minimised, while the training error raises.\par
 
-A model adapts itself to best fit to the training set, but this does not imply the same good fit happens with the testing set. For this reason, it is not a good idea striving to reduce the error in the training set. In general, $\bar{err}<\ Err$ and the training error tends to zero increasing the complexity of the model (e.g., the number of features involved) but this fact does not guarantee good results of the test set.\par
+A model adapts itself to best fit to the training set, but this does not imply the same good fit happens with the testing set. For this reason, it is not a good idea striving to reduce the error in the training set. In general, $\overline{err}<\ Err$ and the training error tends to zero increasing the complexity of the model (e.g., the number of features involved) but this fact does not guarantee good results of the test set.\par
 
-Model selection involves different metrics to measure the performance of different predictive models in order to choose the best one. For this reason, the in-sample error $Err_{IN}$ is introduced to describe the error having N new response values at each of the training points\footnote{This is a sampling error, i.e. a measure of how much the sample chosen to train the model represents the entire population.}.
+Model selection involves different metrics to measure the performance of different predictive models in order to choose the best one. For this reason, the in-sample error $Err_{IN}$ is introduced to describe the error having $N$ new response values at each of the training points\footnote{This is a sampling error, i.e. a measure of how much the sample chosen to train the model represents the entire population.}.
 
 \begin{equation}
 Err_{IN}= \frac{1}{N}\sum_{i=1}^{N}E_{T}\left[E_{Y^0}\left[L\left(Y_i^0,\hat{f}(X_i)\right)|T\right]\right]
 \label{eq_trainTestError3}
 \end{equation}
 
-A metrics called optimism is defined as $op=Err_{IN}-\bar{err}$. We usually consider $\omega=E_y[op]$ which can be estimated as:
+A metrics called optimism is defined as $op=Err_{IN}-\overline{err}$. We usually consider $\omega=E_y[op]$ which can be estimated as:
 
 \begin{equation}
 \omega=\frac{2}{N}\sum_{i}^{N}{cov(\widehat{y_i},y_i)}
 \label{eq_trainTestError4}
 \end{equation}
 
-The underestimation by $\bar{err}$ in the true error depends on how much $y_i$ affects its own prediction. $\omega$ is a metrics used as a basis for the evaluation of the performance of machine learning algorithms.
+The underestimation by $\overline{err}$ in the true error depends on how much $y_i$ affects its own prediction. $\omega$ is a metrics used as a basis for the evaluation of the performance of machine learning algorithms.
 
 \subsubsection{MSE} \label{secMSE}
 The most commonly used error metric to select a regression model is the mean squared error. It is calculated as:
@@ -92,7 +92,7 @@ Where $p$ is the chosen percentile. In practice, we can evaluate the percentage 
 
 \subsubsection{AIC and BIC}
 
-We consider $\widehat{Err_{IN}}=\bar{err}+\hat{\omega}$. Akaike information criterion (AIC) and Bayesian information criterion (BIC) are two very common metrics used to assess the performance of a model. They are defined as follows.
+We consider $\widehat{Err_{IN}}=\overline{err}+\hat{\omega}$. Akaike information criterion (AIC) and Bayesian information criterion (BIC) are two very common metrics used to assess the performance of a model. They are defined as follows.
 
 \begin{equation}
 AIC=-\frac{2}{N}E\left[loglik\right]+\frac{2d}{N}
@@ -109,7 +109,7 @@ BIC=\ -2loglik+(\log{N})d
 Both these metrics can be used to identify the best tuning parameter of a model or to compare different models. The model with the minimum AIC or BIC value should be chosen. To choose among AIC or BIC, it is important to remember that BIC is asymptotically consistent, which is equivalent to say that BIC selects the correct model with a probability approaching 1 as $N\rightarrow\infty$. Otherwise, increasing the number of samples AIC tends to choose more complex models. In other words, BIC tends to prefer simpler models than AIC, that chooses more complex models.
 
 \subsubsection{Cross-validation}
-The metrics proposed in the previous paragraphs allows investigating the reliability of the predictions. Sometimes, when having few data, split into training, and the testing dataset may lead to two small datasets. For this reason, cross-validation (CV) or bootstrapping are used.\par
+The metrics proposed in the previous paragraphs allows investigating the reliability of the predictions. Sometimes, when having few data, split into training, and the testing dataset may lead to very small datasets. For this reason, cross-validation (CV) or bootstrapping are used.\par
 
 The selection of the train-test split of the data may bias these measures of the error. The CV is used to evaluate the extra-sample error $Err=E[L(Y,\hat{f}(X))]$. $K$-fold cross-validation splits the set into $K$ subsets and performs all the different permutations choosing one of them as a validation set and using the others to train the algorithms. Figure \ref{fig_crossValidation} shows an example of 5-folds CV.
 
@@ -237,7 +237,7 @@ The linear nature of this model allows us to interpret the results of the previo
 \label{eq_OLSgeo1}
 \end{equation}
 
-The value of $\hat{\beta}$ is found such that $X^T\left(y-X\hat{\beta}\right)=X^T\left(y-\hat{y}\right)=0$. This fact is due to the result of the derivative of the RSS $\left(\beta\right)=0$ but by the definition of orthogonal vector, it implies the vector $y-\hat{y}$ is orthogonal to the subspace generated by the $P$ columns of $X$ (remember of the hypothesis of full column rank of $X$). In practice $\left(X^TX\right)^{-1}X^T=H$ is the function generating $\hat{y}$ as the orthogonal projection of $y$ onto the subspace of $\mathbb{R}^P$ generated by the $P$ columns of $X$ (see Figure \ref{fig_projection}).
+The value of $\hat{\beta}$ is found such that $X^T\left(y-X\hat{\beta}\right)=X^T\left(y-\hat{y}\right)=0$. This fact is due to the result of the derivative of the RSS $\left(\beta\right)=0$ but, by the definition of orthogonal vector, it implies the vector $y-\hat{y}$ is orthogonal to the subspace generated by the $P$ columns of $X$ (remember of the hypothesis of full column rank of $X$). In practice $\left(X^TX\right)^{-1}X^T=H$ is the function generating $\hat{y}$ as the orthogonal projection of $y$ onto the subspace of $\mathbb{R}^P$ generated by the $P$ columns of $X$ (see Figure \ref{fig_projection}).
 
 \begin{equation}
 \hat{y}=\left(X^TX\right)^{-1}X^Ty=Hy
@@ -320,14 +320,14 @@ Given the these hypotheses, $\beta$ is distributed as a multivariate normal dist
 \label{eq_OLSgeo7}
 \end{equation}
 
-The variance can be described as a $\chi^2$ distribution with $N-p-1$ degrees of freedom $\sigma^2\chi_{N-p-1}^2$. To test the hypothesis $H_0$ that a coefficient $\beta_j=0$ the Z-score of its coefficient is calculated as follows.
+The variance can be described as a $\chi^2$ distribution with $N-p-1$ degrees of freedom $\sigma^2\chi_{N-p-1}^2$. To test the hypothesis $H_0$ that a coefficient $\beta_j=0$ the $Z$-score of its coefficient is calculated as follows.
 
 \begin{equation}
 z_j=\frac{\hat{\beta}}{\hat{\sigma}\ \sqrt{v_j}}
 \label{eq_OLSgeo8}
 \end{equation}
 
-With $v_j$ the j-th diagonal element of $\left({X}^{T}{X}\right)^{-\mathbf{1}}$. $z_j$ is distributed as $t_{N-p-1}$ and the t-test is used to assess the null hypothesis $H_0:\beta_j = 0$. When the number of samples increases, a Z-test can be used as well. A large (absolute) values of $z_j$ (connected to low p-values) suggest rejecting $H_0$ i.e., the $\beta_j$ coefficient is relevant in the prediction model.\par
+With $v_j$ the $j$-th diagonal element of $\left({X}^{T}{X}\right)^{-\mathbf{1}}$. $z_j$ is distributed as $t_{N-p-1}$ and the $t$-test is used to assess the null hypothesis $H_0:\beta_j = 0$. When the number of samples increases, a $Z$-test can be used as well. A large (absolute) values of $z_j$ (connected to low $p$-values) suggest rejecting $H_0$ i.e., the $\beta_j$ coefficient is relevant in the prediction model.\par
 
 To simultaneously compare the effect of groups of input parameters, the F-test is used. The value of RSS is calculated for each group of parameters (group 0 and group 1).
 
@@ -446,7 +446,7 @@ This method applies the PCA first, to define a subset of $M<p$ orthogonal predic
 Partial Least square works similarly to the principal component regression. Nevertheless, while the principal component regression is based on the PCA and it gives higher importance to the directions having a higher variance, the partial least square seeks for the directions having both high variance and high correlation with the response.
 
 \subsubsection{Transformation for linearity}
-The assumption of a linear model (i.e., the function $f$ is linear in $y=f(X)$) often produces approximations on real predictions. It is always possible to transform the input data $X$ using a function h before applying a linear model. In particular, the prediction model will be in the form:
+The assumption of a linear model (i.e., the function $f$ is linear in $y=f(X)$) often produces approximations on real predictions. It is always possible to transform the input data $X$ using a function $h$ before applying a linear model. In particular, the prediction model will be in the form:
 
 \begin{equation}
 y=f\left(X\right)=\sum_{m=1}^{M}{\beta_mh_m(X)}

@@ -10,10 +10,10 @@ This chapter focuses on the problems involving the control of a production node.
 Business process modelling is a qualitative mapping activity aiming at the definition of the relationships between physical and information entities involved in any process. The modelling of production processes allows defining their interactions with operators, resources, parts and information systems. The Business Process Model and Notation (see section \ref{secBPMN} is a graphical model for this purpose using predefined symbols to model tasks, activities and interactions. Mapping a production environment:
 
 \begin{itemize}
-    \item the activities are any production or auxiliary task necessary for the realisation of the product (manufacturing, traceability, supplier and customers interactions).
-    \item the events identify the step of the processes concluding an activity, and the part increases its value (e.g. the end of the production or the inbound process).
-    \item the gateways describe different production path (e.g. variants of the products)
-    \item the pools identify the department or the office in charge of specific tasks.
+    \item activities are any production or auxiliary task necessary for the realisation of the product (manufacturing, traceability, supplier and customers interactions);
+    \item events identify the step of the processes concluding an activity, and the part increases its value (e.g. the end of the production or the inbound process);
+    \item gateways describe different production path (e.g. variants of the products);
+    \item pools identify the department or the office in charge of specific tasks.
 
 \end{itemize}
 
@@ -22,7 +22,7 @@ BPMN defines a qualitative map of the production processes useful for manager an
 \begin{enumerate}
     \item Logistic KPIs, evaluate the logistic impact of a certain solution. They use metrics like time, distance and the performance parameters introduced in section \ref{secOntology}.
 	\item Cost KPIs, evaluate the economic sustainability of a given solution. They are expressed in \euro{} or other currency.
-	\item Energy KPIs, evaluate the energy needed to feed a given solution. They use metrics as kW and kW/h.
+	\item Energy KPIs, evaluate the energy needed to feed a given solution. They use metrics as kW and kWh.
 	\item Environmental KPIs, evaluate the environmental impact of a given solution. They are expressing the equivalent $CO_2$ produced per year.
 
 \end{enumerate}
@@ -67,7 +67,7 @@ Parts demand is classified by considering the variability of the quantity and th
 Where $\gamma_i$ is the interarrival time between two batches of goods; $\sigma_q$ is the standard deviation of the quantity for each batch, $\bar{q}$ is the average quantity for each batch. Thresholds on these metrics are identified to classify the demand ~\cite{Syntetos2005}:
 
 \begin{itemize}
-    \item Stable; these parts have a high demand frequency ($ADI\geq1.32$), and low variability in quantities ($CV^2<0.49$). Their behaviour is stable and easy to forecast.
+    \item stable; these parts have a high demand frequency ($ADI\geq1.32$), and low variability in quantities ($CV^2<0.49$). Their behaviour is stable and easy to forecast.
 	\item Intermittent; these parts have a low demand frequency ($ADI<1.32$), and low variability in quantities ($CV^2<0.49$). Their demand is extremely sporadic, and few data points are available making harder to predict their behaviour in the future.
 	\item Erratic; these parts have a high demand frequency ($ADI\geq1.32$), and high variability in quantities ($CV^2\geq0.49$). Their demand is frequent but extremely variant in quantities. Forecasts are possible but their accuracy remains a crucial issue.
 	\item Lumpy; these parts have a low demand frequency ($ADI<1.32$), and high variability in quantities ($CV^2\geq0.49$). Their behaviour is difficult to predict since there are few data points with great variability. 
@@ -179,7 +179,7 @@ Another visual analytic tool (see Figure \ref{fig_prod_CAMST_performance2}) allo
 \end{figure}
 
 \subsubsection{Workload prediction}
-Once a set of KPIs to assess the performance of the system has been identified, it is necessary to classify and make forecasts on the demand that guide any other control or design step. Historical data are collected and organised to define the value of $ADI$ and $CV^2$ for each part. The dot-plot in Figure \ref{fig_prod_CAMST_demandPatterns} identifies each product with a dot where the x- and y-axes represent the $ADI$, and $CV^2$ calculated within the reference time horizon of the dataset (one week). The size of the dot represents the number of lines (i.e. the number of orders) for each part; the bigger the dot, the higher the number of orders. The heatmap on the right pf Figure \ref{fig_prod_CAMST_demandPatterns} identifies the demand pattern of the entire production system. In this case, the demand is mainly intermittent, with low variability but significant time spans between orders of the same part. The production system has, then, to be flexible, allowing the production of the same average quantity of a vast product mix.\footnote{The source code of Figure \ref{fig_prod_CAMST_demandPatterns} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/PROD_02\%20Demand\%20patterns.ipynb}{here}.}
+Once a set of KPIs to assess the performance of the system has been identified, it is necessary to classify and make forecasts on the demand that guide any other control or design step. Historical data are collected and organised to define the value of $ADI$ and $CV^2$ for each part. The dot-plot in Figure \ref{fig_prod_CAMST_demandPatterns} identifies each product with a dot where the x- and y-axes represent the $ADI$, and $CV^2$ calculated within the reference time horizon of the dataset (one week). The size of the dot represents the number of lines (i.e. the number of orders) for each part; the bigger the dot, the higher the number of orders. The heatmap on the right pf Figure \ref{fig_prod_CAMST_demandPatterns} identifies the demand patterns of the entire production system. In this case, the demand is mainly intermittent, with low variability but significant time spans between orders of the same part. The production system has, then, to be flexible, allowing the production of the same average quantity of a vast product mix.\footnote{The source code of Figure \ref{fig_prod_CAMST_demandPatterns} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/PROD_02\%20Demand\%20patterns.ipynb}{here}.}
 
 % INSERT fig_prod_CAMST_demandPatterns
 \begin{figure}[hbt!]
@@ -190,8 +190,8 @@ Once a set of KPIs to assess the performance of the system has been identified, 
 \label{fig_prod_CAMST_demandPatterns}
 \end{figure}
 
-\subsection{Job scheduling}
-Job scheduling in food catering involves the pre-processing, cooking and packing departments of the plant. This activity deeply affects the quality of the finished products since the more the time they wait at the end of the production, the more the quality and taste decay due to the holding temperature ~\cite{Tufano2020}. Figure \ref{fig_prod_CAMST_scheduling} graphically identifies the variable to control in the scheduling of a recipe: the resource r, the processing quantity and the cycle time $c_j$ affect on the final time and temperature of the production lot.
+\subsubsection{Job scheduling}
+Job scheduling in food catering involves the pre-processing, cooking and packing departments of the plant. This activity deeply affects the quality of the finished products since the more the time they wait at the end of the production, the more the quality and taste decay due to the holding temperature ~\cite{Tufano2020}. Figure \ref{fig_prod_CAMST_scheduling} graphically identifies the variable to control in the scheduling of a recipe: the resource $r$, the processing quantity and the cycle time $c_j$ affect on the final time and temperature of the production lot.
 
 % INSERT fig_prod_CAMST_scheduling
 \begin{figure}[hbt!]
@@ -218,7 +218,7 @@ Finding the best food safety solution only slightly affect the scheduling from a
 \subsection{Control of a 3PL packaging plant for automotive spare parts} \label{secControlPackagingPlant}
 \subsubsection{Performance assessment}
 
-The management of this production node relies on a third-party company that perform the operations. Business processes are then fractioned, unclear, inefficient and even unknown to the managers. For this reason, the business process mapping and notation (BPMN)  is used to investigate the physical and information flows between entities and actors involved in production and planning. Figure \ref{fig_prod_CHIMAR_bpmn} illustrate an example of the BPMN together with the georeferencing of the processes on the plant layout. This technique enables visual analysis of the routes e of different processes and identifies which resources and which areas are responsible for processing a specific task. 
+The management of this production node relies on a third-party company that performs the operations. Business processes are then fractioned, unclear, inefficient and even unknown to the managers. For this reason, the business process mapping and notation (BPMN)  is used to investigate the physical and information flows between entities and actors involved in production and planning. Figure \ref{fig_prod_CHIMAR_bpmn} illustrates an example of the BPMN together with the georeferencing of the processes on the plant layout. This technique enables visual analysis of the routes e of different processes and identifies which resources and which areas are responsible for processing a specific task. 
 
 % INSERT fig_prod_CHIMAR_bpmn
 \begin{figure}[hbt!]

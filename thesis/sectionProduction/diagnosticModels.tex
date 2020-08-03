@@ -4,7 +4,7 @@ The last part of this book is about production nodes. Production nodes are where
 
 Here we encounter the highest degree of complexity with low standardisation of the methods, technologies and processes. Nevertheless, it is not a good reason to abandon a data-driven approach.  On the contrary, it is the field where decision-makers benefit the most from this approach linking the model-driven and the data-driven approaches.\par
 
-This chapter focuses on the definition of the keywords and key entities extending the ontology of chapter \ref{chap_InformationFramework} to production nodes. After that, it introduces the diagnostic framework for production nodes with a relational data structure and some KPIs. It will be necessary to pay special attention to the definition of the data structure since it needs the flexibility to host data from very diverse production systems. The same rationale applies to the KPIs where the main KPIs are developed from chapter \ref{chap_InformationFramework}, and applicable to any industries. A smaller subset is, then, introduced to be industry-oriented.\par
+This chapter focuses on the definition of the keywords and key entities extending the ontology of chapter \ref{chap_InformationFramework} to production nodes. After that, it introduces the diagnostic framework for production nodes with a relational data structure and some KPIs. It will be necessary to pay special attention to the definition of the data structure since it needs the flexibility to host data from very diverse production systems. The same rationale applies to the KPIs, developed from the definition in chapter \ref{chap_InformationFramework}, and applicable to any industry. A smaller subset is, then, introduced to be industry-oriented.\par
 
 Chapter \ref{chapProdControl} focuses on the control of a production node by using analytics to get knowledge on the existing processes and to improve their efficiency. Chapter \ref{chapProdPlantDesign} studies the design of a production facility, and chapter \ref{chapProdProcessDesign} the design of production processes from a data- and model-driven approach.
 
@@ -13,7 +13,7 @@ Here we develop the general ontology introduced in chapter \ref{chap_Information
 
 \subsubsection{Entities}
 We identify the following entities.\par
-\textbf{Part} ($i$): It is a piece of raw material, component, subassembly or assembly. Where:
+\textbf{Part} ($i$): it is a piece of raw material, component, subassembly or assembly. Where:
 \begin{itemize}
     \item Raw material is a part purchased out of the production node (i.e. from the suppliers).
     \item Component is an individual piece assembled into more complex products.
@@ -22,48 +22,48 @@ We identify the following entities.\par
 \end{itemize}
 \par
 
-\textbf{Processing node} ($j$):A processing node is a resource within the production nodes (e.g. machines and workbenches). In this section, they are also called resources or machines. \par
+\textbf{Processing node} ($j$): a processing node is a resource within the production nodes (e.g. machines and workbenches). In this section, they are also called resources or machines. \par
 
-\textbf{Edge} ($j,k$): The paths connecting resources (e.g. conveyors, corridors) \par
+\textbf{Edge} ($j,k$): the paths connecting resources (e.g. conveyors, corridors) \par
 
-\textbf{Vehicle} ($v$): Is a unit travelling on edges to handle materials between resources; some examples are forklifts, AGVs and conveyors. \par
+\textbf{Vehicle} ($v$): is a unit travelling on edges to handle materials between resources; some examples are forklifts, AGVs and conveyors. \par
 
-\textbf{Consumable} ($s$): It is an additional material (often a fluid) or a service necessary to perform activities within the production node. Some examples are electricity, compressed air or steam. \par
+\textbf{Consumable} ($s$): it is an additional material (often a fluid) or a service necessary to perform activities within the production node. Some examples are electricity, compressed air or steam. \par
 
-\textbf{Route} ($e$): It is the production cycle of a part $i$, i.e. the sequence (ordered set) of resources (machines or workbenches) to visit to transform it to a finished product. \par
+\textbf{Route} ($e$): it is the production cycle of a part $i$, i.e. the sequence (ordered set) of resources (machines or workbenches) to visit to transform it to a finished product. \par
 
-\textbf{Order} ($o$): It is a production order received from a customer. \par
+\textbf{Order} ($o$): it is a production order received from a customer. \par
 
-\textbf{Job} ($b$): It is a planned activity (a sequence of tasks) to perform on a part $i$ using resources $j$. \par
+\textbf{Job} ($b$): it is a planned activity (a sequence of tasks) to perform on a part $i$ using resources $j$. \par
 
-\textbf{System network} The graph $G(V,A)$ of nodes $j\in V$ and edges $\left(j,k\right)\in A$ composing a Job-shop, flow-shop or a production line.
+\textbf{System network} the graph $G(V,A)$ of nodes $j\in V$ and edges $\left(j,k\right)\in A$, composing a job-shop, flow-shop or a production line.
 
 \subsubsection{Metrics}
 We identify the following metrics to assess the performances of a processing node $j$.\par
 
-\textbf{Throughput} ($TH_{j}$): The throughput is the productivity of a resource, i.e. the average number of parts in output per unit of time (e.g., parts produced per hour)..\par
+\textbf{Throughput} ($TH_{j}$): the throughput is the productivity of a resource, i.e. the average number of parts in output per unit of time (e.g., parts produced per hour)..\par
 
-\textbf{Work in process} ($WIP_{j}$): It is the number of parts (i.e., the level of inventory) waiting for processing nearby a resource $j$.\par
+\textbf{Work in process} ($WIP_{j}$): it is the number of parts (i.e., the level of inventory) waiting for processing nearby a resource $j$.\par
 
-\textbf{Work in process} ($WIP_{jk}$): It is the number of parts being transported by a vehicle $v$. \par
+\textbf{Work in process} ($WIP_{jk}$): it is the number of parts being transported by a vehicle $v$. \par
 
-\textbf{Capacity} ($C_j$): It is the upper bound of the throughput of a resource.\par
+\textbf{Capacity} ($C_j$): it is the upper bound of the throughput of a resource.\par
 
-\textbf{Capacity} ($C_v$): It is the maximum number of part transportable by a vehicle $v$ at the same time. \par
+\textbf{Capacity} ($C_v$): it is the maximum number of part transportable by a vehicle $v$ at the same time. \par
 
-\textbf{Utilisation} ($U_j$): It is the average fraction of time that a resource is not idle for lack of parts. \par
+\textbf{Utilisation} ($U_j$): it is the average fraction of time that a resource is not idle for lack of parts. \par
 
-\textbf{Utilisation} ($U_v$): It is the average fraction of non-empty space on a vehicle. \par
+\textbf{Utilisation} ($U_v$): it is the average fraction of non-empty space on a vehicle. \par
 
-\textbf{Lead time} ($LT_e$): It is the time allocated for a given route (i.e. to complete the production cycle of a part). \par
+\textbf{Lead time} ($LT_e$): it is the time allocated for a given route (i.e. to complete the production cycle of a part). \par
 
-\textbf{Cycle time} ($CT_e$): It is the average time from the release of a job to the end of its route. \par
+\textbf{Cycle time} ($CT_e$): it is the average time from the release of a job to the end of its route. \par
 
 \textbf{Service level} ($SL_e$): $Prob\{cycle\ time\le lead\ time\}$
 
 \subsubsection{Information functions}
 
-Finally, we define the three information functions: Movements $M$ are referred to load/unload of parts on resources; inventories $I$ are referred to the work in process on a resource $j$, or a vehicle $v$. The productivity $P$ refers to the inbound and outbound absorption rates of a resource. Since production resources do not have a decoupling purpose (as, for example, storage system does) it is possible to refer to $P_j=P^{IN}=P^{OUT}$. Table \ref{tab_information_framework_prod} summarises the definition of the three functions in a storage system.
+Finally, we define the three information functions: movements $M$ are referred to load/unload of parts on resources; inventories $I$ are referred to the work in process on a resource $j$, or a vehicle $v$. The productivity $P$ refers to the inbound and outbound absorption rates of a resource. Since production resources do not have a decoupling purpose (as, for example, storage system does) it is possible to refer to $P_j=P^{IN}=P^{OUT}$. Table \ref{tab_information_framework_prod} summarises the definition of the three functions in a storage system.
 
 % INSERT tab_information_framework_prod
 \begin{figure}[hbt!]
@@ -84,9 +84,9 @@ Modelling a system with an ER structure means identifying the physical entities 
 Modelling is performed by using a top-down approach, starting with the definition of macro-areas that involve similar entities. Afterwards, it is necessary to identify each table (i.e. entities and relations) and the attributes for each table. Following this direction, we apply a top-down approach to a production environment of a food catering industry, identifying three macro-areas to model:
 
 \begin{enumerate}
-    \item Supply chain network;
-    \item Production plant;
-    \item Product quality and control.
+    \item supply chain network;
+    \item production plant;
+    \item product quality and control.
 \end{enumerate}
 
 Within each of these macro-areas, we identify a set of entities to model using tables.
@@ -225,9 +225,9 @@ Figure \ref{fig_MVM_prod} uses the unified modelling language (UML) to represent
 This section introduces the decision patterns (see section \ref{secDecisionPatterns}) analysed in chapters \ref{chapProdControl}, \ref{chapProdPlantDesign} and \ref{chapProdProcessDesign} focusing on the role of analytics to solve production node control, design and process design. Each chapter addresses a family of problems:
 
 \begin{enumerate}
-    \item Production control problems, deal with the assessment and improvement of the performance of an existing production plant.
-    \item Plant design problems, deal with the design and placement of the physical assets of a production plant;
-    \item Process design problems, deal with the definition of the production processes.
+    \item production control problems, deal with the assessment and improvement of the performance of an existing production plant.
+    \item plant design problems, deal with the design and placement of the physical assets of a production plant;
+    \item process design problems, deal with the definition of the production processes.
 \end{enumerate}
 
 Different methodologies allow getting feasible solutions to these problems. Table \ref{tab_problems_prod} illustrates the entities and their definition according to the ontology in Paragraph \ref{secOntology}. 
@@ -246,19 +246,19 @@ Different methodologies allow getting feasible solutions to these problems. Tabl
 
 Production control involves the following decisions:
 \begin{enumerate}
-    \item The assessment of the performance of production processes;
-    \item The prediction of the market demand and the workload in the future;
-    \item The prescription of job scheduling to assign jobs to resources.
+    \item the assessment of the performance of production processes;
+    \item the prediction of the market demand and the workload in the future;
+    \item the prescription of job scheduling to assign jobs to resources.
 \end{enumerate}
 
 Plant design involves the following decisions:
 \begin{enumerate}
-    \item The definition of homogeneous product families to process and analyse together;
-    \item The definition of the location of the physical plant;
-    \item The design of the auxiliary system to feed with energy and fluid asset and resources;
-    \item The definition of the technology of asset and resources to provide adequate throughput;
-    \item The definition of a proper amount of resources identifying a proper production capacity;
-    \item The design of the plant layout.
+    \item the definition of homogeneous product families to process and analyse together;
+    \item the definition of the location of the physical plant;
+    \item the design of the auxiliary system to feed with energy and fluid asset and resources;
+    \item the definition of the technology of asset and resources to provide adequate throughput;
+    \item the definition of a proper amount of resources identifying a proper production capacity;
+    \item the design of the plant layout.
 
 \end{enumerate}
 

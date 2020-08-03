@@ -7,12 +7,12 @@ In general, this activity is complicated. Luckily, there are some general rules 
 This chapter focuses on the problems related to the design of the plant:
 
 \begin{enumerate}
-    \item Clustering items into product families;
-    \item Facility location;
-    \item Technology and asset choice;
-    \item Auxiliary systems design;
-    \item Definition of the number of assets;
-    \item Layout design.
+    \item clustering items into product families;
+    \item facility location;
+    \item technology and asset choice;
+    \item auxiliary systems design;
+    \item definition of the number of assets;
+    \item layout design.
 
 \end{enumerate}
 
@@ -42,18 +42,18 @@ Figure \ref{fig_prod_plant_design} presents a cascade procedure, inspired to ~\c
 Engineering is about complexity. Companies rely on engineers and engineering science since they are able to use tools and method to:
 
 \begin{enumerate}
-    \item Pickup a complex problem;
-    \item Reduce its complexity;
-    \item Understand the problem;
-    \item Find a method to solve the problem;
-    \item Solve the problem.
+    \item pickup a complex problem;
+    \item reduce its complexity;
+    \item understand the problem;
+    \item find a method to solve the problem;
+    \item solve the problem.
 
 \end{enumerate}
 
 Production nodes are responsible for creating goods, i.e. parts $i$. Globalisation and mass customisation trends lead production nodes to incredibly high levels of complexity. This complexity is measurable in terms of:
 
 \begin{itemize}
-    \item 	The size of the product portfolio (i.e. the number of different parts $i$);
+    \item The size of the product portfolio (i.e. the number of different parts $i$);
 	\item The production volume $Q_{G,i}$ (i.e. the number of items produced by the plant $G$, for each type of part $i$).
 
 \end{itemize}
@@ -119,30 +119,30 @@ Using $a$, $b$, $c$ and $d$, the matrix $D_{ik}$ is defined for all the couples 
     s_{ik}=\frac{a}{a+b+c}
 \end{equation}
 
-For the sake of completeness, there are other similarity coefficients $s_{ij}$, as: the simple or relative matching coefficients ~\cite{Heltshe1988}, Yule coefficients, Rogers and Tanimoto coefficients ~\cite{Jackson1989}, Baroni-Urbani coefficients ~\cite{Buser1976}, Sorenson coefficient ~\cite{Yin2005}. Given $D_{ik}$, hierarchical clustering (see section \ref{secHierarchicalClustering}) is used to agglomerate parts into clusters.\par
+For the sake of completeness, there are other many other definitions of similarity coefficients $s_{ij}$, as: the simple or relative matching coefficients ~\cite{Heltshe1988}, Yule coefficients, Rogers and Tanimoto coefficients ~\cite{Jackson1989}, Baroni-Urbani coefficients ~\cite{Buser1976}, Sorenson coefficient ~\cite{Yin2005}. Given $D_{ik}$, hierarchical clustering (see section \ref{secHierarchicalClustering}) is used to agglomerate parts into clusters.\par
 
-The same procedure can be applied to create clusters of similar resources j to locate close to each other on the plant layout. So far, the data-driven approach does not add too much to the classical model-driven approach.\par
+The same procedure can be applied to create clusters of similar resources $j$ to locate close to each other on the plant layout. So far, the data-driven approach does not add too much to the classical model-driven approach.\par
 
 There are unlucky but ordinary circumstances where the route $e$ of a product is unknown (e.g. not available in the information system during the planning). In this case, the data-driven approach is useful by combining different type of data to determine product families. There are many features that can enter the matrix $X_{ij}$, for example:
 
 \begin{itemize}
-    \item The set of processing resources $j$;
-	\item The size of the part $i$;
-	\item The volume and weight of $i$;
-	\item The description of the item $i$;
-	\item The package or the vehicle needed to transport $i$;
-	\item The supplier of $i$;
-	\item The customer of $i$;
-	\item The bill of materials of $i$.
+    \item the set of processing resources $j$;
+	\item the size of the part $i$;
+	\item the volume and weight of $i$;
+	\item the description of the item $i$;
+	\item the package or the vehicle needed to transport $i$;
+	\item the supplier of $i$;
+	\item the customer of $i$;
+	\item the bill of materials of $i$.
 
 \end{itemize}
 
 Given a matrix $X_{ij}$ with all the available information, it is necessary to investigate (e.g. using historical data) if a correlation exists between one of the features and the route $e$. If a correlation exists, feature selection should be performed, and unsupervised learning algorithms can be applied. Many unsupervised learning algorithms can be used as:
 
 \begin{itemize}
-    \item 	The k-means (see section \ref{secKmeans}), suitable when all the data are numerical and with the same unit of measure (e.g. length, height and width);
-	\item The Gaussian mixture model (see section \ref{secGaussianMixture}), suitable when all the data are numerical and with the same unit of measure (e.g. length, height and width) and values are normally distributed within the same cluster;
-	\item Hierarchical clustering (see section \ref{secHierarchicalClustering}), when data are categorical or provided by a binary incidence matrix $X_{ij}$ or a proximity matrix $D_{ik}$.
+    \item the k-means (see section \ref{secKmeans}), suitable when all the data are numerical and with the same unit of measure (e.g. length, height and width);
+	\item the Gaussian mixture model (see section \ref{secGaussianMixture}), suitable when all the data are numerical and with the same unit of measure (e.g. length, height and width) and values are normally distributed within the same cluster;
+	\item hierarchical clustering (see section \ref{secHierarchicalClustering}), when data are categorical or provided by a binary incidence matrix $X_{ij}$ or a proximity matrix $D_{ik}$.
 
 \end{itemize}
 
@@ -202,17 +202,17 @@ Nowadays, due to the variability of the market demand and the shortness of the d
     z^\pi=\min{\left\{\sum_{t\in T} d\left[\left(x,y\right),\left(x_t^\ast,y_t^\ast\right)\right]\right\}}
 \end{equation}
 
-Identifies the optimal location over a time horizon $T$.\footnote{The package logproj provides method to deal with facility location problems \href{https://github.com/aletuf93/logproj/blob/master/logproj/P6_placementProblem/facility_location_definition.py}{here}}.
+Identifies the optimal location over a time horizon $T$\footnote{The package logproj provides method to deal with facility location problems \href{https://github.com/aletuf93/logproj/blob/master/logproj/P6_placementProblem/facility_location_definition.py}{here}}.
 
 \section{Auxiliary systems design (P4)}
 Auxiliary systems are any technological asset that does not directly add value to the finished product, but it is necessary to perform tasks. Examples of the auxiliary systems are:
 
 \begin{itemize}
-    \item The lighting systems of the production site;
-    \item The air conditioning system (i.e. heating and cooling);
-    \item The systems for the production of energy (e.g. electricity/steam),
-    \item The systems for the production of other technological fluids (e.g. compressed air);
-    \item The systems for the reduction of the noise.
+    \item the lighting systems of the production site;
+    \item the air conditioning system (i.e. heating and cooling);
+    \item the systems for the production of energy (e.g. electricity/steam),
+    \item the systems for the production of other technological fluids (e.g. compressed air);
+    \item the systems for the reduction of the noise.
 
 \end{itemize}
 
@@ -234,9 +234,9 @@ This activity involves the determination of the proper technologies and level of
 Three main layout configurations are identified:
 
 \begin{enumerate}
-    \item The production line: all the resources necessary to transform raw materials into a finished product are placed in line.
-    \item Cellular manufacturing: all the resources necessary to transform raw materials into a limited set of finished products are placed together. There is the possibility some tasks need resources outside the cell.
-    \item Resources are organised per type (milling machines, lathing machines, pressing machines).
+    \item the production line: all the resources necessary to transform raw materials into a finished product are placed in line.
+    \item cellular manufacturing: all the resources necessary to transform raw materials into a limited set of finished products are placed together. There is the possibility some tasks need resources outside the cell.
+    \item resources are organised per type (milling machines, lathing machines, pressing machines).
 
 \end{enumerate}
 
@@ -265,8 +265,8 @@ The decision-maker should choose the possibilities that maximise the profit of t
 Model-driven methods consider two metrics (already seen in section \ref{secClusteringParts}) to identify an adequate technological configuration:
 
 \begin{itemize}
-    \item The size of the product portfolio (i.e. the number of different parts $i$);
-	\item The production volume $Q_{G,i}$ (i.e. the number of items produced by the plant $G$, for each type of part $i$).
+    \item the size of the product portfolio (i.e. the number of different parts $i$);
+	\item the production volume $Q_{G,i}$ (i.e. the number of items produced by the plant $G$, for each type of part $i$).
 
 \end{itemize}
 
@@ -326,7 +326,7 @@ The choice of the production technology and the assets can be seen as an assignm
 The definition of such clusters within the same production node allows to immediately identify which layout configuration results suitable the most in case of re-design. In addition, the design of a classification model (see sectio \ref{chapLinearClassification}), can help to design the production flow of new products depending on the expectation of their market demand (i.e. the number of rows and the order quantity).
 
 \section{Definition of the number of assets (P5)}
-The definition of the number of assets identifies the power (i.e. the capacity) and the saturation of the resources. The utilisation $U_j$ must be as highest as possible for economic reasons, while the capacity $C_j$ should be enough to satisfy the market demand. Both these metrics impact the level of service since capacity act as a buffer (higher capacity allow for processing a production volume within a shorter time). As many power problems in other engineering disciplines, this problem is prescriptive and lead by an engineering model.
+The definition of the number of assets identifies the power (i.e. the capacity) and the saturation of the resources. The utilisation $U_j$ must be as higher as possible for economic reasons, while the capacity $C_j$ should be enough to satisfy the market demand. Both these metrics impact the level of service since capacity act as a buffer (higher capacity allow for processing a production volume within a shorter time). As many power problems in other engineering disciplines, this problem is prescriptive and lead by an engineering model.
 
 \subsection{Model-driven methods (PS4)}
 Models to define the number of assets can be static or dynamic. When no information about the time is available, a static model should be chosen. Static models always work by considering:
@@ -510,8 +510,8 @@ To investigate the behaviour of the system depending on the number of assets, th
 
 \begin{itemize}
     \item a single machine for each type (machine-based rationale), to identify the workload curve of the machine;
-    \item The minimum number of machine to avoid queues (recipe-based), to identify the behaviour of the system without queues;
-    \item An arbitrary number of machine defined by the decision-maker (layout-based), to identify the performance of a given design alternative.
+    \item the minimum number of machine to avoid queues (recipe-based), to identify the behaviour of the system without queues;
+    \item an arbitrary number of machine defined by the decision-maker (layout-based), to identify the performance of a given design alternative.
 
 \end{itemize}
 

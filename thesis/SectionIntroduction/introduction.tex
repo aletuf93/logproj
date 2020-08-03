@@ -6,7 +6,7 @@
 
 This chapter introduces the background of this work identifying its relevance, originality and the placement within the existing literature.\par
 
-The background of this work is engineering. Engineering is composed of models based on math (approximations) that describe a physical phenomenon. The electricity current passing through a wire, the lift force of the air which supports the weight of an aircraft, the exchange of heat in an air conditioning system are physical phenomenon described by engineering models. On-field experiments and observation lead to the definition of the models, i.e. the mathematical relationships between the entities involved in the phenomenon.
+The background of this work is engineering. Engineering is composed of models based on math (approximations) that describe a physical phenomenon. The electricity current passing through a wire, the lift force of the air which supports the weight of an aircraft, the exchange of heat in an air conditioning system are physical phenomenon described by engineering models. On-field experiments and observations lead to the definition of the models, i.e. the mathematical relationships between the entities involved in the phenomenon.
 
 \section{Taxonomy} \label{secSupplyChainTaxonomy}
 
@@ -60,7 +60,7 @@ To define the object of study of this work, we consider the literature ~\cite{St
 
 \begin{itemize}
     \item the number of decision-makers;
-    \item their knowledge about the information relevant to the decision. 
+    \item their knowledge about the information relevant for a decision. 
 \end{itemize}
 
 Usually, a decision-maker (DM) makes a decision (i.e., setting the value of decision variables) based on the knowledge of some information (i.e., decision parameters).\par
@@ -87,25 +87,25 @@ When a single DM knows all the decision parameters, the optimisation (e.g. integ
 
 \end{itemize}
 
-An intermediate decision support tool between CC and DC is the “system dynamics”, which defines connection and cause-effect relationships between the decision variables (i.e. the entity of a system) and the DMs. The relationships are usually nonlinear, and the system dynamic evolves at different time steps. The discrete event simulation (DES) is an implementation of system dynamics which evaluates the states of a system at discrete time lags.
+An intermediate decision support tool between CC and DC is the “system dynamics”, which defines connection and cause-effect relationships between the decision variables (i.e. the entities of a system) and the DMs. The relationships are usually nonlinear, and the system dynamic evolves at different time steps. The discrete event simulation (DES) is an implementation of system dynamics which evaluates the states of a system at discrete time lags.
 
 \subsection{Centralised information with distributed decision-makers (CD)}
 When the output of a single DM depends on the information owned by other DMs, it is necessary to identify different decision scenarios guessing the behaviour of the other actors. Usually, two tools go in this direction:
 
 \begin{itemize}
     \item game theory;
-    \item specific heuristics or metaheuristics algorithms.
+    \item problem-oriented heuristics or metaheuristics algorithms.
 \end{itemize}
 
-The game theory assesses the probability of the outcomes of a decision process evaluating all the alternatives in a tree structure. Game theory is mostly used to evaluate the payback of many actors cooperating or not cooperating in a supply chain. All the possibilities of cooperation or not cooperation are evaluated, finding the payback for each actor. Different strategies exist to identify the strategy which provides a higher benefit to a single actor or the entire system.\par
+The game theory assesses the probability of the outcomes of a decision process evaluating all the alternatives in a tree structure. Game theory is mostly used to evaluate the payback of many actors cooperating or not cooperating in a supply chain. All the possibilities of cooperation or not cooperation are evaluated, finding the payback for each actor. Different approaches exist to identify the strategy which provides a higher benefit to a single actor or the entire system.\par
 
-Heuristics and metaheuristics result suitable to provide sub-optimal solutions since they can e tailored to a specific instance of the problem.\par
+Heuristics and metaheuristics result suitable to provide sub-optimal solutions since they can be tailored to a specific instance of the problem.\par
 
 The definition of the route of a truck is an example of this problem: the planner has all the information, but some decisions (e.g. route replanning) may happen due to exogenous facts as disruptions. 
 
 \subsection{Decentralised information with distributed decision-makers (DD)}
 
-When the information and the ownership of the decision are decentralised, the outcome of the decision process depends on several independent decisions for each actor of the system. An important support tool is the agent-based modelling where each actor (i.e. an agent) has its own set of (partial) information to base its decision. Multi-agent simulation is similar to discrete event simulation. However, each actor implements its specific heuristics to make decisions based on the current state of the system from his point of view (i.e. based on its information set). \par
+When the information and the ownership of a decision are decentralised, the outcome of the decision process depends on several independent decisions for each actor of the system. An important support tool is the agent-based modelling where each actor (i.e. an agent) has its own set of (partial) information to base its decision. Multi-agent simulation is similar to discrete event simulation. However, each actor implements its specific heuristics to make decisions based on the current state of the system from his point of view (i.e. based on its information set). \par
 
 The participation of a company to a tender is an example of DD; each company makes an offer based on its information. The outcome of the process depends on all the offers from all the companies participating in the tender.
 
@@ -168,7 +168,7 @@ Under the perspective of big data, data science opens a new horizon for science.
 
 The following chapters of this book aim at evaluating when data-driven methods are suitable to address strategic decisions in the field of logistics and operations.
 
-\subsection{Fundamental concepts of data science}
+\subsection{Fundamentals of data science}
 We start, first, from the fundamental theoretical concepts of data science ~\cite{Provost2013}. 
 
 \begin{enumerate}
@@ -182,7 +182,7 @@ We start, first, from the fundamental theoretical concepts of data science ~\cit
 
 \end{enumerate}
 
-The following paragraph comes from the (2) and (3) proposing a framework for logistic and operational data. The other points are implemented in the following sections of this work that are dedicated to storage systems, distribution networks and production plants.
+The following paragraphs comes from the (2) and (3) proposing a framework for logistic and operational data. The other points are implemented in the following sections of this work that are dedicated to storage systems, distribution networks and production plants.
 
 \section{History of Operations Research}
 Section \ref{secSupplyChainTaxonomy} introduced the research field of this work, while sections \ref{secDecScienceTopology} and \ref{secDataScienceTopology} review the organisation of the decision support tools belonging to the fields of Decision Science and Data Science. The careful readers already will have noticed some overlaps between these two disciplines. Nevertheless, to understand these overlaps and to point out the direction of this work, it is necessary to introduce some history of the operations research (that, in our taxonomy, embeds both Decision and Data Science). \par
@@ -203,7 +203,7 @@ Logistics research was born in 1910 with the term “scientific management”, a
 
 The scientific management of the work (1) starts together with the first assembly line to produce the Ford Model T. For the first time there is a scientific organisation of the work and the time and motion analysis are used to measure and control the productivity of the line. It is the beginning of the application of scientific tools to operations, the era of logistics research began.\par
 
-In the second period (2), after World War II, the von Neumann architecture defines how to connect the component of a computer. This architecture changed the world, implementing the separation of the processor and the storage unit of a computer. This architecture is still used today in almost all IT applications, and it opened for the implementation of many decision support tools we still use nowadays.\par
+In the second period (2), after World War II, the Von Neumann's architecture defines how to connect the component of a computer. This architecture changed the world, implementing the separation of the processor and the storage unit of a computer. This architecture is still used today in almost all IT applications, and it opened for the implementation of many decision support tools we still use nowadays.\par
 
 The third period (3) has seen the development of microchips, which make affordable for companies to build information technology (IT) systems. Companies started to collect and store data on their operations into their system.\par
 
@@ -217,9 +217,9 @@ In the fourth period (4), these data are used to improve the decision process th
 
 During the period of business intelligence (5), it becomes obvious that there is a value behind the data collected by the IT systems. In addition to companies, the world wide web started providing tons of data and information to a broad public.\par
 
-The period of analytics (6) saw the realisation of the deductive process where information is obtained from tons of data and used to understand and improve the operations. Mathematics is used for understanding the data, but human intuition is still necessary to choose and implement the right decision. According to ~\cite{Mortenson2015}, period (6) is the current one. Nevertheless, the technological developments of the last few years move us to add two additional periods.\par
+The period of analytics (6) saw the realisation of the deductive process where information is obtained from tons of data and used to understand and improve the operations. Mathematics is used for understanding the data, but human intuition is still necessary to choose and implement the right decision. According to ~\cite{Mortenson2015}, period (6) was the current one. Nevertheless, the technological developments of the last few years move us to add two additional periods.\par
 
-The period of artificial intelligence (7) starts in 2015 when a team of data scientist from Google develops a neural network able to play the game of Go better than the world champion of this game ~\cite{Silver2016}. It is the advent of artificial intelligence. IT systems have already overcome the speed of the human brain (during period 6), but now they are also able to think and react similarly to a real human brain. The following step is theoretical, but natural (8): when the artificial systems will be able to program themselves, they will be able to understand a problem autonomously and to get a solution faster and better than a real human brain. However, for the sake of our knowledge, this step in the history of IT is yet to come.\par
+The period of artificial intelligence (7) starts in 2015 when a team of data scientist from Google develops a neural network able to play the game of Go better than the world champion of this game ~\cite{Silver2016}. It is the advent of artificial intelligence. IT systems have already overcome the speed of the human brain (during period (6)), but now they are also able to think and react similarly to a real human brain. The following step is theoretical, but natural (8): when the artificial systems will be able to program themselves, they will be able to understand a problem autonomously and to get a solution faster and better than a real human brain. However, for the sake of our knowledge, this step in the history of IT is yet to come.\par
 
 This work focuses on step (6) in the field of logistics and operations. We want to approach analytics to deeper investigate how human intuition and the value of logistics information match for proper management of a supply chain ~\cite{Arvan2019}.\par
 
@@ -243,8 +243,8 @@ Figure \ref{fig_operationsResearch} illustrates the topology of logistics resear
 The traditional model-driven approach can be seen as a system to control through a feedback loop:
 
 \begin{enumerate}
-    \item the real system is modelled through decision science, defining decision variables based on the human understanding of the system. 
-    \item the historical data of the system is the input parameter of the model.
+    \item the real system is modelled through decision science, defining decision variables based on the human understanding of the system;
+    \item the historical data of the system is the input parameter of the model;
     \item the output of the model is analysed and used again to control the system.
 
 \end{enumerate}
@@ -260,7 +260,7 @@ Here we have a traditional model-driven approach (see Figure \ref{fig_controlAsI
 \label{fig_controlAsIs}
 \end{figure}
 
-In this work, we introduce a different approach (see Figure \ref{fig_controlToBe}). Data science is not only the base for the control of the system but also the design of the model. Figure \ref{fig_controlDataDriven} already illustrated the different between model-driven to data-driven perspectives.
+In this work, we introduce a different approach (see Figure \ref{fig_controlToBe}). Data science is not only the base for the control of the system but also the design of the model. Figure \ref{fig_controlDataDriven} already illustrated the differences between model-driven to data-driven perspectives.
 
 % INSERT fig_controlToBe
 \begin{figure}[hbt!]
@@ -271,7 +271,7 @@ In this work, we introduce a different approach (see Figure \ref{fig_controlToBe
 \label{fig_controlToBe}
 \end{figure}
 
-By using this approach, data science is used to train a model which is based on the real behaviour of the system and not on apriori human intuition. The outcome of the model which highlight patterns, correlation and relationships among data are discussed and interpreted by human and used as input for decision-making. The model is, then, used to predict the behaviour of the system in the future. The model is trained and updated each time new historical data from the real system are available, making the data-driven approach flexible and up-to-date. We can think of this fact as the change from a world where there was the need to design from scratch to a world where Is it necessary to understand, control and improve the extant processes. This is the reason why the following sections of this book analyse the control of a logistic system first.\par
+By using this approach, data science is used to train a model which is based on the real behaviour of the system and not on apriori human intuition. The outcome of the model which highlight patterns, correlations and relationships among data are discussed and interpreted by human and used as input for decision-making. The model is, then, used to predict the behaviour of the system in the future. The model is trained and updated each time new historical data from the real system are available, making the data-driven approach flexible and up-to-date. We can think of this fact as the change from a world where there was the need to design from scratch to a world where it is necessary to understand, control and improve the extant processes. This is the reason why the following sections of this book analyse the control of a logistic system first.\par
 
 This approach does not question the relevance of decision science, but it considers a new relationship between data science and decision science. We can exemplify this new relationship thinking of the design of a DSS. We identify the four fundamental stages in the design of a DSS from a data-driven perspective (whose implementation will be the object of Parts III, IV and V of this book):
 
@@ -293,7 +293,7 @@ The diagnosing of the business-as-usual scenario (1) is the phase where the DM a
 
 The training of the model (2) is the phase where the decision variables are identified and the model to predict their value is built (based on data science methods). The model is trained upon the available data from the real world. Differently from the model-driven approach, we do not assume any relationship between the input variables. In some case, assumptions are made on the value of each column to clean the data but, in general, we are interested in augmenting the knowledge we have on the data by only observing the data. For this reason, other assumptions are discouraged at this stage. The model will highlight the relationships between the input data and the decision variables.\par
 
-Human intuition is then required to understand the output of the model and the link between the input data that is the validation of the model (3). Decision science methods can be implemented at this stage when the scenario is complex, and it requires additional information to be useful for the DM (e.g. it is necessary to merge the result of two models trained on different decision variables).\par
+Human intuition is then required to understand the output of the model and the link between the input data that is the validation of the model (3). Decision science methods can be implemented at this stage when the scenario is complex, and it requires additional information to be useful for the DM (e.g. it is necessary to merge the results of two models trained on different decision variables).\par
 
 When the output of the model is considered confident enough for the DM (and from a statistical point of view), the model can be deployed into a DSS (e.g., a software) able to get input, train the model and present the output aiding the DM in his/her work.\par
 
@@ -307,11 +307,11 @@ Model-driven and data-driven models can co-exist. For this reason, we introduce 
 \begin{itemize}
     \item data-driven optimisation;
     \item supervised learning;
-    \item predictive-Prescriptive problem.
+    \item predictive-prescriptive problem.
 
 \end{itemize}
 
-Let introduce the following variables. Let $y_1,\ldots,y_N\in Y$ a quantity of logistics/operational interest (e.g. the demand); $x_1,\ldots,x_N\in X$ be an associated covariates $X$ (e.g. search engine attention); $z\in Z$ he decision variables.
+Let introduce the following variables. Let $y_1,\ldots,y_N\in Y$ a quantity of logistics/operational interest (e.g. the demand); $x_1,\ldots,x_N\in X$ be an associated covariates $X$ (e.g. search engine attention); $z\in Z$ the decision variables.
 
 In data-driven optimisation, we are interested in setting decision variables $z$ to minimise an uncertain cost $c(z;Y)$. We only consider the prescriptive approach (i.e. defining the values of $z$) and the historical data $Y$. The problem can be written as:
 
@@ -331,7 +331,7 @@ The “pure” supervised learning approach, on the other side, does not involve
     E \left[ Y|X=x \right]
 \end{equation}
 
-The problems defined by (1) and (3) matches together in the Predictive-Prescriptive problem i.e. fitting a machine learning (supervised) model ${\hat{m}}_N\approx\ E[Y|X=x]$ and then solving a deterministic problem:
+The problems defined by (1) and (3) matches together in the predictive-prescriptive problem i.e. fitting a machine learning (supervised) model ${\hat{m}}_N\approx\ E[Y|X=x]$ and then solving a deterministic problem:
 
 \begin{equation}
     {\hat{z}}_N^{point-pred}\left(x\right)\in\arg{\min_{z\in Z}{c(z;{\hat{m}}_N(x))}}

@@ -32,7 +32,7 @@ All these tribes have a precise way of thinking, a specific optimisation algorit
 
 The name evolutionaries comes from the theory of evolution of Charles Darwin ~\cite{Darwin1859}. With this tribe, we refer to researchers and methods born in the field of biology to model and understand how nature evolves. The machine learning tribe called evolutionaries mimics the natural behaviour to learn information.\par
 
-The formal language of evolutionaries is the genetic programming and thinking that leads to classification systems, as the classification of the species. Their evaluation metric is the goodness of fit that measures the distance between the outcome of a model and its true value. Evolutionaries use search algorithms that move on the input data hyperplane to find solutions. These algorithms are called genetic search algorithms and belong to the family of metaheuristics.
+The formal language of evolutionaries is the genetic programming and they think that it leads to classifying systems, as the classification of the species. Their evaluation metric is the goodness of fit that measures the distance between the outcome of a model and its true value. Evolutionaries use search algorithms that move on the input data hyperplane to find solutions. These algorithms are called genetic search algorithms and belong to the family of metaheuristics.
 
 \subsection{Genetic search} \label{geneticSearch}
 Genetic search algorithms are metaheuristic algorithms that consider an initial feasible solution of a prescriptive problem and make it evolve by mimics of the natural evolution mechanisms as mutations and cross-over. They aim at finding a new feasible solution with a better performing solution value. \par
@@ -63,7 +63,7 @@ Figure \ref{fig_crossover} identifies an example of a cross-over of two strings 
 
 \section{Symbolists’ methods} 
 
-The symbolists use the formal language of the logic to learn and generate information. We already introduced the logic in \ref{chapLogicalModelling}, and we have already seen the application of logic to unsupervised learning models in the definition of association rules (see Section \ref{secAssociationRules}). A similar “if-else” statement can be used to learn information in a supervised fashion by using decision trees. Decision trees are the application of the formal language of symbolists to supervised learning. Their evaluation metric is measured through the accuracy and the information gain.\footnote{The package logproj provides methods to deal with symbolists' methods \href{https://github.com/aletuf93/logproj/blob/master/logproj/M_learningMethod/symbolists_models.py}{here}.}
+The symbolists use the formal language of the logic to learn and generate information. We already introduced the logic in Chapter \ref{chapLogicalModelling}, and we have already seen the application of logic to unsupervised learning models in the definition of association rules (see Section \ref{secAssociationRules}). A similar “if-else” statement can be used to learn information in a supervised fashion by using decision trees. Decision trees are the application of the formal language of symbolists to supervised learning. Their evaluation metric is measured through the accuracy and the information gain.\footnote{The package logproj provides methods to deal with symbolists' methods \href{https://github.com/aletuf93/logproj/blob/master/logproj/M_learningMethod/symbolists_models.py}{here}.}
 
 \subsection{Decision trees} \label{secDecisionTrees}
 Decision trees can be used both for regression and for classification. The idea behind a regression tree is to split the space of the input features into $M$ partitions such that the response of the model is:
@@ -73,7 +73,7 @@ Decision trees can be used both for regression and for classification. The idea 
         \label{eq_decisionTree1}
 \end{equation}
 
-In other words, the model assigns a constant response value $c_m$ for each partition $m$ of the feature space. The model can be represented as a tree where the observations are split based on the value of a splitting variable $j$ and a splitting point $s$. Each branch, consequently, divide the current feature region into two regions $R_1$ and $R_2$ such that $R_1\left(j,s\right)=\{X|X_j\le s\}$ and  $R_2\left(j,s\right)=\{X|X_j>s\}$.The branching variable $j$ and its splitting point $s$ are chosen to minimize the error function:
+In other words, the model assigns a constant response value $c_m$ for each partition $m$ of the feature space. The model can be represented as a tree where the observations are split based on the value of a splitting variable $j$ and a splitting point $s$. Each branch, consequently, divides the current feature region into two regions $R_1$ and $R_2$ such that $R_1\left(j,s\right)=\{X|X_j\le s\}$ and  $R_2\left(j,s\right)=\{X|X_j>s\}$.The branching variable $j$ and its splitting point $s$ are chosen to minimize the error function:
 
 \begin{equation}
         \min_{j,s}{\left[\min_{c_1}{\sum_{x_i\in R_1(j,s)}\left(y_i-c_1\right)^2}+\min_{c_2}{\sum_{x_i\in R_2(j,s)}\left(y_i-c_2\right)^2}\right]}
@@ -155,10 +155,10 @@ Each marginal density distribution can be estimated using one-dimensional kernel
 \label{eq_naiveBayes3}
 \end{equation}
 
-\subsection{Markov Chain} \label{secMarkovChain}
+\subsection{Markov Chains} \label{secMarkovChain}
 The hypothesis of the independence between the input variables is hardly often valid. On the other side, the definition of an accurate joint probability distribution requires a huge amount of data and a significant computational time. To overcome these obstacles, Markov chains assume that the probability of an event only depends on the current state of a system. \par
 
-The p attributes of the input dataset $X$ define the state of a system, and they are linked together by a transition probability. This way, even if the number of features $p$ is high, the number of transition probabilities $t$ calculate is still limited. Figure \ref{fig_markovChain} introduce the graphical model of a Markov chain, whose information content is described by a transition matrix $T$ with states $i$ and $j$ as rows and columns labels. The entries $t_{ij}\in T$ identifies the probabilities from $i$ to $j$.
+The $p$ attributes of the input dataset $X$ define the state of a system, and they are linked together by a transition probability. This way, even if the number of features $p$ is high, the number of transition probabilities $t$ calculate is still limited. Figure \ref{fig_markovChain} introduce the graphical model of a Markov chain, whose information content is described by a transition matrix $T$ with states $i$ and $j$ as rows and columns labels. The entries $t_{ij}\in T$ identifies the probabilities from $i$ to $j$.
 
 % INSERT fig_markovChain
 \begin{figure}[hbt!]
@@ -169,7 +169,7 @@ The p attributes of the input dataset $X$ define the state of a system, and they
 \label{fig_markovChain}
 \end{figure}
 
-\subsection{Hidden Markov Model and Kalman filter} \label{secKalmanFilter}
+\subsection{Hidden Markov Models and Kalman filter} \label{secKalmanFilter}
 Sometimes, state variables are not observable, but the state depends on a subset of measurable variables that affect the state variables, and a model (i.e. a prior) of how these variables affect the state is given (see Figure \ref{fig_hiddenMarkovModel}).
 
 % INSERT fig_hiddenMarkovModel
@@ -181,7 +181,7 @@ Sometimes, state variables are not observable, but the state depends on a subset
 \label{fig_hiddenMarkovModel}
 \end{figure}
 
-Kalman filter implements this rationale when the states and the observations are continuous variables ~\cite{Anandalingam1989}. The filter works by considering a prior knowledge given by a model describing the state of a system ~\cite{LAARAIEDH, Fang2018}. The state of the system is estimated and updated online by considering empirical measurements of the transitions (representing a posterior knowledge). Let $\mu$ and $\sigma^2$ be the mean value and standard deviation of the prior and $\nu$ and $r^2$ the ones of the posterior. The Kalman filter works correctly when the measurements have a higher information content than the model, i.e. their accuracy is higher $r^2<\sigma^2$. This hypothesis is often verified since the measurements depend on the accuracy of the instrument on a single transition (see \ref{secMeasurementSystem}), while models tend to be more general and inaccurate. Kalman filter calculates a new mean $\mu\prime$ and $\sigma^2\prime$ of the system state as:
+Kalman filter implements this rationale when the states and the observations are continuous variables ~\cite{Anandalingam1989}. The filter works by considering a prior knowledge given by a model describing the state of a system ~\cite{LAARAIEDH, Fang2018}. The state of the system is estimated and updated online by considering empirical measurements of the transitions (representing a posterior knowledge). Let $\mu$ and $\sigma^2$ be the mean value and standard deviation of the prior and $\nu$ and $r^2$ the ones of the posterior. The Kalman filter works correctly when the measurements have a higher information content than the model, i.e. their accuracy is higher $r^2<\sigma^2$. This hypothesis is often verified since the measurements depend on the accuracy of the instrument on a single transition (see \ref{secMeasurementSystem}), while models tend to be more general and inaccurate. Kalman filter calculates a new mean $\mu\prime$ and ${\sigma^2}^\prime$ of the system state as:
 
 \begin{equation}
 \begin{split}
@@ -201,7 +201,7 @@ At this stage, the state is updated by considering the transition measurement $u
 \label{eq_kalmanFilter2}
 \end{equation}
 
-\subsection{Bayesian Network and Montecarlo Markov Chain}
+\subsection{Bayesian Networks and Montecarlo Markov Chains}
 
 When multiple prior and posteriors are involved, Bayesian networks can be used to describe a system. In practice, a Bayesian network defines a number of variables with a specific probability distribution and a connection between them. This way, it is possible to model multiple interconnected events with different probability distributions. The parameters of a probability distribution can be variables as well.\par
 
@@ -250,7 +250,7 @@ SVC have a problem when a region is enclosed by another, i.e. there is no possib
 Connectionsts aim at learning by mimic the connection of the human brain. The human brain is composed of interconnected neurons activated by electrical impulses. The formal language of the connectionists is the neural network. A neural network has an input similar to the input from the five senses of a human. Depending on the input, different groups of neurons are activated, producing the output. The evaluation metric of connectionists is a continuous error metric, as the mean squared error (see section \ref{secMSE}) that measures the difference between the know target label, and the output of the neural network. The search algorithm to define the behaviour of the neurons is the gradient descent.\footnote{The package logproj provides methods to deal with connectionists' methods \href{https://github.com/aletuf93/logproj/blob/master/logproj/M_learningMethod/connectionists_models.py}{here}.}
 
 \subsection{Neural Networks}
-Neural networks work by mimic a network of neurons. Figure \ref{fig_neuron} illustrate how a mathematical neuron is defined. A neuron has some inputs, a bias input quantity b. All these inputs are summed up and processed by an activation function. This is usually a sigmoid function, as a logistic function, a hyperbolic tangent, a rectified linear (RELU) or a fixed threshold. If the sum of the input is enough to activate the function, a positive output is obtained; otherwise, the energy provided by the inputs is not enough to activate the neuron, that produces a zero.
+Neural networks work by mimic a network of neurons. Figure \ref{fig_neuron} illustrate how a mathematical neuron is defined. A neuron has some inputs, a bias input quantity $b$. All these inputs are summed up and processed by an activation function. This is usually a sigmoid function, as a logistic function, a hyperbolic tangent, a rectified linear (RELU) or a fixed threshold. If the sum of the input is enough to activate the function, a positive output is obtained; otherwise, the energy provided by the inputs is not enough to activate the neuron, that produces a zero.
 
 % INSERT fig_neuron
 \begin{figure}[hbt!]

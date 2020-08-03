@@ -5,14 +5,14 @@
 
 Databases, Internet of Things, big data provide tons of data per second. There is an obvious obstacle in processing all of them since a large computational power and a lot of storage memory are needed. Besides, a portion of this data does not provide useful information since it may have a fixed value or an extremely high correlation with the other data. We introduce dimensionality reduction strategies to smooth the process of data processing and to get information fastly and efficiently. These strategies aim at getting the highest level of information possible using the lowest amount of input data.\par
 
-Let assume that data from our sources is organised in a dataset $X_{N\times P}$ having $N$ observation (rows) and $P$ features (columns). Each observation describes the realisation of a phenomenon characterised by the $P$ features. Dimensionality reduction aims at explaining the information of each row in $X$ using only K features, with $K<P$. To meet this goal, features can be:
+Let assume that data from our sources is organised in a dataset $X_{N\times P}$ having $N$ observation (rows) and $P$ features (columns). Each observation describes the realisation of a phenomenon characterised by the $P$ features. Dimensionality reduction aims at explaining the information of each row in $X$ using only $K$ features, with $K<P$. To meet this goal, features can be:
 
 \begin{itemize}
     \item extracted (i.e. the $P$ features are transformed to explain the majority of the information in $X$);
     \item selected (i.e. a subset $K$ of $P$ explains the majority of the information in $X$). 
 \end{itemize}
 
-The following paragraphs explore techniques belonging to these two methodologies.\footnote{The package logproj provides methods to deal with time series \href{https://github.com/aletuf93/logproj/blob/master/logproj/ml_dimensionalityReduction.py}{here}.} 
+The following paragraphs explore techniques belonging to these two methodologies.\footnote{The package logproj provides methods to deal with dimensionality reduction \href{https://github.com/aletuf93/logproj/blob/master/logproj/ml_dimensionalityReduction.py}{here}.} 
 
 \section{Feature extraction}
 The most common feature extraction strategy is the principal component analysis (PCA); this section introduces it using the singular value decomposition (SVD) to decompose a dataset $X$. SVD and PCA can be used when a learning table is composed of many columns (e.g. with image recognition or dummy columns from an initial dataset containing categorical variables converted into binary features). SVD and PCA use eigenvalues and eigenvector to transform the features space reducing overfitting. Eigenvectors are defined as vectors whose direction does not change when a linear transformation is applied to them. Eigenvalues are the scalar used to transform the eigenvectors. Given a matrix $A$, we can write:
@@ -21,7 +21,7 @@ The most common feature extraction strategy is the principal component analysis 
 Ax-\lambda x=0
 \label{eq_eigenvaluesEigenvectors}
 \end{equation}
-Where x is the eigenvector of A and $\lambda$ are the eigenvalues of A.
+Where $x$ is the eigenvector of A and $\lambda$ are the eigenvalues of A.
 
 \subsection{Singular Value Decomposition (SVD)} \label{secSVD}
 In general, any matrix $X_{N,P}$ can be decomposed into a product of a mixing matrix $U_{N,K}$ and a dictionary matrix $V_{P,K}$ such that:
@@ -49,7 +49,7 @@ Table \ref{tab_svd} shows the information content of the three matrices produced
 \end{figure}
 
 \subsection{Principal Component Analysis (PCA)} \label{secPCA}
-PCA aims at reducing  $X_{N,P}$ to $C_{N,K}$  with $K<P$ where $K$ is the number of orthogonal vectors used to explain the variability of $X$. The PCA projects the elements of $X$ in the $K$ directions defined by $V_K$ such that the variance of the $N$ observation is maximised along this direction. In practice, PCA projects the reference system of the $P$ variables onto a new Kdimensional coordinate system $V$. All the entries $x_i$ of the matrix $X_{\left(N,P\right)}$ are converted into the new reference system at $x_{i\left(1,P\right)}^Tv_{\left(P,1\right)}\ $ . PCA defines:
+PCA aims at reducing  $X_{N,P}$ to $C_{N,K}$  with $K<P$ where $K$ is the number of orthogonal vectors used to explain the variability of $X$. The PCA projects the elements of $X$ in the $K$ directions defined by $V_K$ such that the variance of the $N$ observation is maximised along this direction. In practice, PCA projects the reference system of the $P$ variables onto a new $K$-dimensional coordinate system $V$. All the entries $x_i$ of the matrix $X_{\left(N,P\right)}$ are converted into the new reference system at $x_{i\left(1,P\right)}^Tv_{\left(P,1\right)}\ $ . PCA defines:
 
 \begin{equation}
 v_{\left(P,1\right)}=\arg\max_{v:\left|\left|v\right|\right|=1}{{\frac{1}{N}\sum_{i}\left(x_i^Tv\right)^2}}
@@ -171,7 +171,7 @@ The theory does not explain how to choose the number of PCs. This information ca
 \end{figure}
 
 \subsection{Multi-dimensional scaling} \label{secMultiDimensionalScaling}
-In some cases, we do not have a matrix $X_{N,P}$ with observations and features but a distance matrix $D_{N,N}$ expressing a pairwise distance between each observation, for a given feature. In this case, it is recommendable to turn he $D$ matrix into a $P$ one, but this involves the approximation of the distance values into a $K$-dimensional space.\par
+In some cases, we do not have a matrix $X_{N,P}$ with observations and features but a distance matrix $D_{N,N}$ expressing a pairwise distance between each observation, for a given feature. In this case, it is recommendable to turn the $D$ matrix into a $X$ one, but this involves the approximation of the distance values into a $K$-dimensional space.\par
 
 Multidimensional scaling aims at this goal, considering a $D_{N,N}$ and finding a low-dimensional projection of the data such that a stress function is minimised.
 
@@ -189,7 +189,7 @@ t-SNE algorithm proceeds step by step, determining the similarity between each o
 All the observation are randomly scattered on the $K$-dimensional space, and their distance is measured as the distance between the observation and a $t$-distribution populating the matrix $D_t$. At this stage, points are re-organised in the $K$-dimensional space one by one to make $D_t$ similar to $D$ defining compact clusters.
 
 \section{Feature selection}
-Feature selection strategies implement heuristics to define a subset of the P features to train learning algorithms. The following paragraphs illustrate these strategies.
+Feature selection strategies implement heuristics to define a subset of the $P$ features to train learning algorithms. The following paragraphs illustrate these strategies.
 
 \subsection{Selection by correlation}
 The correlations between the features of the input dataset $X$ are values to check carefully before training a learning algorithm. If two features are highly correlated, it may be necessary to exclude one of them since the other already describes the variability of the dataset. The correlation matrix is used for this purpose to identify the correlation coefficients of all the possible couples of variables. Figure \ref{fig_corrMatrix} shows an example of a correlation matrix from the wine dataset using different colour gradients to highlight positive and negative correlations.\footnote{The source code of Figure \ref{fig_corrMatrix} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/05.\%20Dimensionality\%20Reduction.ipynb}{here}.}
@@ -203,7 +203,7 @@ The correlations between the features of the input dataset $X$ are values to che
 \label{fig_corrMatrix}
 \end{figure}
 
-Another strategy based on the correlation consists of training an algorithm only with a subset of variables having a minimum value of correlation with the target variable. Figure \ref{fig_selectCorr} shows the correlation behaviour of the features of the \textit{wine dataset} with the target variable. The plot shows the number of features (y-axis) having a minimum correlation value (x-axis) with the target variable. One may decide to set a threshold of minimum correlation to work with a subset o variable resulting significantly correlated to the target variable (e.g. at least 30\% of correlation).\footnote{The source code of Figure \ref{fig_selectCorr} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/05.\%20Dimensionality\%20Reduction.ipynb}{here}.}
+Another strategy based on the correlation consists of training an algorithm only with a subset of variables having a minimum value of correlation with the target variable. Figure \ref{fig_selectCorr} shows the correlation behaviour of the features of the \textit{wine dataset} with the target variable. The plot shows the number of features (y-axis) having a minimum correlation value (x-axis) with the target variable. One may decide to set a threshold of minimum correlation to work with a subset of variables resulting significantly correlated to the target variable (e.g. at least 30\% of correlation).\footnote{The source code of Figure \ref{fig_selectCorr} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/05.\%20Dimensionality\%20Reduction.ipynb}{here}.}
 
 % INSERT fig_selectCorr
 \begin{figure}[hbt!]
@@ -270,7 +270,7 @@ Identify the intercept of the linear regression\;
 \label{algo_forwardStepwise}
 \end{algorithm}
 
-Figure \ref{fig_selectForwardStepwise} shows the outcome of the forward stepwise regression of the wine dataset. Increasing the number of features, the RSS decreases and the $r^2$ of the model increases. Besides, a relatively small number of feature (i.e. the first five features) is enough to fit the linear model obtaining a relatively small error. \footnote{The source code of Figure \ref{fig_selectForwardStepwise} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/05.\%20Dimensionality\%20Reduction.ipynb}{here}.} 
+Figure \ref{fig_selectForwardStepwise} shows the outcome of the forward stepwise selection of the wine dataset. Increasing the number of features, the RSS decreases and the $r^2$ of the model increases. Besides, a relatively small number of feature (i.e. the first five features) is enough to fit the linear model obtaining a relatively small error. \footnote{The source code of Figure \ref{fig_selectForwardStepwise} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/05.\%20Dimensionality\%20Reduction.ipynb}{here}.} 
 
 % INSERT fig_selectForwardStepwise
 \begin{figure}[hbt!]

@@ -87,7 +87,7 @@ $\rho$ is called “learning rate”, and it can be proved that this algorithm c
 Similarly to the error metrics evaluating regression models, classification models have specific error metrics to compare the outcome of each model and choose the one with the best predictive performance.
 
 \subsection{Accuracy}
-The accuracy is the simplest indicators since it measures the number of good predictions over the total number of predictions. We consider the case of binary classification (i.e., two classes '1', and '-1') and the number of the:
+The accuracy is the simplest indicator since it measures the number of good predictions over the total number of predictions. We consider the case of binary classification (i.e., two classes '1', and '-1') and the number of the:
 
 \begin{itemize}
     \item true positives $TP$: the items with true label '1', classified correctly;
@@ -156,7 +156,7 @@ Based on the confusion matrix, it is possible to identify other metrics to evalu
 Precision gives importance to the cost of false-positive. It answers the question \textit{“Out of the items that the classifier predicted to be relevant, how many are truly relevant?”} On the other side, sensitivity (or recall) gives importance to the cost of a false negative. Answering the question: \textit{“Out of all the items that are truly relevant, how many are detected by the classifier?”}. Precision and recall can be matched together by plotting a precision versus recall curve (similar to a ROC curve) or calculating the so-called F1 score.
 
 \begin{equation}
-    F1=\frac{2precision\times recall}{precision+recall}
+    F1=\frac{2\times precision\times recall}{precision+recall}
     \label{eq_f1Score}
 \end{equation}
 A low F1 score indicates that either precision or recall is small.

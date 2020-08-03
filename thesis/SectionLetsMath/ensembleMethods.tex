@@ -4,7 +4,7 @@
 \epigraph{\textit{A choir sings better than a single voice.}}{}
 
 
-In the chapter \ref{cahpNonLinear} we introduced machine learning methods born from different research approaches. Each of them has peculiarity and limits, and there is not the best method that outperforms the others. Ensemble learning aims at combining the power of these different learners to obtain a more effective result. The idea behind ensemble learning is to combine different prediction models and consider their output together to make predictions on the target variable. Ensemble methods are mainly based on bagging and boosting (see Figure \ref{fig_ensemble}). Bagging combines the effect of multiple independent learners while boosting create a pipeline of learners in sequence.\footnote{The package logproj provides methods to deal with ensemble methods \href{https://github.com/aletuf93/logproj/blob/master/logproj/M_learningMethod/ensemble_methods.py}{here}.}
+In the chapter \ref{cahpNonLinear} we introduced machine learning methods born from different research approaches. Each of them has peculiarity and limits, and there is not the best method that outperforms the others. Ensemble learning aims at combining the power of these different learners to obtain a more effective result. The idea behind ensemble learning is to combine different prediction models and consider their output together to make predictions on the target variable. Ensemble methods are mainly based on bagging and boosting (see Figure \ref{fig_ensemble}). Bagging combines the effect of multiple independent learners while boosting creates a pipeline of learners in sequence.\footnote{The package logproj provides methods to deal with ensemble methods \href{https://github.com/aletuf93/logproj/blob/master/logproj/M_learningMethod/ensemble_methods.py}{here}.}
 
 % INSERT fig_ensemble
 \begin{figure}[hbt!]
@@ -64,12 +64,12 @@ For a classification tree the function of majority vote is considered:
 
 where $C_b(x)$ is the class predicted by the $b$ tree of the random forest.\par
 
-The hyperparameters of a random forest are the number $m$ of features to extract and the minimum number of nodes $n_min$. Valid tuning parameter for regression random forests are $m=\sqrt p$, and $n_{min}=1$; while for classification random forests are used $m=p/3$, and $n_{min}=5$.\par
+The hyperparameters of a random forest are the number $m$ of features to extract and the minimum number of nodes $n_{min}$. Valid tuning parameter for regression random forests are $m=\sqrt p$, and $n_{min}=1$; while for classification random forests are used $m=p/3$, and $n_{min}=5$.\par
 
 The performance of a random forest can be assessed through a traditional error metric (e.g. the MSE) calculated on out-of-bag (OOB) samples. OOB samples are the samples of the original dataset which does not appear in the bootstrapped dataset. This measure of error is similar to the cross-validation.
 
 \section{AdaBoost}
-\textit{AdaBoost} means adaptive boosting, and it has been one of the firsts boosting methods. The main idea behind these methods is to combine the outputs of many \textit{weak} classifiers to get a robust prediction. A weak classifier is any classification function with an error rate slightly better than random classification (i.e., flipping a coin). These \textit{weak} classifiers are called \textit{stumps}, and can be modelled as decision trees with a single split. Each of the classifiers votes to produce a different weighted contribution on the final prediction. AdaBoost born as a classification method on two classes $y\in{-1;1}$. The final prediction is obtained as:
+\textit{AdaBoost} means adaptive boosting, and it has been one of the firsts boosting methods. The main idea behind these methods is to combine the outputs of many \textit{weak} classifiers to get a robust prediction. A weak classifier is any classification function with an error rate slightly better than random classification (i.e., flipping a coin). These \textit{weak} classifiers are called \textit{stumps}, and can be modelled as decision trees with a single split. Each of the classifiers votes to produce a different weighted contribution on the final prediction. AdaBoost born as a classification method on two classes $y\in\{-1;1\}$. The final prediction is obtained as:
 
 \begin{equation}
 G\left(x\right)=sign\left(\sum_{m=1}^{M}{\alpha_mG_m\left(x\right)}\right)
@@ -129,7 +129,7 @@ Gradient boosting is a boosting model similar to AdaBoost with a main difference
 \label{algo_gradientBoosting}
 \end{algorithm}
 
-In particular, working with a regression problem, the initial value is set to the average of the target variable $f_0\left(x\right)=\bar{y}$. The loss function $L=\frac{1}{2}\left(y_i-f\left(x_i\right)\right)^2$ is set to the sum of squared residual multiplied by a coefficient $\frac{1}{2} $which will be simplified after calculating the gradient of $L$. \par
+In particular, working with a regression problem, the initial value is set to the average of the target variable $f_0\left(x\right)=\bar{y}$. The loss function $L=\frac{1}{2}\left(y_i-f\left(x_i\right)\right)^2$ is set to the sum of squared residual multiplied by a coefficient $\frac{1}{2}$ which will be simplified after calculating the gradient of $L$. \par
 
 The algorithm builds $M$ different trees to get the final prediction. Each tree defines $J_m$ terminal regions (i.e. leaves) to target the value of $r_{im}$. The value of $r_{im}$ is calculated at each step, based on the value of the loss function $L$ generated at the previous tree $f_{m-1}$. The values of $f_m$, i.e. the prediction on $y$ at the step $m$ of the algorithm, is generated summing the prediction from the previous step $f_{m-1}$ plus a value $\gamma_{jm}$. $\gamma_{jm}$ is the output value at the terminal region $R_{jm}$ chosen to minimise the sum of squared residuals generated by the multiple observations falling into the same leave $R_{jm}$. $\rho\in[0,1]$ is a learning rate used to reduce the variance produced by the model on the test set. The experience suggests setting the hyperparameters choosing $\rho=0.1$ and building trees with 8 to 32 leaves. \par
 

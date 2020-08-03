@@ -3,7 +3,7 @@
 %citazione introduttiva
 \epigraph{\textit{Let math do its work.}}{}
 
-This work comes with the idea that probability and statistics can solve the majority of the problem from logistics and operations. Unfortunately, many logistics and operations manager forgot about the superpowers of statistics. Software developers do the same while deploying warehouse management systems (WMS), transportation management system (TMS) and manufacturing execution system (MES). For this reason, this chapter reviews the most essential elements of statistics and probability upon which are the base of the method implemented in the following chapters. 
+This work comes with the idea that probability and statistics can solve the majority of the problem from logistics and operations. Unfortunately, many logistics and operations managers forgot about the superpowers of statistics. Software developers do the same while deploying warehouse management systems (WMS), transportation management system (TMS) and manufacturing execution system (MES). For this reason, this chapter reviews the most essential elements of statistics and probability upon which are the base of the methods implemented in the following chapters. 
 
 \section{Probability Theory}
 Probability theory aims at defining the behaviour of a variable (let us call it random variable) whose value is not deterministic. A random variable describes the realisations of an event whose outcomes are not static. Any phenomenon measured on-field is describable by a random variable. Flipping a coin is an event having two outcomes (heads or tails); a random variable can be used to describe the outcome (e.g. the expected number of heads over many flips). Operations and logistics management are based on many quantities measured on-field (e.g., time and motion, efficiency, productivity, as already introduced in Chapter \ref{chap_InformationFramework}). Random variables can be used to describe all these variables. 
@@ -31,7 +31,7 @@ F_X(x)=\int_{-\infty}^{+\infty}{f_X\left(t\right)\ dt}
 \label{eq_cdfIntegralPdf}
 \end{equation}
 
-Probability theory defines many “famous” probability functions where $f$ and $F$ are defined on a continuous domain by using closed-form equations. The Gaussian, exponential, uniform, beta, Weibull distributions are examples of continuous probability distributions. Discrete distributions as the binomial and Poisson are used to define a discrete realisation of an event (e.g. heads or tails, '0' or '1'). In practice, a researcher tries to find the best fit between a series of $n$ realisations collected on-field and a “famous” probability distribution with known $f$ and $F$. When he/she finds an adequate fit, the probability distribution models the behaviour of the random variable and can be used to infer relevant information on the observed event.\par
+Probability theory defines many “famous” probability functions where $f$ and $F$ are defined on a continuous domain by using closed-form equations. The Gaussian, exponential, uniform, beta, Weibull distributions are examples of continuous probability distributions. Discrete distributions as the binomial and Poisson are used to define a discrete realisation of an event (e.g. heads or tails, '0' or '1'). In practice, a researcher tries to find the best fit between a series of $n$ realisations collected on-field and a “famous” probability distribution with known $f$ and $F$. When he/she finds an adequate fit, the probability distribution models the behaviour of the random variable and can be used to infer relevant information of the observed event.\par
 
 In practice, we interpret the as a frequency analysis (i.e. the histogram) of the random variable $X$. On the other side, the CDF measures the relative importance of every single observed value cumulated to all the previous. Figure \ref{fig_empiricalPdfCdf} shows the empirical and the best-fit PDF and CDF of a sample with $n=200$ observations.\footnote{The source code of Figure \ref{fig_empiricalPdfCdf} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/01.\%20Probability\%20Theory.ipynb}{here}.
 }
@@ -53,7 +53,7 @@ E\left[\left(x\right)^m\right]=\int_{-\infty}^{+\infty}f\left(x^m\right)dx
 \label{eq_momentOfOrderm}
 \end{equation}
 
-and the central moment of order m, as:
+and the central moment of order $m$, as:
 
 \begin{equation}
 M_m=E[\left(x-\mu\right)^m]
@@ -109,7 +109,7 @@ The correlation between two random variables is a scalar number defining a measu
 \label{eq_correlation}
 \end{equation}
 
-Measuring the correlation between variables is extremely important to evaluate their information content. If two variables are completely correlated (or uncorrelated), their information content is entirely defined by a single of them. Scatterplots are used to visualise correlations. Figure \ref{fig_irisCorrelation} presents an example from the famous \textit{iris dataset}. This dataset is largely used in machine learning examples, and it contains 50 samples for each of the three species of the iris flower (\textit{iris setosa}, \textit{iris virginica} and \textit{iris versicolor}). For each sample, the dataset maps the sepal and petal length and width. A high positive correlation can be easily identified between the variables \textit{petal\_len} and \textit{petal\_wid}.
+Measuring the correlation between variables is extremely important to evaluate their information content. If two variables are completely correlated (or uncorrelated), their information content is entirely defined by a single of them. Scatterplots are used to visualise correlations. Figure \ref{fig_irisCorrelation} presents an example from the famous \textit{iris dataset}. This dataset is largely used in machine learning examples, and it contains 50 samples for each of the three species of the iris flower (\textit{iris setosa}, \textit{iris virginica} and \textit{iris versicolor}). For each sample, the dataset maps the sepal and petal length and width. A high positive correlation can be easily identified between the variables \textit{petal\_len} and \textit{petal\_wid}.\footnote{The source code of Figure \ref{fig_irisCorrelation} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/01.\%20Probability\%20Theory.ipynb}{here}.}
 
 % INSERT fig_irisCorrelation
 \begin{figure}[hbt!]
@@ -120,7 +120,7 @@ Measuring the correlation between variables is extremely important to evaluate t
 \label{fig_irisCorrelation}
 \end{figure}
 
-Sometimes, it may be interesting to evaluate how much a single random variable varies with itself. This is the case of a time series that may have some seasonal components. The autocovariance is introduced to meet this goal. It measures how much a random variable varies with itself after some lag $k$ (e.g. a time lag in a time series).
+Sometimes, it may be interesting to evaluate how much a single random variable varies with itself. This is the case of a time series that may have some seasonal components. The autocovariance is introduced to meet this goal. It measures how much a random variable varies with itself after some lag $k$ (e.g. the sampling period of a time series).
 
 \begin{equation}
 \gamma_k=cov\left(X_t,X_{t-k}\right)=E\left[\left(X_t-\mu_t\right)\left(X_{t-k}-\mu_{t-k}\right)\right]-\mu_t\mu_{t-k}
@@ -134,14 +134,14 @@ Similarly to the variance, it is possible to define a global autocorrelation fun
 \label{eq_ACF}
 \end{equation}
 
-A partial autocorrelation function (PACF) $\phi_{kk}$ is introduced to measure the linear dependence between the random variable observed at time t and itself observed at time $t-k\ $ without taking into account the intermediate correlations (i.e. $\phi_{kk}$ does not consider the dependence between $X_t$ and $X_{t-1}$ ; $X_t$ and $X_{t-2}$ ; ... ; $X_t$ and $X_{t-k+1}$).
+A partial autocorrelation function (PACF) $\phi_{kk}$ is introduced to measure the linear dependence between the random variable observed at time $t$ and itself observed at time $t-k\ $ without taking into account the intermediate correlations (i.e. $\phi_{kk}$ does not consider the dependence between $X_t$ and $X_{t-1}$ ; $X_t$ and $X_{t-2}$ ; ... ; $X_t$ and $X_{t-k+1}$).
 
 \begin{equation}
 \phi_{kk}=Corr(X_t,X_{t-k}|X_{t-1},X_{t-2},\ldots,X_{t-k+1})
 \label{eq_PACF}
 \end{equation}
 
-Figure \ref{fig_ACFPACF} illustrates a seasonal time series with its ACF and PACF. ACF and PACF of the series evidence that autocorrelation of the realisations exists after about five time lags. Additional details on the use of this information for time series analysis are introduced in Section \ref{secTimeSeries}.\footnote{The source code of Figure \ref{fig_ACFPACF} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/02.\%20Time\%20Series.ipynb}{here}.}
+Figure \ref{fig_ACFPACF} illustrates a seasonal time series with its ACF and PACF. ACF and PACF of the series evidence that autocorrelation of the realisations exists after about five time lags.\footnote{The source code of Figure \ref{fig_ACFPACF} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/02.\%20Time\%20Series.ipynb}{here}.} Additional details on the use of this information for time series analysis are introduced in Section \ref{secTimeSeries}.
 
 % INSERT fig_ACFPACF
 \begin{figure}[hbt!]
@@ -218,7 +218,7 @@ f_Z(z)=\frac{dF(z)}{dz}=\frac{2\left(p-z\right)}{p^2}
 \label{eq_Distance6}
 \end{equation}
 
-We can test that $f_z$ is a PDF since by the definition of $X$,$Y$ its domain is $[0,p]$ and its integral equals 1.
+We can prove that $f_z$ is a PDF since by the definition of $X$,$Y$ its domain is $[0,p]$ and its integral equals 1.
 
 \begin{equation}
 f_{Z\left(z\right)}=\int_{0}^{p}\frac{2\left(p-z\right)}{p^2}dz=\left[\frac{2z^2}{2p^2}\right]_0^p=1\ \ 
@@ -239,7 +239,7 @@ The procedure above can be applied to any probability distribution of $X$ and $Y
 
 \section{Statistics} \label{secStatistics}
 
-The statistic is an application of the probability theory to infer the properties of a population of elements working on a small subset of it (i.e. a sample). The statistic was born to solve the trade-off between the time necessary to collect data on-field and the accuracy of the information obtained by these data. In fact, it is always impossible to collect all the information available since the population counts thousand or millions of different elements. Statistics provides models to get robust results even when we have few observations of a physical phenomenon.
+The statistic is an application of the probability theory to infer the properties of a population of elements working on a small subset of it (also known as "sample"). The statistic was born to solve the trade-off between the time necessary to collect data on-field and the accuracy of the information obtained by these data. In fact, it is always impossible to collect all the information available since a population may count thousand or millions of different elements. Statistics provides models to get robust results even when we have few observations of a physical phenomenon.
 
 \subsection{Estimators} \label{secEstimators}
 
@@ -250,7 +250,7 @@ Statistics usually follows a precise workflow:
     \item Infer properties from samples to the whole population.
 \end{enumerate}
 
-The last step is the one we are interested in the most: we need to estimate the parameters of the probability distribution of the population. Estimators are used to calculating the value of a parameter of a population (e.g., the mean or the variance) based on the observed values given by the sample. Estimators are classified as biased or unbiased. We call an estimator $\hat{\theta}$ of a parameter $\theta$ unbiased when $E\left[\hat{\theta}\right]=\theta$.\par
+The last step is the one we are interested in the most: we need to estimate the parameters of the probability distribution of the population. Estimators are used to calculating the value of a parameter of a population (e.g., the mean or the variance) based on the observed values given by the sample. Estimators are classified as biased or unbiased. We call "unbiased" an estimator $\hat{\theta}$ of a parameter $\theta$ when $E\left[\hat{\theta}\right]=\theta$.\par
 
 The most common estimators are needed for the estimation of $\mu\ $ and $\sigma $ of the population. The sample mean $\bar{X}$ is an unbiased estimator of $\mu$ (see equation \ref{eq_sampleMean}). While the sample variance $S^2$ is an unbiased estimator for $\sigma^2$ (see equation \ref{eq_sampleVariance}).
 
@@ -264,7 +264,7 @@ S^2=\frac{1}{N-1}{\sum_{i}^{N}\left(X_i-\bar{X}\right)^2}
 \label{eq_sampleVariance}
 \end{equation}
 
-Estimators are evaluated according to their accuracy (i.e. their closeness to the random variable they estimate). In general, we can find two sources of inaccuracy on an estimator: the bias and the variance. Let assume having a model f producing an estimator $\hat{\theta}$ for the random variable $\theta$ with an error $\epsilon$. 
+Estimators are evaluated according to their accuracy (i.e. their closeness to the random variable they estimate). In general, we can find two sources of inaccuracy of an estimator: the bias and the variance. Let assume having a model $f$ producing an estimator $\hat{\theta}$ for the random variable $\theta$ with an error $\epsilon$. 
 
 \begin{equation}
 \theta \simeq \hat{\theta}=f\left(X\right)+\epsilon
@@ -292,7 +292,7 @@ The error of an estimator can be defined according to \ref{eq_bias2} using:
     \item 	$Var\left(\hat{f}\left(x_0\right)\right)$ is the deviation of the estimator around its mean.
 \end{itemize}
 
-The role of the variance and bias can be easily visually interpreted in Figure \ref{fig_biasVariance}.
+The role of the variance and bias can be easily interpreted graphically in Figure \ref{fig_biasVariance}.
 
 % INSERT fig_biasVariance
 \begin{figure}[hbt!]
@@ -303,9 +303,9 @@ The role of the variance and bias can be easily visually interpreted in Figure \
 \label{fig_biasVariance}
 \end{figure}
 
-Complex prediction models developed using data-driven methods, have to take into account the variance and the bias of the predictions they produce. In particular, there is a bias-variance trade-off. Typically, the more complex the model, the lowest the variance and the highest the bias produced by predictions of the models. On the opposite, a simple model leads to low bias but high variance. Practically speaking, it is always necessary to take into account the bias and the variance of the response of a model to check if it fits with its purpose. Developing a complex model to solve a simple problem is just a way to add additional variance to the responses of the model. In general, we keep a model as simpler as possible (according to the Ockham's razor principle). \par
+Complex prediction models developed using data-driven methods, have to take into account the variance and the bias of the predictions they produce. In particular, there is a bias-variance trade-off. Typically, the more complex the model, the lowest the variance and the highest the bias produced by predictions of the models. On the opposite, a simple model leads to low bias but high variance. Practically speaking, it is always necessary to take into account the bias and the variance of the response of a model to check if it fits with its purpose. Developing a complex model to solve a simple problem is just a way to add additional bias to the responses of the model. In general, we keep a model as simpler as possible (according to the Ockham's razor principle). \par
 
-We introduce the Gauss-Markov theorem to show an important property of the linear regression estimator (see chapter \ref{chapLinearRegression}). Let $\hat{\theta}=c^Ty$ be an unbiased estimator of:
+We introduce the Gauss-Markov theorem to show an important property of the linear regression estimator, one of the simplest prediction models (see chapter \ref{chapLinearRegression}). Let $\hat{\theta}=c^Ty$ be an unbiased estimator of:
 
 \begin{equation}
 \alpha^T\beta=\alpha^T\left(X^TX\right)^{-1}X^Ty
@@ -369,7 +369,7 @@ Kernel Density Estimation (KDE) is a procedure to estimate the PDF of a random v
 \label{eq_KDE}
 \end{equation}
 
-Where K is a kernel function with a peak on 0 (it is common to use a gaussian function). Figure \ref{fig_KDE} shows the effect of different KDEs with several values of b. \footnote{The source code of Figure \ref{fig_KDE} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/03.\%20Statistics.ipynb}{here}.}
+Where $K$ is a kernel function with a peak on 0 (it is common to use a gaussian function). Figure \ref{fig_KDE} shows the effect of different KDEs with several values of $b$. \footnote{The source code of Figure \ref{fig_KDE} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/03.\%20Statistics.ipynb}{here}.}
 
 % INSERT fig_KDE
 \begin{figure}[hbt!]
@@ -382,7 +382,7 @@ Where K is a kernel function with a peak on 0 (it is common to use a gaussian fu
 
 \subsection{Bootstrapping method} \label{secBootstrapping}
 
-Bootstrapping is an algorithm used to estimate the value of a parameter $\alpha$ (e.g. the mean or variance) from a population where its PDF is unknown or too difficult to estimate analytically.  Let X be a set of observations with cardinality $n$. Algorithm \ref{algo_bootstrap} illustrates the Bootstrapping method.
+Bootstrapping is an algorithm used to estimate the value of a parameter $\alpha$ (e.g. the mean or variance) from a population where its PDF is unknown or too difficult to estimate analytically.  Let $X$ be a set of observations with cardinality $n$. Algorithm \ref{algo_bootstrap} illustrates the Bootstrapping method.
 
 \begin{algorithm}[H]
 \DontPrintSemicolon
@@ -400,7 +400,7 @@ Define the confidence interval of $\alpha$ using the statistic of the $B$ iterat
 \subsection{Montecarlo method} \label{secMontecarlo}
 Montecarlo simulation is a valid alternative to measure the outcome of a process where many random variables with given PDF are involved, but their joint distribution is hard to compute. \par
 
-Let consider the random variables $X_i$ $i=1,\ldots,q$ whose distribution are given and $\alpha=f(X_i)$. We need to infer properties on the distribution of $\alpha$. Algorithm \ref{algo_montecarlo} shows the Montecarlo simulation to estimate the distribution of $\alpha$. 
+Let consider the $M$ random variables $X_i$ $i=1,\ldots,M$ whose distribution are given and $\alpha=f(X_i)$. We need to infer properties on the distribution of $\alpha$. Algorithm \ref{algo_montecarlo} shows the Montecarlo simulation to estimate the distribution of $\alpha$. 
 
 \begin{algorithm}[H]
 \DontPrintSemicolon
@@ -423,7 +423,7 @@ X_1=X_{true}+\beta+\epsilon
 \label{eq_measurement1}
 \end{equation}
 
-Where $X_{true}$ is the real value of the variable; $\beta$ is the bias (accuracy or systematic error), i.e. how much far the (average value) of the measure from $X_{true}$; $\epsilon$ are random errors depending on the precision of the measurement system. A good measurement procedure has:
+Where $X_{true}$ is the real value of the variable; $\beta$ is the bias (accuracy or systematic error), i.e. how much far the average value of the measure is from $X_{true}$; $\epsilon$ are random errors depending on the precision of the measurement system. A good measurement procedure has:
 
 \begin{equation}
 \mu=\lim_{N \to +\infty}{\frac{1}{N}\sum_{i=1}^{N}{X_i=X_{true}+\beta}}
@@ -441,7 +441,7 @@ The analysis of uncertainty aims at the definition of $\beta$ and $\epsilon$ of 
 Systematic error (or bias errors) is determined by a measure of the accuracy of the measurement instrument. Systematic errors occur when an instrument has not an appropriate level of accuracy compared to the variable one wants to measure. For example, it is inadequate to measure the length of a warehouse rack using a ruler. A measurement instrument always requires calibration to be accurate. For example, using a calliper, the systematic error is often linked to a wrong calibration. 
 
 \subsubsection{Uncertainty errors}
-Uncertainty error (or random errors) is a measure of precision linked with the random nature of the measurement process. This is unavoidable and must be normally distributed in any empirical data collection (e.g., the processing time of a part on a workbench should be normally distributed when the process is under control).
+The uncertainty error (or random errors) is a measure of precision linked with the random nature of the measurement process. This is unavoidable and must be normally distributed in any empirical data collection (e.g., the processing time of a part on a workbench should be normally distributed when the process is under control).
 
 \subsubsection{Mistakes}
 Mistakes are data points with wrong values. They may be error storing the results of an experiment or outliers which must be deleted when there are solid arguments against the value of these data points.
@@ -458,7 +458,7 @@ The second methodology we introduce to deal with outliers is the interquartile r
 \section{Statistical Distributions}
 This section introduces the relevant statistical distribution for the applications in the field of logistics and operations.
 
-\subsection{The Normal distribution}
+\subsection{Normal distribution}
 The most important probability distribution is called normal (or Gaussian) distribution, and its PDF is defined as:
 
 \begin{equation}
@@ -490,7 +490,7 @@ Prob\left\{X_i-1.96\sigma\le\mu\le X_i+1.96\sigma\right\}=0.95
 \label{eq_pdfConfidenceInterval2}
 \end{equation}
 
-A normal distribution has many useful properties. In practice, it is necessary to prove that a sample is normally distributed (e.g. using statistical tests see \ref{secStatTest}) to apply all the magical properties of the normal distribution. This way, by estimating the $\sigma$ of the populations using the estimator $s=\frac{1}{N-1}\sum_{i=1}^{N}{{{(X}_i-\bar{X})}^2\ \ }$, the mean value $\mu$ of the population will have a confidence interval of 95\% within the range $\pm1.96\sigma$. The central limit theorem generalises these properties of the normal distribution to any statistical distribution.
+A normal distribution has many useful properties. In practice, it is necessary to prove that a sample is normally distributed (e.g. using statistical tests see \ref{secStatTest}) to apply all the magical properties of the normal distribution. This way, by estimating the $\sigma$ of the population with the estimator $s=\frac{1}{N-1}\sum_{i=1}^{N}{{{(X}_i-\bar{X})}^2\ \ }$, the mean value $\mu$ of the population will have a confidence interval of 95\% within the range $\pm1.96\sigma$. The central limit theorem generalises these properties of the normal distribution to any statistical distribution.
 
 \subsection{Central limit theorem}
 The central limit theorem states that describing an event with a sufficiently large number $N$ (with $N\geq30$) of random variables $X_i$, the arithmetic mean of these variables is normally distributed.
@@ -514,7 +514,7 @@ X\sim N_p\left(\mu,\Sigma\right)= f\left(x_1,\ldots,x_p\right)=\frac{1}{\left(2\
 
 Where $\mu$ is the mean vector $\mu=E\left[X\right]=\left[E\left[X_1\right],E\left[X_2\right],\ldots,E\left[X_p\right]\right]^T$ and $\Sigma$ is a $p\times p$ covariance matrix $\Sigma_{i,j}=E\left[\left(X_i-\mu_i\right)\left(X_j-\mu_j\right)\right]=Cov[X_i,X_j]$.
 
-\subsection{The Poisson Distribution} \label{secPoisson}
+\subsection{Poisson Distribution} \label{secPoisson}
 The Poisson distribution is a discrete probability distribution useful to describe the realisations of events when the average time between the event is given, but the interarrival time between the events is random. This situation is common when dealing with queues (the average throughput of the resource is given, but the interarrival time of the workload is random) or maintenance (the mean time to failure is given, but the exact failure time is unknown). The Poisson distribution has PDF:
 
 \begin{equation}
@@ -535,7 +535,7 @@ The Poisson distribution identifies the probability of realisation of $k$ events
 \label{fig_poisson}
 \end{figure}
 
-\subsection{The Triangular Distribution}
+\subsection{Triangular Distribution}
 Some times empirical measurements are done on the minimum, maximum and average value of a random variable $X$. In these situations, we have only three values to infer the properties of the random variable $X$. Triangular distribution assumes $X$ having a density with a triangular shape with its mode in correspondence of the mean value, and the vertices at the minimum and maximum values. The triangular distribution has PDF:
 
 \begin{equation}
@@ -589,7 +589,7 @@ p=Prob\left\{ X\le x|H_0\right\}
 \label{eq_pvalue}
 \end{equation}
 
-Figure \ref{fig_StatTest} shows an example where $X$ is an unknown distribution that is tested to have the same mean $\mu$ of the represented normal distribution. The null hypothesis $H_0$ is that \textit{“the empirical data are normally distributed”}. In the figure on the left, the sample with mean value $X$ is too far from the mean of the distribution and the p-value is low; for this reason, $H_0$ is rejected. Otherwise, in the figure on the right, the sample with mean $X$ behaves as the distribution (within the confidence interval of the test $\alpha=0.05$), the $p$-value is higher than $\alpha$, and $H_0$ is not rejected.
+Figure \ref{fig_StatTest} shows an example where $X$ is an unknown distribution that is tested to have the same mean $\mu$ of the represented normal distribution. The null hypothesis $H_0$ is that \textit{“the empirical data are normally distributed”}. In the figure on the left, the sample with mean value $X$ is too far from the mean of the distribution and the $p$-value is low; for this reason, $H_0$ is rejected. Otherwise, in the figure on the right, the sample with mean $X$ behaves as the distribution (within the confidence interval of the test $\alpha=0.05$), the $p$-value is higher than $\alpha$, and $H_0$ is not rejected.
 
 % INSERT fig_StatTest
 \begin{figure}[hbt!]
@@ -724,7 +724,7 @@ The aim of TS analysis is the definition of a PDF describing the realisation of 
 
 Since it is easy that each observation of a TS may depend on the previous: there is a sort of “influence” between them (in general, we can say that a TS has \textit{memory}). This is good news since it suggests that we could check historical values to make forecasts, that is one of our purposes.\par
 
-TS are modelled as stochastic processes; for this reason, we introduce the notation indicating $X(\omega,t)$, where $X$ is the stochastic process. A TS behaves as a set of events $\omega$, one for each $t$ step, generated by $X(\omega,t)$. The random variable $X_t$ models the event at each time period $t$. Figure \ref{fig_stochProcess} shows the inputs and outputs of a stochastic process. We aim at describing the generating process $X(\omega,t)$ modelling the behaviour of the process to make forecasts.
+TSs are modelled as stochastic processes; for this reason, we introduce the notation indicating $X(\omega,t)$, where $X$ is the stochastic process. A TS behaves as a set of events $\omega$, one for each $t$ step, generated by $X(\omega,t)$. The random variable $X_t$ models the event at each time period $t$. Figure \ref{fig_stochProcess} shows the inputs and outputs of a stochastic process. We aim at describing the generating process $X(\omega,t)$ modelling the behaviour of the process to make forecasts.
 
 % INSERT fig_stochProcess
 \begin{figure}[hbt!]
@@ -736,7 +736,7 @@ TS are modelled as stochastic processes; for this reason, we introduce the notat
 \end{figure}
 
 
-When modelling a TS as a stochastic process, there is a limit. A TS is composed of a single observation for each couple $(\omega,t)$. This is equal to have each event at a time $t$ represented by a single record (as having a single TS of the n represented in Figure \ref{fig_ACFPACF}). In practice, a single observation $X(t)$ is assumed to be representative of the entire event $\omega$ at time $t$. \footnote{The package logproj provides methods to deal with time series \href{https://github.com/aletuf93/logproj/blob/master/logproj/stat_time_series.py}{here}.
+When modelling a TS as a stochastic process, there is a limit. A TS is composed of a single observation for each couple $(\omega,t)$. This is equal to have each event at a time $t$ represented by a single record (as having a single TS of the $n$ represented in Figure \ref{fig_ACFPACF}). In practice, a single observation $X(t)$ is assumed to be representative of the entire event $\omega$ at time $t$. \footnote{The package logproj provides methods to deal with time series \href{https://github.com/aletuf93/logproj/blob/master/logproj/stat_time_series.py}{here}.
 }
 
 \subsection{Time series decomposition} \label{secTimeSeriesDecomposition}
@@ -780,7 +780,7 @@ For the sake of brevity, the following paragraphs consider a TS modelled through
 
 For this reason, all the techniques here presented are applicable to multiplicative models (see equation \ref{eq_multiplicativeTS}) too. In practice, one can fit both of them and measure their goodness of fit choosing the model which better describe the empirical measurements. 
 
-An option to fit an additive model is to get the trend component of the series as a linear regression model fitted by ordinary least square (OLS\footnote{Section \ref{secLinearRegression} provides additional details of the OLS method.}). The result is a function $T\left(t\right)=mt+q$ where $m$ is the angular coefficient and $q$ is the intercept of the straight line best approximating the trend of $X(t)$. Alternatively, the trend can be estimated using a smoothing function, for example, using a Moving Average (MA) with a time window equal to the seasonality of $X(t)$\footnote{Sometimes, the seasonality of $X(t)$ is unknown. Section \ref{secFourier} shows how to detect the seasonality of a TS.}. Equation \ref{eq_trendTS} illustrates the formula of the MA; the time window is equal to $2h+1$ (e.g., $2h+1=7$ for a weekly seasonality of a time series having one sample per day).
+An option to fit an additive model is to get the trend component of the series as a linear regression model fitted by ordinary least square (OLS\footnote{Section \ref{secLinearRegression} provides additional details of the OLS method.}). The result is a function $T\left(t\right)=mt+q$, where $m$ is the angular coefficient and $q$ is the intercept of the straight line best approximating the trend of $X(t)$. Alternatively, the trend can be estimated using a smoothing function, for example, using a Moving Average (MA) with a time window equal to the seasonality of $X(t)$\footnote{Sometimes, the seasonality of $X(t)$ is unknown. Section \ref{secFourier} shows how to detect the seasonality of a TS.}. Equation \ref{eq_trendTS} illustrates the formula of the MA; the time window is equal to $2h+1$ (e.g., $2h+1=7$ for a weekly seasonality of a time series having one sample per day).
 
 \begin{equation}
 T_t=\frac{1}{2h+1}\sum_{i=t-h}^{t+h}X_i
@@ -814,7 +814,7 @@ To estimate the seasonal component $S(t)$ averaging is performed on the residual
 \label{fig_averaging}
 \end{figure}
 
-The residuals $R_t$ are obtained, again, by subtraction. If the residuals are randomly distributed, our model is interpreting the behaviour of the TS correctly. Otherwise, if the residuals show a pattern,  the estimation of $T(t)$ and $S(t)$ need more accuracy, or the choice of additive or multiplicative model is wrong. Figure \ref{fig_extractedSeasonality} shows the seasonal component and residuals. The residuals are randomly distributed, and it is possible to conclude that the decomposition process worked properly. Nevertheless, their magnitude is significant; collecting a higher number of samples would help in practice to reduce their magnitude and better detect the seasonality\footnote{The source code of Figure \ref{fig_extractedSeasonality} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/03.\%20Statistics.ipynb}{here}.}.
+The residuals $R_t$ are obtained, again, by subtraction. If the residuals are randomly distributed, our model is interpreting the behaviour of the TS correctly. Otherwise, if the residuals show a pattern,  the estimations of $T(t)$ and $S(t)$ need more accuracy, or the choice of additive or multiplicative model is wrong. Figure \ref{fig_extractedSeasonality} shows the seasonal component and residuals. The residuals are randomly distributed, and it is possible to conclude that the decomposition process worked properly. Nevertheless, their magnitude is significant; collecting a higher number of samples would help in practice to reduce their magnitude and better detect the seasonality\footnote{The source code of Figure \ref{fig_extractedSeasonality} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/03.\%20Statistics.ipynb}{here}.}.
 
 % INSERT fig_extractedSeasonality
 \begin{figure}[hbt!]
@@ -839,7 +839,7 @@ Z_t=\sum_{j=0}^{+\infty}{\psi_ja_{t-j}}
 \label{eq_ARIMAmovingaverage}
 \end{equation}
 
-Equation \ref{eq_ARIMAautoregressive} models the autoregressive component where $V_t$ is the deterministic part of the model; $\omega_j$ is a fixed frequency and $\alpha_j$ and $\beta_j$ are uncorrelated white noise \footnote{A white noise process $a_t \sim WN\left(0,\sigma_a\right)$ is such that: $E\left(a_t\right)=0$; $Var\left(a_t\right)=\sigma_a^2$; $cov\left(a_t,a_{t-k}\right)=0 \forall t\in T,\ k\neq0$.} processes. $Z_t$ (see equation \ref{eq_ARIMAmovingaverage}) is the stochastic process and it is a moving average of infinity order where $a_t$ is the prediction error. In practice, a consequence of the Wold’s theorem is that once a TS has been transformed into a stationary TS it can be modelled as a linear function of a white noise process.A stochastic process is stationary when it has constant mean and variance and its autocovariance only depends on the time lag k (not by the time t). Using equations:
+Equation \ref{eq_ARIMAautoregressive} models the autoregressive component where $V_t$ is the deterministic part of the model; $\omega_j$ is a fixed frequency and $\alpha_j$ and $\beta_j$ are uncorrelated white noise \footnote{A white noise process $a_t \sim WN\left(0,\sigma_a\right)$ is such that: $E\left(a_t\right)=0$; $Var\left(a_t\right)=\sigma_a^2$; $cov\left(a_t,a_{t-k}\right)=0 \forall t\in T,\ k\neq0$.} processes. $Z_t$ (see equation \ref{eq_ARIMAmovingaverage}) is the stochastic process and it is a moving average of infinity order where $a_t$ is the prediction error. In practice, a consequence of the Wold’s theorem is that once a TS has been transformed into a stationary TS it can be modelled as a linear function of a white noise process.A stochastic process is stationary when it has constant mean and variance and its autocovariance only depends on the time lag $k$ (not by the time $t$). Using equations:
 
 \begin{equation}
 \begin{split}
@@ -888,7 +888,7 @@ Stationarity can be tested using the Dickey-Fuller test for stationarity. Altern
 
 \subsection{Fourier transform} \label{secFourier}
 
-All the models introduced in the previous paragraphs assume that a seasonality exists and its lag is defined (or can be defined analysing the graph of the time series). Nevertheless, in some cases, it may be necessary to have analytical methods to study the seasonality of a series. For this reason, we introduce the spectrum analysis and the Fourier transform. Spectrum analysis is a methodology widely used in telecommunication for the analysis of signals. Signals (analogue or digital) are usually periodic and characterised by a period $\tau$, due to their sinusoidal behaviour. A periodic (i.e. sinusoidal) signal (see Figure \ref{fig_signal}) can be modelled as\footnote{The source code of Figure \ref{fig_signal} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/03.\%20Statistics.ipynb}{here}.}.:
+All the models introduced in the previous paragraphs assume that a seasonality exists and its lag is defined (or can be defined analysing the graph of the time series). Nevertheless, in some cases, it may be necessary to have analytical methods to study the seasonality of a series. For this reason, we introduce the spectrum analysis and the Fourier transform. Spectrum analysis is a methodology widely used in telecommunication for the analysis of signals. Signals (analogue or digital) are usually periodic and characterised by a period $\tau$, due to their sinusoidal behaviour. A periodic (i.e. sinusoidal) signal (see Figure \ref{fig_signal}) can be modelled as\footnote{The source code of Figure \ref{fig_signal} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/03.\%20Statistics.ipynb}{here}.}:
 
 \begin{equation}
 y=S(t)=Asin(\omega t+\phi)
@@ -931,7 +931,7 @@ Telecommunication uses different strategies to transmit signals avoiding losses 
 \label{fig_signalsampling}
 \end{figure}
 
-The original signal can be recreated using the Fourier transform on the sampled signal investigating its behaviour in the frequency domain. The signal is expected to have a maximum original frequency of 400\ Hz (i.e. it has been sampled correctly, accordingly with the Nyquist-Shannon theorem).\par
+The original signal can be recreated using the Fourier transform of the sampled signal, and investigating its behaviour in the frequency domain. The signal is expected to have a maximum original frequency of 400\ Hz (i.e. it has been sampled correctly, accordingly with the Nyquist-Shannon theorem).\par
 
 The Fourier theorem states that any periodic function $x(t)$ may be expressed as a sum of infinite terms of sine and cosine terms (called Fourier series), each of them with a specific amplitude and phase complex coefficient $c_n$ called the Fourier coefficient. 
 
@@ -947,7 +947,7 @@ X\left(f\right)=F\left\{x\left(t\right)\right\}=\int_{-\infty}^{+\infty}{x\left(
 \label{eq_Fouriertransform}
 \end{equation}
 
-The representation of these frequencies is obtained through amplitude and phase spectra which represents the absolute value and the argument of the complex coefficients $c_n$. The amplitude spectrum of the sampled signal is shown in Figure \ref{fig_Fourier}.\footnote{The source code of Figure \ref{fig_Fourier} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/03.\%20Statistics.ipynb}{here}.}
+The representation of these frequencies is obtained through amplitude and phase spectra which represent the absolute value and the argument of the complex coefficients $c_n$. The amplitude spectrum of the sampled signal is shown in Figure \ref{fig_Fourier}.\footnote{The source code of Figure \ref{fig_Fourier} is available \href{https://github.com/aletuf93/logproj/blob/master/examples/03.\%20Statistics.ipynb}{here}.}
 
 % INSERT fig_Fourier
 \begin{figure}[hbt!]
