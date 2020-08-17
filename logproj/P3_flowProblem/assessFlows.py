@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib
 
 # %%
 
@@ -54,7 +55,7 @@ def defineFromToTable(D_flows, colFrom, colTo, colQty):
     
     # %generate heatmap
     fig_count = plt.figure()
-    plt.pcolor(df_fromTo_count, cmap=plt.get_cmap('plasma'))
+    plt.imshow(df_fromTo_count, cmap=plt.get_cmap('plasma'))
     plt.yticks(np.arange(0.5, len(df_fromTo_count.index), 1), df_fromTo_count.index,rotation=45)
     plt.xticks(np.arange(0.5, len(df_fromTo_count.columns), 1), df_fromTo_count.columns,rotation=45)
     plt.title("From-to matrix flows count")
@@ -64,7 +65,7 @@ def defineFromToTable(D_flows, colFrom, colTo, colQty):
     plt.show()
     
     fig_quantity = plt.figure()
-    plt.pcolor(df_fromTo_quantity, cmap=plt.get_cmap('plasma'))
+    plt.imshow(df_fromTo_quantity, cmap=plt.get_cmap('plasma'))
     plt.yticks(np.arange(0.5, len(df_fromTo_quantity.index), 1), df_fromTo_quantity.index,rotation=45)
     plt.xticks(np.arange(0.5, len(df_fromTo_quantity.columns), 1), df_fromTo_quantity.columns,rotation=45)
     plt.title("From-to matrix flows quantities")
