@@ -3,7 +3,7 @@
 %citazione introduttiva
 \epigraph{\textit{The Earth is not flat, but the world behaves linearly, sometimes.}}{}
 
-This chapter, together with chapters \ref{chapLinearRegression}, \ref{chapLinearClassification}, \ref{cahpNonLinear}, \ref{cahpEnsemble}, introduces the so-called “supervised learning”. Differently from unsupervised learning, these algorithms train models on data to predict the value of a given feature $y$. This section addresses regression models, i.e. models targeting a real number. \footnote{The package logproj provides methods to deal with linear regression \href{https://github.com/aletuf93/logproj/blob/master/logproj/M_learningMethod/linear_models.py}{here}.} 
+This chapter, together with chapters, \ref{chapLinearClassification}, \ref{cahpNonLinear}, \ref{cahpEnsemble}, introduces the so-called “supervised learning”. Differently from unsupervised learning, these algorithms train models on data to predict the value of a given feature $y$. This section addresses regression models, i.e. models targeting a real number. \footnote{The package logproj provides methods to deal with linear regression \href{https://github.com/aletuf93/logproj/blob/master/logproj/M_learningMethod/linear_models.py}{here}.} 
 
 \section{Supervised learning} \label{supervisedLearning}
 Supervised learning (predictive algorithms) are used to predict the value of an unknown variable $y$, from a training set $X$ of observations where $y$ is given for each row of $X$. This technique is useful when it is necessary to build a prediction model of the future value of $y$. If the observations contains only the feature $y$, then time series analysis (see Section \ref{secTimeSeries}) applies. When a number of features $P$ is available for each observation, together with $y$, then an option is to build a supervised learning model.
@@ -41,7 +41,7 @@ The testing set is used to compare the predictions obtained by the model with tr
 \label{fig_trainTest}
 \end{figure}
 
-The following chapters illustrate tens of machine learning model. It is necessary to understand how to choose the most proficient in practice. The main idea is to have an error metric and to choose the model that minimises the most this error metric. The prediction error can be calculated for the training set or the testing set. Given a training set $T$, we can define a prediction error on the training set  $\overline{err}$ and a prediction error $Err$ on the independent testing set as follows.
+The following chapters illustrate tens of machine learning models. It is necessary to understand how to choose the most proficient in practice. The main idea is to have an error metric and to choose the model that minimises the most this error metric. The prediction error can be calculated for the training set or the testing set. Given a training set $T$, we can define a prediction error on the training set  $\overline{err}$ and a prediction error $Err$ on the independent testing set as follows.
 
 \begin{equation}
 \overline{err}=\frac{1}{N}\sum_{i=1}^{N}L\left(y_i,f\left(x_i\right)\right)

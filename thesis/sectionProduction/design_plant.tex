@@ -412,7 +412,7 @@ The solution produced by a construction algorithm may be far from optimality. Fo
 
 Local search algorithms are the 2-opt, 3-opt exchange ~\cite{Potvin1989} and CRAFT ~\cite{Scriabin1985}. The 2-opt and 3-opt are general-purpose local search methods that make exchanges between groups of 2 or 3 elements.
 
-Regardless of the methodology used to solve the plant layout problem, a graph $G\left(V,A\right)$ of the system can be defined and visually investigated to identify criticalities. The flows exchanged between control points can be aggregated by arcs or nodes and represented by projecting $G$ on the plant layout (see Figure \ref{prod_layout_visual}).
+Regardless of the methodology used to solve the plant layout problem, a graph $G\left(V,A\right)$ of the system can be defined and visually investigated to identify criticalities. The flows exchanged between control points can be aggregated by arcs or nodes and represented by projecting $G$ on the plant layout (see Figure \ref{prod_layout_visual})\footnote{The source code to deal with the representation of a from-to matrix is available \href{https://github.com/aletuf93/logproj/blob/master/logproj/P3_flowProblem/assessFlows.py}{here}.}.
 
 % INSERT prod_layout_visual
 \begin{figure}[hbt!]
