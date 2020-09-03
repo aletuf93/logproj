@@ -33,6 +33,46 @@ def returnProbabilisticInventory(I_t, iterations=30):
 
     '''
 
+    #service function
+    def movementsGeneratorFromDemandPattern(demand_pattern, n_days, ADI, mean_interarrival_time, std_interarrival_time, mean_qty, sigma_qty):
+    #observed demand pattern
+    #n_days number of inventory days to simulate
+    #ADI ADI value of the observed movements
+    #mean_interarrival_time average number of days between two movements
+    #std_interarrival_time std of the number of days between two movements
+    #mean_qty average quantity of a single movement
+    #sigma_qty std of the quantity of a single movement
+
+    # if intermitten or lumpy, use a poisson to generate interarrival times
+        if demand_pattern in(["",""]):
+
+            #integer values are allowed due to Poisson distribution for out_days
+            out_days = poisson.rvs(mu=ADI, size=n_days)
+
+        #if stable or erratic, use a gaussian distribution to generate interarrival times
+        elif demand_pattern in(["ERRATIC","STABLE","INTERMITTENT","LUMPY"]):
+
+            #only 0/1 values are allowed for out_days
+            out_days = np.zeros(n_days)
+            dayPointer=0
+            while dayPointer<len(out_days):
+                waitingDays= int(np.round(np.random.normal(mean_interarrival_time, std_interarrival_time),0))
+                dayPointer=dayPointer+waitingDays
+                if dayPointer<len(out_days):
+                    out_days[dayPointer]=1
+
+        else:
+            print("Error, demand pattern not found")
+
+        #generates the demand values
+        out_quantities = np.round(np.random.normal(mean_qty, sigma_qty,len(out_days)),0)
+
+        #generates probabilistic outbound movements
+        M_prob = out_quantities * out_days
+        #plt.figure()
+        #plt.plot(out_days)
+        return M_prob
+
     #initialise output
     #compare simulated and real values
     min_real_I_t = max_real_I_t = avg_real_I_t =std_real_I_t=0
@@ -83,35 +123,32 @@ def returnProbabilisticInventory(I_t, iterations=30):
 
 
         for iteration in range(0,iterations):
-            # if intermitten or lumpy, use a poisson to generate interarrival times
-            if demand_pattern in(["INTERMITTENT","LUMPY"]):
+            #generate outbound movements
+            M_prob_out = movementsGeneratorFromDemandPattern(demand_pattern = demand_pattern_out,
+                  n_days = len(I_t),
+                  ADI=ADI_OUT,
+                  mean_interarrival_time = mean_interarrival_time_out,
+                  std_interarrival_time = std_interarrival_time_out,
+                  mean_qty=mean_qty_out,
+                  sigma_qty=sigma_qty_out)
 
-                #integer values are allowed due to Poisson distribution for out_days
-                out_days = poisson.rvs(mu=ADI_OUT, size=len(I_t))
+            #generate inbound movements
+            M_prob_in = movementsGeneratorFromDemandPattern(demand_pattern = demand_pattern_in,
+                          n_days = len(I_t),
+                          ADI=ADI_IN,
+                          mean_interarrival_time = mean_interarrival_time_in,
+                          std_interarrival_time = std_interarrival_time_in,
+                          mean_qty=mean_qty_in,
+                          sigma_qty=sigma_qty_in)
 
-            #if stable or erratic, use a gaussian distribution to generate interarrival times
-            elif demand_pattern in(["ERRATIC","STABLE"]):
+            #generate inventory
+            I_prob = [0]
+            for i in range(0,len(M_prob_in)):
+                I_prob.append(I_prob[i]+M_prob_in[i]-M_prob_out[i])
+            
 
-                #only 0/1 values are allowed for out_days
-                out_days = np.zeros(len(I_t))
-                dayPointer=0
-                while dayPointer<len(out_days):
-                    waitingDays= int(np.round(np.random.normal(mean_interarrival_time_out, std_interavvial_time_out),0))
-                    dayPointer=dayPointer+waitingDays
-                    if dayPointer<len(out_days):
-                        out_days[dayPointer]=1
-
-            else:
-                print("Error, demand pattern not found")
-
-            #generates the demand values
-            out_quantities = np.round(np.random.normal(mean_qty_out, sigma_qty_out,len(out_days)),0)
-            #generates probabilistic outbound movements
-            M_prob = out_quantities * out_days
-
-            #calculates the optimal inventory function
-            I_prob = [j if j>0 else np.nan for j in M_prob]
             I_prob = pd.DataFrame(I_prob,columns=['INVENTORY'])
+            I_prob['INVENTORY'] = I_prob['INVENTORY']-min(I_prob['INVENTORY'])
             if len(I_prob.dropna())>0:
                 I_prob['INVENTORY'] = I_prob['INVENTORY'].fillna(method='bfill') #defines the values of the inventory value
                 I_prob['INVENTORY'] = I_prob['INVENTORY'].fillna(method='ffill') #fill nan values after the last outbound movement
@@ -119,6 +156,7 @@ def returnProbabilisticInventory(I_t, iterations=30):
                 max_inventory.append(max(I_prob['INVENTORY']))
                 avg_inventory.append(np.mean( I_prob['INVENTORY']))
                 std_inventory.append(np.std( I_prob['INVENTORY']))
+            #plt.plot(I_prob['INVENTORY'])
 
         #compare simulated and real values
         min_real_I_t = np.nanmin([j for j in I_t if j>0])
@@ -251,7 +289,7 @@ def returnInventoryPart(D_movements, D_inventory, timeLineDays,quantityColums='Q
 
     #uso forward fill per riempire i nulli: se non ho inventari calcolati, fa fede l'ultimo inventario calcolato
     D_inventory_part['INVENTORY'] = D_inventory_part['INVENTORY'].fillna(method='ffill')
-    
+
     #riempio il resto con zeri
     D_inventory_part['INVENTORY'] =  D_inventory_part['INVENTORY'].fillna(0)
 
@@ -314,7 +352,7 @@ def assessInterarrivalTime(I_t):
     interarrival_time = []
     for j in range(1,len(M_t_in)):
         interarrival_time.append(M_t_in.index[j] - M_t_in.index[j-1])
-    
+
     #if one or zero data point set the interarrival time equal to zero
     if len(M_t_in)<=1:
         interarrival_time.append(0)
