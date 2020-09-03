@@ -12,8 +12,8 @@ def calculateADICV2(D_mov, itemfield, qtyfield, dateVar):
     #itemfiels is the string with the column name for the itemcode
     #qtyfield is the string with the column name for the quantity
     #dataVar is the string with the column name for the timestamp
-    
-    
+
+
     #identify the number of days of the input dataset
     N_Days=max(D_mov[dateVar])-min(D_mov[dateVar])
     N_Days=N_Days.days
@@ -33,7 +33,7 @@ def calculateADICV2(D_mov, itemfield, qtyfield, dateVar):
 # %%
 def returnsparePartclassification(ADI,CV2):
     '''
-    
+
 
     Parameters
     ----------
@@ -48,14 +48,14 @@ def returnsparePartclassification(ADI,CV2):
         DESCRIPTION. return the demand pattern of the spare part
 
     '''
-    
-    if (ADI<=1.32) & (CV2>0.49):
+
+    if (ADI>1.32) & (CV2>0.49):
         return "LUMPY"
-    elif (ADI>1.32) & (CV2>0.49):
+    elif (ADI<=1.32) & (CV2>0.49):
         return "ERRATIC"
-    elif (ADI<=1.32) & (CV2<=0.49):
-        return "INTERMITTENT"
     elif (ADI>1.32) & (CV2<=0.49):
+        return "INTERMITTENT"
+    elif (ADI<=1.32) & (CV2<=0.49):
         return "STABLE"
 
 #%% demand classification
@@ -64,9 +64,9 @@ def demandPatternADICV2(df_results, setTitle, draw=False):
     # - ADI (with the ADI value)
     # - CV2 (with the CV2 value)
     # - frequency (with the number of lines for each itemcode)
-    
+
     #setTitle is a string containing the name of the dataset to generate the title of the figure
-    
+
     fig=fig1=[]
     df_results = df_results.dropna()
     if len(df_results)>0:
@@ -76,7 +76,7 @@ def demandPatternADICV2(df_results, setTitle, draw=False):
         numIntermittent=len(df_results[(df_results.ADI<=1.32) & (df_results.CV2<=0.49) ])
         numStable=len(df_results[(df_results.ADI>1.32) & (df_results.CV2<=0.49) ])
         totParts=numLumpy+numErratic+numIntermittent+numStable
-        
+
         if draw:
             #if totParts==len(df_results):
                 A=np.array([[numLumpy, numErratic], [numIntermittent, numStable]])
@@ -84,19 +84,19 @@ def demandPatternADICV2(df_results, setTitle, draw=False):
                                   [f"Intermittent \n {numIntermittent} parts \n Perc: {np.round(numIntermittent*100/totParts, 2)} %", f"Stable \n {numStable} parts \n Perc: {np.round(numStable*100/totParts, 2)} %"]])
                 fig, ax = plt.subplots()
                 im = ax.imshow(A,cmap="YlOrRd")
-                
+
                 plt.title(f"Parts set: {setTitle}")
-                
-                
+
+
                 im.axes.get_xaxis().set_visible(False)
                 im.axes.get_yaxis().set_visible(False)
-                
+
                 for i in range(0,2):
                     for j in range(0,2):
                         ax.text(j, i, A_text[i, j],
                                        ha="center", va="center", color="k")
-                
-                
+
+
                 #grafica risultati ADI e CV2
                 #normalizzo i valori per dare dimensione alle bolle
                 fig1 = plt.figure()
@@ -106,6 +106,6 @@ def demandPatternADICV2(df_results, setTitle, draw=False):
                 plt.xlabel('ADI')
                 plt.ylabel('CV2')
                 plt.title(f"Demand pattern: {setTitle}")
-            
-        
+
+
     return fig, fig1, numLumpy, numIntermittent, numErratic, numStable
